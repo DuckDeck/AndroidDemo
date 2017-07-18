@@ -15,13 +15,13 @@ class Forecast {
     var more: More? = null
 
     inner class Temperature {
-        var max: String? = null
-        var min: String? = null
+        var max: String = ""
+        var min: String = ""
     }
 
     inner class More {
         @SerializedName("txt_d")
-        var info: String? = null
+        var info: String = ""
     }
 
 }

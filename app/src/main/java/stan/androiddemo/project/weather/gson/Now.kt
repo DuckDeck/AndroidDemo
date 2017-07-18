@@ -7,12 +7,12 @@ import com.google.gson.annotations.SerializedName
  */
 class Now {
     @SerializedName("tmp")
-    var temperature: String? = null
+    var temperature: String = ""
     @SerializedName("cond")
     var more: More? = null
 
     inner class More {
         @SerializedName("txt")
-        var info: String? = null
+        var info: String = ""
     }
 }

@@ -16,16 +16,16 @@ class Suggestion {
 
     inner class Comfort {
         @SerializedName("txt")
-        var info: String? = null
+        var info: String = ""
     }
 
     inner class CarWash {
         @SerializedName("txt")
-        var info: String? = null
+        var info: String = ""
     }
 
     inner class Sport {
         @SerializedName("txt")
-        var info: String? = null
+        var info: String = ""
     }
 }

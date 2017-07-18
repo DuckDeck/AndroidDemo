@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName
  */
 class Basic {
     @SerializedName("city")
-    var cityName: String? = null
+    var cityName: String = ""
 
     @SerializedName("id")
     var weatherId: String? = null
@@ -16,7 +16,7 @@ class Basic {
 
     inner class Update {
         @SerializedName("loc")
-        var updateTime: String? = null
+        var updateTime: String = ""
     }
 
 }

@@ -11,7 +11,7 @@ class AQI:Serializable{
     public var city:AQICity? = null
 
     class AQICity{
-        public var sqi = ""
+        public var aqi = ""
         public var pm25 = ""
     }
 }

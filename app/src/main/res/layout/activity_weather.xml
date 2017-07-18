@@ -5,5 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="stan.androiddemo.project.weather.WeatherActivity">
-
+<FrameLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <fragment
+        android:id="@+id/fra"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</FrameLayout>
 </android.support.constraint.ConstraintLayout>
