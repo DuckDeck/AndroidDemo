@@ -12,7 +12,6 @@ class KeyBoardListener(activity: Activity) {
 
     init {
         //获取activity的根视图
-
         //监听视图树中全局布局发生改变或者视图树中的某个视图的可视状态发生改变
         rootView.viewTreeObserver.addOnGlobalLayoutListener(ViewTreeObserver.OnGlobalLayoutListener {
             //获取当前根视图在屏幕上显示的大小
@@ -57,7 +56,6 @@ class KeyBoardListener(activity: Activity) {
 
     interface OnSoftKeyBoardChangeListener {
         fun keyBoardShow(height: Int)
-
         fun keyBoardHide(height: Int)
     }
 
