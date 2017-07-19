@@ -19,6 +19,7 @@
 
     <stan.androiddemo.UI.FixedDrawerLayout
         android:id="@+id/drawer_layout_fixed"
+
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <android.support.v4.widget.SwipeRefreshLayout
@@ -37,6 +38,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <RelativeLayout
+                        android:background="#99aa4000"
                         android:orientation="vertical"
                         android:layout_width="match_parent"
                         android:layout_height="?attr/actionBarSize">
@@ -76,7 +78,9 @@
                         android:orientation="vertical"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="15dp">
+                        android:layout_margin="15dp"
+                        android:padding="10dp"
+                        android:background="#8000">
 
                         <TextView
                             android:id="@+id/degree_text"
@@ -124,7 +128,8 @@
 
 
                     <LinearLayout
-                        android:orientation="vertical" android:layout_width="match_parent"
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="15dp"
                         android:background="#8000">
@@ -236,6 +241,14 @@
                 </LinearLayout>
             </ScrollView>
         </android.support.v4.widget.SwipeRefreshLayout>
+
+
+        <fragment
+            android:id="@+id/activity_chooser_view_content"
+            android:name="stan.androiddemo.project.weather.ChooseAreaFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"/>
     </stan.androiddemo.UI.FixedDrawerLayout>
 
 </FrameLayout>

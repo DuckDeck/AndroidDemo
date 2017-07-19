@@ -5,6 +5,7 @@ import com.google.gson.Gson
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
+import org.litepal.crud.DataSupport
 import stan.androiddemo.project.weather.db.City
 import stan.androiddemo.project.weather.db.Country
 import stan.androiddemo.project.weather.db.Province
@@ -46,7 +47,7 @@ class Utility {
                         val city = City()
                         city.cityName =  cityObject.getString("name")
                         city.cityCode = cityObject.getInt("id")
-                        city.id = provinceId
+                        city.provinceId = provinceId
                         city.save()
                     }
                     return true

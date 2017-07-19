@@ -1,15 +1,14 @@
 package stan.androiddemo.project.weather
 
 import android.app.ProgressDialog
-import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+
 import kotlinx.android.synthetic.main.fragment_choose_area.*
 import okhttp3.Call
 import okhttp3.Callback
@@ -31,21 +30,22 @@ class ChooseAreaFragment : Fragment() {
     val LEVEL_CITY = 1
     val LEVEL_COUNTRY = 2
 
-    private var progressDialog: ProgressDialog? = null
+    private var progressBar: ProgressBar? = null
     lateinit var adapter: ArrayAdapter<String>
     internal var dataList: MutableList<String> = ArrayList()
     lateinit var provinceList: List<Province>
     lateinit var cityList: List<City>
     lateinit var countryList: List<Country>
     lateinit var selectedProvince: Province
+    lateinit var list_view:ListView
     lateinit var selectedCity: City
     var currentLevel: Int = 0
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater!!.inflate(R.layout.fragment_choose_area, container, false)
-
         adapter = ArrayAdapter(context, android.R.layout.simple_list_item_1, dataList)
-        list_view.setAdapter(adapter)
+        list_view = view.findViewById<ListView>(R.id.list_view)
+        list_view.adapter = adapter
         return view
     }
 
@@ -59,17 +59,17 @@ class ChooseAreaFragment : Fragment() {
                 selectedCity = cityList[position]
                 queryCountries()
             } else if (currentLevel == LEVEL_COUNTRY) {
-                val weatherId = countryList[position].id
+                val weatherId = countryList[position].weatherId.toString()
                 if (activity is  WeatherActivity) {
-                    val intent = Intent(activity, WeatherActivity::class.java)
+                    val intent = Intent(activity, WeatherInfoActivity::class.java)
                     intent.putExtra("weather_id", weatherId)
                     startActivity(intent)
                     activity.finish()
                 } else if (activity is WeatherInfoActivity) {
-                    val activity = activity as WeatherActivity
-//                    activity.drawerLayout.closeDrawers()
-//                    activity.swipeRefresh.setRefreshing(true)
-//                    activity.requestWeather(weatherId)
+                    val activity = activity as WeatherInfoActivity
+                    activity.closeDrawer()
+                    activity.refresh()
+                    activity.requestWeather(weatherId)
                 }
 
             }
@@ -81,6 +81,11 @@ class ChooseAreaFragment : Fragment() {
                 queryProvince()
             }
         })
+        txt_clear_data.setOnClickListener {
+            DataSupport.deleteAll(Province::class.java)
+            DataSupport.deleteAll(City::class.java)
+            DataSupport.deleteAll(Country::class.java)
+        }
         queryProvince()
     }
 
@@ -181,17 +186,16 @@ class ChooseAreaFragment : Fragment() {
     }
 
     internal fun showProgressDialog() {
-        if (progressDialog == null) {
-            progressDialog = ProgressDialog(activity)
-            progressDialog!!.setMessage("Loading...")
-            progressDialog!!.setCanceledOnTouchOutside(false)
+        if (progressBar == null) {
+            progressBar = ProgressBar(context)
+
         }
-        progressDialog!!.show()
+
     }
 
     internal fun closeProgressDialog() {
-        if (progressDialog != null) {
-            progressDialog!!.dismiss()
-        }
+//        if (progressDialog != null) {
+//            progressDialog!!.dismiss()
+//        }
     }
 }
