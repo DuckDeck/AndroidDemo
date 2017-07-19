@@ -19,7 +19,9 @@
         </activity>
         <activity android:name=".project.weather.WeatherActivity" />
         <activity android:name=".ProjectActivity" />
-        <activity android:name=".project.weather.WeatherInfoActivity"></activity>
+        <activity android:name=".project.weather.WeatherInfoActivity" />
+        <activity android:name=".LayoutActivity" />
+        <activity android:name=".layout.keyboard.KeyboardActivity"></activity>
     </application>
 
 </manifest>

@@ -1,13 +1,12 @@
 package stan.androiddemo
 
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_main.*
-import stan.androiddemo.tool.HttpTool
 
 class MainActivity : AppCompatActivity() {
 
@@ -15,7 +14,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val adapter = ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, arrayListOf("项目Demo"))
+        val adapter = ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, arrayListOf("项目Demo","布局Layout"))
         list_view_menu.adapter = adapter
 
 
@@ -28,7 +27,11 @@ class MainActivity : AppCompatActivity() {
                     val intent = Intent(this, ProjectActivity::class.java)
                     startActivity(intent)
                 }
-
+                "布局Layout"->
+                {
+                    val intent = Intent(this, LayoutActivity::class.java)
+                    startActivity(intent)
+                }
             }
         }
     }
