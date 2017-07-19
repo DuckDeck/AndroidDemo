@@ -8,6 +8,7 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.KeyEvent
 import android.widget.EditText
+import kotlinx.android.synthetic.main.activity_keyboard.*
 import stan.androiddemo.R
 
 
@@ -19,11 +20,11 @@ class KeyboardActivity : AppCompatActivity() {
         setContentView(R.layout.activity_keyboard)
         KeyBoardListener.setListener(this, object:KeyBoardListener.OnSoftKeyBoardChangeListener{
             override fun keyBoardHide(height: Int) {
-                println("keyBoardHide")
+                txt_event_status.text="键盘收起"
             }
 
             override fun keyBoardShow(height: Int) {
-                println("keyBoardShow")
+                txt_event_status.text="键盘收弹出"
             }
 
         })
