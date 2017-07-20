@@ -8,6 +8,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_project.*
+import stan.androiddemo.project.novel.NovelSearchActivity
 import stan.androiddemo.project.weather.WeatherActivity
 
 
@@ -16,18 +17,23 @@ class ProjectActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_project)
-        val adapter = ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, arrayListOf("weather"))
+        val adapter = ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,
+                arrayListOf("Weather","Novel"))
         list_view_project.adapter = adapter
 
         list_view_project.onItemClickListener = AdapterView.OnItemClickListener { adapterView, view, i, l ->
             val title = (view as TextView).text
             when(title){
-                "weather"->
+                "Weather"->
                 {
                     val intent = Intent(this, WeatherActivity::class.java)
                     startActivity(intent)
                 }
-
+                "Novel"->
+                {
+                    val intent = Intent(this, NovelSearchActivity::class.java)
+                    startActivity(intent)
+                }
             }
         }
     }

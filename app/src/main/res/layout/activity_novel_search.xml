@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="stan.androiddemo.project.novel.NovelSearchActivity">
+    <EditText
+        android:text="完美世界"
+        android:hint="输入名称搜索"
+        app:layout_constraintEnd_toStartOf="@id/btn_search_start"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:id="@+id/txt_search_input"
+        android:layout_width="0dp"
+        android:layout_height="40dp"  />
+    <Button
+        android:text="搜索"
+        app:layout_constraintStart_toEndOf="@id/txt_search_input"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:id="@+id/btn_search_start"
+        android:layout_width="60dp"
+        android:layout_height="40dp"  />
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_novels"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_search_input"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+</android.support.constraint.ConstraintLayout>
