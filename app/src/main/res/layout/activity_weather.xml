@@ -9,7 +9,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <fragment
-        android:id="@+id/fra"
+        android:id="@+id/activity_chooser_view_content"
+        android:name="stan.androiddemo.project.weather.ChooseAreaFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </FrameLayout>

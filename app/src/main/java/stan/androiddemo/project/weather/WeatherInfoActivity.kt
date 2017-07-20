@@ -73,6 +73,8 @@ class WeatherInfoActivity : AppCompatActivity() {
 
         back_button.setOnClickListener {
             drawer_layout_fixed.openDrawer(GravityCompat.START)
+            //Iusse2 when click back to show the city choose raise a error with this   java.lang.IllegalArgumentException: No drawer view found with gravity LEFT
+            //you need add the city choose fragment below the drawlayout
         }
     }
 
@@ -157,8 +159,16 @@ class WeatherInfoActivity : AppCompatActivity() {
                 val editor = PreferenceManager.getDefaultSharedPreferences(this@WeatherInfoActivity).edit()
                 editor.putString("bing_pic", bingPic)
                 editor.apply()
-                runOnUiThread { Glide.with(this@WeatherInfoActivity).load(bingPic).into(img_bg_bing) }
+                runOnUiThread { Glide.with(this@WeatherInfoActivity).load(bingPic).centerCrop().into(img_bg_bing) }
             }
         })
+    }
+
+    fun closeDrawer(){
+        drawer_layout_fixed.closeDrawers()
+    }
+
+    fun refresh(){
+        swipe_refresh_weather.isRefreshing = true
     }
 }

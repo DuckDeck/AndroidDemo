@@ -1,5 +1,6 @@
 package stan.androiddemo.tool
 
+import android.util.Log
 import okhttp3.OkHttpClient
 import okhttp3.Request
 
@@ -9,6 +10,7 @@ import okhttp3.Request
 class HttpTool{
    companion object {
        fun sendOKHttpRequest(address: String, callback: okhttp3.Callback) {
+           Log.e("sendOKHttpRequest, 请求地址",address)
            val client = OkHttpClient()
            val request = Request.Builder().url(address).build()
            client.newCall(request).enqueue(callback)
