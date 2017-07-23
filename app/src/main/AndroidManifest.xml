@@ -24,8 +24,11 @@
         <activity android:name=".project.weather.WeatherInfoActivity" />
         <activity android:name=".LayoutActivity" />
         <activity android:name=".layout.keyboard.KeyboardActivity" />
-        <activity android:name=".project.novel.NovelSearchActivity" />
-        <activity android:name=".layout.constraintLayout.ConstraintLayoutDemoActivity"></activity>
+        <activity
+            android:name=".project.novel.NovelSearchActivity"
+            android:windowSoftInputMode="stateHidden" />
+        <activity android:name=".layout.constraintLayout.ConstraintLayoutDemoActivity" />
+        <activity android:name=".project.novel.SectionListActivity"></activity>
     </application>
 
 </manifest> <!-- issue0:can not hide the title bar --><!-- just use   android:theme="@style/Theme.AppCompat.Light.NoActionBar"> -->

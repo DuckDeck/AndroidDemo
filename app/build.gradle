@@ -38,6 +38,6 @@ dependencies {
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.android.support:recyclerview-v7:26.0.0-alpha1'
     compile 'org.jsoup:jsoup:1.10.3'
-    compile 'com.ineat-group:quick-adapter:1.0.2'
+    compile "com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.24"
     implementation 'com.android.support:support-v4:26.0.0-beta2'
 }

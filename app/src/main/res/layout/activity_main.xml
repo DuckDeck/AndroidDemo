@@ -10,7 +10,11 @@
 <ListView
     android:id="@+id/list_view_menu"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toStartOf="parent"
+    app:layout_constraintBottom_toTopOf="parent">
 </ListView>
 
 </android.support.constraint.ConstraintLayout>
