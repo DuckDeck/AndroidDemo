@@ -23,14 +23,15 @@
                android:id="@+id/txt_search_input"
                android:layout_weight="6"
                android:layout_width="0dp"
-               android:layout_height="40dp"
-               app:layout_constraintHeight_min="@dimen/dp_40"/>
-           <Button
+               android:layout_height="40dp" />
+           <TextView
+
                android:layout_weight="1"
                android:text="搜索"
-               android:id="@+id/btn_search_start"
+               android:gravity="center"
+               android:id="@+id/txt_search_start"
                android:layout_width="0dp"
-               android:layout_height="40dp"  />
+               android:layout_height="match_parent"  />
        </LinearLayout>
        <android.support.v7.widget.RecyclerView
            android:id="@+id/recycler_novels"

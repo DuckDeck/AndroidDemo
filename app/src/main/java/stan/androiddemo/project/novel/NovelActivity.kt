@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.text.Html
+import android.view.View
 import android.widget.Toast
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
@@ -21,6 +22,8 @@ class NovelActivity : AppCompatActivity() {
     var index = 0
     var arrNovelSection = ArrayList<SectionInfo>()
     lateinit var mAdapter: BaseQuickAdapter<SectionInfo, BaseViewHolder>
+    lateinit var failView: View
+    lateinit var loadingView: View
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_novel)
@@ -41,6 +44,14 @@ class NovelActivity : AppCompatActivity() {
         mAdapter.setOnLoadMoreListener({
             getNovelSection()
         },recycler_novel_section)
+        loadingView = View.inflate(this,R.layout.list_loading_hint,null)
+        failView = View.inflate(this,R.layout.list_empty_hint,null)
+        failView.setOnClickListener {
+            mAdapter.emptyView = loadingView
+            index = 0
+            getNovelSection()
+        }
+        mAdapter.emptyView = loadingView
         getNovelSection()
 
     }
@@ -50,7 +61,12 @@ class NovelActivity : AppCompatActivity() {
         SectionInfo.getNovelSection(currentSection.sectionUrl,{ v: ResultInfo ->
             runOnUiThread {
                 if (v.code != 0) {
-                    mAdapter.loadMoreFail()
+                    if (arrNovelSection.size == 0){
+                        mAdapter.emptyView = failView
+                    }
+                    else{
+                        mAdapter.loadMoreFail()
+                    }
                     Toast.makeText(this,v.message, Toast.LENGTH_LONG).show()
                     return@runOnUiThread
                 }

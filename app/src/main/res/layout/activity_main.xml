@@ -6,7 +6,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="stan.androiddemo.MainActivity">
+<android.support.v7.widget.Toolbar
+    app:title="App Title"
+    app:subtitle="Sub Title"
 
+    android:layout_height="wrap_content"
+    android:minHeight="?attr/actionBarSize"
+    android:layout_width="match_parent"
+    android:background="?attr/colorPrimary">
+
+</android.support.v7.widget.Toolbar>
 <ListView
     android:id="@+id/list_view_menu"
     android:layout_width="match_parent"
