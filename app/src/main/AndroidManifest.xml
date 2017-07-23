@@ -28,7 +28,8 @@
             android:name=".project.novel.NovelSearchActivity"
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".layout.constraintLayout.ConstraintLayoutDemoActivity" />
-        <activity android:name=".project.novel.SectionListActivity"></activity>
+        <activity android:name=".project.novel.SectionListActivity" />
+        <activity android:name=".project.novel.NovelActivity"></activity>
     </application>
 
 </manifest> <!-- issue0:can not hide the title bar --><!-- just use   android:theme="@style/Theme.AppCompat.Light.NoActionBar"> -->

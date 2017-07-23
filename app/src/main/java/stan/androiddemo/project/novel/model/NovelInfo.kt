@@ -1,5 +1,8 @@
 package stan.androiddemo.project.novel.model
 
+import android.annotation.SuppressLint
+import android.os.Parcel
+import android.os.Parcelable
 import android.util.Log
 import okhttp3.Call
 import okhttp3.Response
@@ -10,11 +13,14 @@ import stan.androiddemo.errcode_html_resolve_error
 import stan.androiddemo.errcode_netword_error
 import stan.androiddemo.tool.HttpTool
 import java.io.IOException
+import java.nio.charset.Charset
+import javax.xml.transform.Source
 
+@SuppressLint("ParcelCreator")
 /**
  * Created by hugfo on 2017/7/20.
  */
-class NovelInfo{
+class NovelInfo() :Parcelable{
     var id = 0
     var url = ""
     var title = ""
@@ -24,15 +30,52 @@ class NovelInfo{
     var category = ""
     var updateTime = ""
 
-    companion object {
-        fun search(key:String,index:Int, cb: ((novels:ResultInfo)->Int)){
+
+
+
+
+    constructor(parcel: Parcel) : this() {
+        id = parcel.readInt()
+        url = parcel.readString()
+        title = parcel.readString()
+        img = parcel.readString()
+        intro = parcel.readString()
+        author = parcel.readString()
+        category = parcel.readString()
+        updateTime = parcel.readString()
+    }
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeInt(id)
+        parcel.writeString(url)
+        parcel.writeString(title)
+        parcel.writeString(img)
+        parcel.writeString(intro)
+        parcel.writeString(author)
+        parcel.writeString(category)
+        parcel.writeString(updateTime)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<NovelInfo> {
+        override fun createFromParcel(parcel: Parcel): NovelInfo {
+            return NovelInfo(parcel)
+        }
+
+        override fun newArray(size: Int): Array<NovelInfo?> {
+            return arrayOfNulls(size)
+        }
+        fun search(key:String,index:Int, cb: ((novels:ResultInfo)->Unit)){
             val url = "http://zhannei.baidu.com/cse/search?s=2041213923836881982&q=$key&p=$index&isNeedCheckDomain=1&jump=1"
             HttpTool.sendOKHttpRequest(url,object :okhttp3.Callback{
                 var result = ResultInfo()
                 override fun onFailure(call: Call?, e: IOException?) {
                     result.code = errcode_netword_error
                     result.message = "网络错误，请重新再试"
-
+                    cb(result)
                     e?.printStackTrace()
                 }
 
@@ -67,14 +110,109 @@ class NovelInfo{
                 }
             })
         }
+        fun getSections(url:String,cb: ((novels:ResultInfo)->Unit)){
+            HttpTool.sendOKHttpRequest(url,object :okhttp3.Callback{
+                var result = ResultInfo()
+                override fun onFailure(call: Call?, e: IOException?) {
+                    result.code = errcode_netword_error
+                    result.message = "网络错误，请重新再试"
+                    cb(result)
+                    e?.printStackTrace()
+                }
+                override fun onResponse(call: Call, response: Response) {
+                    var arrSections = ArrayList<SectionInfo>()
+                    try {
+                        //issue3 when you convert something to string ,java use a default charset to convert, when the default charset do not match the stream, the chines to show random code and lost
+                        //the origin charset, you can not convert it ti the correct charset, so the first thing is to convert to bytes ,bytes do not contain the charset ,then usr String(str,charset)
+                        //to convert the right charset
+                        val responseText = String(response.body().bytes(), charset("GBK"))
+                        val js =Jsoup.parse(responseText)
+                        val sectionHtml = js.select("div#list").first().child(0).children()
+                        for (s in sectionHtml){
+                            if (s.tagName() == "dd"){
+                                var section = SectionInfo()
+                                section.title = s.child(0).text()
+                                section.sectionUrl = s.child(0).attr("href")
+                                arrSections.add(section)
+                            }
+                        }
+                        result.data = arrSections
+                        cb(result)
+                    }
+                    catch (e:Exception){
+                        result.code = errcode_html_resolve_error
+                        result.message = "HTML解析错误"
+                        cb(result)
+                        e.printStackTrace()
+                    }
+                }
+            })
+        }
     }
 }
 
 
 
-class SectionInfo:DataSupport(){
+class SectionInfo() :DataSupport(),Parcelable{
     var id = 0
     var novelId = 0
     var sectionUrl = ""
     var title = ""
+    var content = ""
+    constructor(parcel: Parcel) : this() {
+        id = parcel.readInt()
+        novelId = parcel.readInt()
+        sectionUrl = parcel.readString()
+        title = parcel.readString()
+        content = parcel.readString()
+    }
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeInt(id)
+        parcel.writeInt(novelId)
+        parcel.writeString(sectionUrl)
+        parcel.writeString(title)
+        parcel.writeString(content)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<SectionInfo> {
+        override fun createFromParcel(parcel: Parcel): SectionInfo {
+            return SectionInfo(parcel)
+        }
+
+        override fun newArray(size: Int): Array<SectionInfo?> {
+            return arrayOfNulls(size)
+        }
+
+        fun getNovelSection(url: String,cb: (novels: ResultInfo) -> Unit){
+            HttpTool.sendOKHttpRequest(url,object :okhttp3.Callback{
+                var result = ResultInfo()
+                override fun onFailure(call: Call?, e: IOException?) {
+                    result.code = errcode_netword_error
+                    result.message = "网络错误，请重新再试"
+                    cb(result)
+                    e?.printStackTrace()
+                }
+                override fun onResponse(call: Call, response: Response) {
+                    try {
+                        val responseText = String(response.body().bytes(), charset("GBK"))
+                        val js =Jsoup.parse(responseText)
+                        val sectionHtml = js.select("div#content").first().html().replace("&nbsp;","")
+                        result.data = sectionHtml
+                        cb(result)
+                    }
+                    catch (e:Exception){
+                        result.code = errcode_html_resolve_error
+                        result.message = "HTML解析错误"
+                        cb(result)
+                        e.printStackTrace()
+                    }
+                }
+            })
+        }
+    }
 }

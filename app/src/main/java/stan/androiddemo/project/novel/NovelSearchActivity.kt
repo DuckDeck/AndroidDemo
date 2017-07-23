@@ -1,5 +1,6 @@
 package stan.androiddemo.project.novel
 
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
@@ -41,13 +42,13 @@ class NovelSearchActivity : AppCompatActivity() {
         recycler_novels.addItemDecoration(Separate(this,Separate.VERTICAL_LIST))
         recycler_novels.adapter = mAdapter
         mAdapter.setEnableLoadMore(true)
-        mAdapter.setOnLoadMoreListener(BaseQuickAdapter.RequestLoadMoreListener {
+        mAdapter.setOnLoadMoreListener({
             searchNovel(key)
         },recycler_novels)
 
         btn_search_start.setOnClickListener {
             val key = txt_search_input.text.toString().trim()
-            if (key.length <= 0){
+            if (key.isEmpty()){
                 Toast.makeText(this,"搜索条件不能为空",Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
@@ -55,16 +56,23 @@ class NovelSearchActivity : AppCompatActivity() {
             this.key = key
             searchNovel(key)
         }
-
+        mAdapter.setOnItemClickListener { _, _, position ->
+            val novel = arrNovels[position]
+            val bundle = Bundle()
+            bundle.putParcelable("novel",novel)
+            val intent = Intent(this,SectionListActivity::class.java)
+            intent.putExtra("novel",novel)
+            startActivity(intent,bundle)
+        }
     }
 
     fun searchNovel(key:String){
-        NovelInfo.search(key,index,{v:ResultInfo->
+        NovelInfo.search(key,index) { v:ResultInfo->
             runOnUiThread {
-                if (v.code != 0){
+                if (v.code != 0)                 {
                     Toast.makeText(this,v.message,Toast.LENGTH_LONG).show()
+                    return@runOnUiThread
                 }
-
                 if (index == 0){
                     arrNovels.clear()
                 }
@@ -74,14 +82,14 @@ class NovelSearchActivity : AppCompatActivity() {
                 }
                 else{
                     mAdapter.loadMoreComplete()
-                    arrNovels.addAll(v.data!! as ArrayList<NovelInfo>)
+                    arrNovels.addAll(resultNovels)
                     index ++
                     mAdapter.notifyDataSetChanged()
                 }
 
             }
-            return@search 1
-        })
+            return@search
+        }
 
     }
 

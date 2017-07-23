@@ -4,13 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="stan.androiddemo.project.novel.SectionListActivity">
+    tools:context="stan.androiddemo.project.novel.NovelActivity">
 <android.support.v7.widget.RecyclerView
+    android:id="@+id/recycler_novel_section"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/recyclerView_sections"
-    app:layout_constraintTop_toTopOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toStartOf="parent"
-    app:layout_constraintBottom_toTopOf="parent"></android.support.v7.widget.RecyclerView>
+    android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
 </android.support.constraint.ConstraintLayout>
