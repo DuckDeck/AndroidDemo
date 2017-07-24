@@ -11,7 +11,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        android:theme="@style/Theme.AppCompat.Light.DarkActionBar">
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,8 +24,15 @@
         <activity android:name=".project.weather.WeatherInfoActivity" />
         <activity android:name=".LayoutActivity" />
         <activity android:name=".layout.keyboard.KeyboardActivity" />
+
         <activity android:name=".CommunicationActivity" />
         <activity android:name=".communication.IPC.IPCActivity"></activity>
+        <activity
+            android:name=".project.novel.NovelSearchActivity"
+            android:windowSoftInputMode="stateHidden" />
+        <activity android:name=".layout.constraintLayout.ConstraintLayoutDemoActivity" />
+        <activity android:name=".project.novel.SectionListActivity" />
+        <activity android:name=".project.novel.NovelActivity"></activity>
     </application>
 
 </manifest> <!-- issue0:can not hide the title bar --><!-- just use   android:theme="@style/Theme.AppCompat.Light.NoActionBar"> -->

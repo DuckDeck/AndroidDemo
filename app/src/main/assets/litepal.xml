@@ -6,5 +6,6 @@
         <mapping class = "stan.androiddemo.project.weather.db.Province" />
         <mapping class = "stan.androiddemo.project.weather.db.City" />
         <mapping class = "stan.androiddemo.project.weather.db.Country" />
+        <mapping class = "stan.androiddemo.project.novel.model.SectionInfo" />
     </list>
 </litepal>

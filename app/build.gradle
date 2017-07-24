@@ -39,5 +39,8 @@ dependencies {
     compile('me.drakeet.multitype:multitype:3.1.0', {
         exclude group: 'com.android.support'
     })
+    compile 'com.android.support:recyclerview-v7:26.0.0-alpha1'
+    compile 'org.jsoup:jsoup:1.10.3'
+    compile "com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.24"
     implementation 'com.android.support:support-v4:26.0.0-beta2'
 }
