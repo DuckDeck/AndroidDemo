@@ -90,7 +90,7 @@ class NovelInfo() :Parcelable{
                             novel.img = e.select("img.result-game-item-pic-link-img").first().attr("src")
                             novel.url = e.select("a.result-game-item-title-link").first().attr("href")
                             novel.id = novel.url.hashCode()
-                            novel.title = e.select("a.result-game-item-title-link").first().child(0).text()
+                            novel.title = e.select("a.result-game-item-title-link").first().text()
                             novel.intro = e.select("p.result-game-item-desc").first().text()
                             val info = e.select("p.result-game-item-info-tag")
                             novel.author = info[0].child(1).text()

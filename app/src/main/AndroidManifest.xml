@@ -24,15 +24,16 @@
         <activity android:name=".project.weather.WeatherInfoActivity" />
         <activity android:name=".LayoutActivity" />
         <activity android:name=".layout.keyboard.KeyboardActivity" />
-
         <activity android:name=".CommunicationActivity" />
-        <activity android:name=".communication.IPC.IPCActivity"></activity>
+        <activity android:name=".communication.IPC.IPCActivity" />
         <activity
             android:name=".project.novel.NovelSearchActivity"
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".layout.constraintLayout.ConstraintLayoutDemoActivity" />
         <activity android:name=".project.novel.SectionListActivity" />
-        <activity android:name=".project.novel.NovelActivity"></activity>
+        <activity android:name=".project.novel.NovelActivity" />
+        <activity android:name=".drawview.drawtext.DrawTextActivity" />
+        <activity android:name=".DrawViewActivity"></activity>
     </application>
 
 </manifest> <!-- issue0:can not hide the title bar --><!-- just use   android:theme="@style/Theme.AppCompat.Light.NoActionBar"> -->

@@ -9,6 +9,7 @@ import android.widget.Toast
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import kotlinx.android.synthetic.main.activity_novel.*
+import kotlinx.android.synthetic.main.novel_list_item.*
 import stan.androiddemo.Model.ResultInfo
 import stan.androiddemo.R
 import stan.androiddemo.project.novel.model.NovelInfo
@@ -35,6 +36,7 @@ class NovelActivity : AppCompatActivity() {
         }
         mAdapter = object: BaseQuickAdapter<SectionInfo,BaseViewHolder>(android.R.layout.simple_list_item_1,arrNovelSection){
             override fun convert(helper: BaseViewHolder, item: SectionInfo) {
+                txt_section_title.text = item.title //用是可以用 不怎么准确
                 helper.setText(android.R.id.text1,Html.fromHtml(item.content))
             }
         }

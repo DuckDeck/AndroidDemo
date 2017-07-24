@@ -5,8 +5,27 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="stan.androiddemo.project.novel.NovelActivity">
+    <TextView
+        android:id="@+id/txt_section_title"
+        android:background="#eeaaaaaa"
+        android:textColor="@android:color/holo_red_light"
+        android:gravity="center"
+        android:textSize="18sp"
+        android:layout_width="match_parent"
+        android:layout_height="30dp" />
 <android.support.v7.widget.RecyclerView
     android:id="@+id/recycler_novel_section"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+    android:layout_height="match_parent">
+</android.support.v7.widget.RecyclerView>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/btn_make_bookmark"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/sp_16"
+        android:layout_marginRight="@dimen/sp_16"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:src="@mipmap/bookmark"
+        android:elevation="10dp"/>
 </android.support.constraint.ConstraintLayout>

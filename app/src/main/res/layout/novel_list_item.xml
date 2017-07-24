@@ -10,7 +10,7 @@
     app:layout_constraintTop_toTopOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     android:layout_width="90dp"
-    android:layout_height="136dp" />
+    android:layout_height="130dp" />
     <TextView
         android:id="@+id/txt_novel_title"
         android:gravity="left"

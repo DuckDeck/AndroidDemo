@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
 //        toolbar_main.title = "123123123"  // can not work
 
         val adapter = ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,
-                arrayListOf("项目Demo","布局Layout","通信IPC"))
+                arrayListOf("项目Demo","布局Layout","绘制View","通信IPC"))
         list_view_menu.adapter = adapter
 
         list_view_menu.onItemClickListener = AdapterView.OnItemClickListener { adapterView, view, i, l ->
@@ -35,6 +35,11 @@ class MainActivity : AppCompatActivity() {
                 "布局Layout"->
                 {
                     val intent = Intent(this, LayoutActivity::class.java)
+                    startActivity(intent)
+                }
+                "绘制View"->
+                {
+                    val intent = Intent(this, DrawViewActivity::class.java)
                     startActivity(intent)
                 }
                 "通信IPC"->

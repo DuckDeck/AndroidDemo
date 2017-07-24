@@ -27,7 +27,6 @@ class NovelSearchActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_novel_search)
-
         mAdapter = object:BaseQuickAdapter<NovelInfo,BaseViewHolder>(R.layout.novel_list_item,arrNovels){
             override fun convert(helper: BaseViewHolder, item: NovelInfo) {
                 Glide.with(this@NovelSearchActivity).load(item.img)
