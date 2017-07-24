@@ -14,7 +14,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val adapter = ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, arrayListOf("项目Demo","布局Layout"))
+        val adapter = ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,
+                arrayListOf("项目Demo","布局Layout","通信IPC"))
         list_view_menu.adapter = adapter
 
 
@@ -30,6 +31,11 @@ class MainActivity : AppCompatActivity() {
                 "布局Layout"->
                 {
                     val intent = Intent(this, LayoutActivity::class.java)
+                    startActivity(intent)
+                }
+                "通信IPC"->
+                {
+                    val intent = Intent(this, CommunicationActivity::class.java)
                     startActivity(intent)
                 }
             }
