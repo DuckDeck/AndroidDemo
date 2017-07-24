@@ -8,17 +8,21 @@ import android.widget.ArrayAdapter
 import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_main.*
 
+
+
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+       title = "" // it works
+        setSupportActionBar(toolbar_main)
+//        toolbar_main.title = "123123123"  // can not work
+
         val adapter = ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,
                 arrayListOf("项目Demo","布局Layout","通信IPC"))
         list_view_menu.adapter = adapter
-
-
 
         list_view_menu.onItemClickListener = AdapterView.OnItemClickListener { adapterView, view, i, l ->
             val title = (view as TextView).text

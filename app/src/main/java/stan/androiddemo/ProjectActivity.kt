@@ -3,7 +3,6 @@ package stan.androiddemo
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.Toolbar
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.TextView
@@ -17,6 +16,12 @@ class ProjectActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_project)
+        title = ""
+        setSupportActionBar(toolbar_main_project)
+
+        toolbar_main_project.setNavigationOnClickListener {
+            onBackPressed()
+        }
         val adapter = ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,
                 arrayListOf("Weather","Novel"))
         list_view_project.adapter = adapter
