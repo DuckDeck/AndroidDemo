@@ -7,7 +7,8 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_main.*
-
+import org.json.JSONObject
+import java.lang.reflect.Field
 
 
 class MainActivity : AppCompatActivity() {
@@ -24,7 +25,7 @@ class MainActivity : AppCompatActivity() {
                 arrayListOf("项目Demo","布局Layout","绘制View","通信IPC"))
         list_view_menu.adapter = adapter
 
-        list_view_menu.onItemClickListener = AdapterView.OnItemClickListener { adapterView, view, i, l ->
+        list_view_menu.onItemClickListener = AdapterView.OnItemClickListener { _, view, _, _ ->
             val title = (view as TextView).text
             when(title){
                 "项目Demo"->
@@ -49,5 +50,86 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+
+        play()
+    }
+
+    fun play(){
+        val strs = listOf("a", "bc", "def")
+        println(strs.map(String::length))
+
+        val j = JSONObject()
+        j.put("testStr","this is a test")
+
+        val s = A(j)
+        println(s.sString)
+
+
+    }
+}
+
+
+open class BaseModel{
+    constructor(){
+        val t = this::class.java
+        println(t.declaredFields)
+
+        if (!TypeMap.selfMap.containsKey(t.name)){
+            TypeMap.selfMap[t.name] = ReflectType()
+        }
+        if (TypeMap.selfMap[t.name]!!.className.length > 0){
+            return
+        }
+
+        for (f in t.declaredFields){
+            TypeMap.selfMap[t.name]!!.className = f.name
+            TypeMap.selfMap[t.name]!!.properties[f.name] = f
+        }
+
+    }
+
+     constructor(jsonObject: JSONObject):this(){
+        val t = this::class.java
+        val ty = TypeMap.selfMap[t.name]
+        for (s in selfMapDesc!!){
+            if (jsonObject.has(s.key))
+            {
+                val f = TypeMap.selfMap[t.name]!!.properties[s.value]
+                f!!.isAccessible = true
+                f!!.set(this,jsonObject.opt(s.key))
+                println(this)
+                // it looks like set the value success ,but the return constructor return the init instance which is not the set value instance
+                // so the set value process fail
+                // report error cannot access private  field java.lang.String stan.androiddemo.A.sString of class java.lang.Class<stan.androiddemo.A>
+            }
+        }
+    }
+
+    //对于selfMapDesc key是json的 value是 自己的
+   open var selfMapDesc:HashMap<String,String>? = null
+
+}
+
+class A: BaseModel {
+//    var iInt = 0
+   open var sString = ""
+
+    override var selfMapDesc: HashMap<String, String>?
+        get() = hashMapOf("testStr" to "sString")
+        set(value) {}
+
+    constructor():super()
+
+    constructor(jsonObject: JSONObject):super(jsonObject){}
+}
+
+class ReflectType{
+    var className = ""
+    var properties = HashMap<String,Field>()
+}
+
+class TypeMap{
+    companion object {
+        var selfMap = HashMap<String,ReflectType>()
     }
 }
