@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-       title = "" // it works
+        title = "" // it works
         setSupportActionBar(toolbar_main)
 //        toolbar_main.title = "123123123"  // can not work
 

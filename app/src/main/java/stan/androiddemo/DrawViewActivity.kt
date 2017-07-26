@@ -7,7 +7,6 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_draw_view.*
-import kotlinx.android.synthetic.main.activity_project.*
 import stan.androiddemo.drawview.drawtext.DrawTextActivity
 
 
