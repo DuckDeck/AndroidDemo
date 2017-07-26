@@ -43,5 +43,6 @@ dependencies {
     compile 'org.jsoup:jsoup:1.10.3'
     compile "com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.24"
     compile 'com.android.support:design:25.1.0'
+    compile 'com.gavin.com.library:stickyDecoration:1.1.1'
     implementation 'com.android.support:support-v4:26.0.0-beta2'
 }

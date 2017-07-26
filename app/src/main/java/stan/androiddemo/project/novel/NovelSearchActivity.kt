@@ -11,10 +11,12 @@ import com.bumptech.glide.Glide
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import kotlinx.android.synthetic.main.activity_novel_search.*
+import org.litepal.crud.DataSupport
 import stan.androiddemo.Model.ResultInfo
 import stan.androiddemo.R
 import stan.androiddemo.UI.Separate
 import stan.androiddemo.project.novel.model.NovelInfo
+import stan.androiddemo.project.novel.model.SectionInfo
 
 class NovelSearchActivity : AppCompatActivity() {
 
@@ -72,6 +74,11 @@ class NovelSearchActivity : AppCompatActivity() {
             val intent = Intent(this,SectionListActivity::class.java)
             intent.putExtra("novel",novel)
             startActivity(intent,bundle)
+        }
+
+        btn_check_bookmark.setOnClickListener {
+          val intent = Intent(this,BookmarkActivity::class.java)
+            startActivity(intent)
         }
     }
 

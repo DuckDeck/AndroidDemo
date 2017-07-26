@@ -20,7 +20,7 @@ import javax.xml.transform.Source
 /**
  * Created by hugfo on 2017/7/20.
  */
-class NovelInfo() :Parcelable{
+class NovelInfo() :Parcelable,DataSupport(){
     var id = 0
     var url = ""
     var title = ""
@@ -29,7 +29,9 @@ class NovelInfo() :Parcelable{
     var author = ""
     var category = ""
     var updateTime = ""
-
+    //litepal不能保存里面的array对象，再次取出就丢失了，这是个问题
+    //因为litepal是用sqlite， 一个对应一张表，所以不能保存对象里面的array数组
+    var arrBookmark = ArrayList<SectionInfo>()
 
 
 

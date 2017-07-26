@@ -33,7 +33,11 @@
         <activity android:name=".project.novel.SectionListActivity" />
         <activity android:name=".project.novel.NovelActivity" />
         <activity android:name=".drawview.drawtext.DrawTextActivity" />
-        <activity android:name=".DrawViewActivity"></activity>
+        <activity android:name=".DrawViewActivity" />
+        <activity
+            android:name=".project.novel.BookmarkActivity"
+            android:label="@string/title_activity_bookmark"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
     </application>
 
 </manifest> <!-- issue0:can not hide the title bar --><!-- just use   android:theme="@style/Theme.AppCompat.Light.NoActionBar"> -->
