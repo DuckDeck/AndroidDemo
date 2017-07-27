@@ -29,8 +29,10 @@ class NovelInfo() :Parcelable,DataSupport(){
     var author = ""
     var category = ""
     var updateTime = ""
+    var novelId = 0
     //litepal不能保存里面的array对象，再次取出就丢失了，这是个问题
     //因为litepal是用sqlite， 一个对应一张表，所以不能保存对象里面的array数组
+    // 有一个issue点，就是使用litapal保存数据时会自动修改
     var arrBookmark = ArrayList<SectionInfo>()
 
 
@@ -45,6 +47,7 @@ class NovelInfo() :Parcelable,DataSupport(){
         author = parcel.readString()
         category = parcel.readString()
         updateTime = parcel.readString()
+        novelId = parcel.readInt()
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -56,6 +59,7 @@ class NovelInfo() :Parcelable,DataSupport(){
         parcel.writeString(author)
         parcel.writeString(category)
         parcel.writeString(updateTime)
+        parcel.writeInt(novelId)
     }
 
     override fun describeContents(): Int {
@@ -91,7 +95,7 @@ class NovelInfo() :Parcelable,DataSupport(){
                             val novel = NovelInfo()
                             novel.img = e.select("img.result-game-item-pic-link-img").first().attr("src")
                             novel.url = e.select("a.result-game-item-title-link").first().attr("href")
-                            novel.id = novel.url.hashCode()
+                            novel.novelId = Math.abs(novel.url.hashCode())
                             novel.title = e.select("a.result-game-item-title-link").first().text()
                             novel.intro = e.select("p.result-game-item-desc").first().text()
                             val info = e.select("p.result-game-item-info-tag")

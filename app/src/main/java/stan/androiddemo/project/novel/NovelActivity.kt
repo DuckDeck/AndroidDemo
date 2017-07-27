@@ -38,9 +38,7 @@ class NovelActivity : AppCompatActivity() {
         novelInfo = intent.getParcelableExtra("novel")
         arrAllSections = intent.getParcelableArrayListExtra("sections")
         currentSection = intent.getParcelableExtra("currentSection")
-        index = arrAllSections.indexOfFirst {
-            it.sectionUrl == currentSection.sectionUrl
-        }
+
         mAdapter = object: BaseQuickAdapter<SectionInfo,BaseViewHolder>(android.R.layout.simple_list_item_1,arrNovelSection){
             override fun convert(helper: BaseViewHolder, item: SectionInfo) {
                 currentDisplaySection = item
@@ -62,47 +60,71 @@ class NovelActivity : AppCompatActivity() {
             getNovelSection()
         }
         mAdapter.emptyView = loadingView
-        getNovelSection()
-
+        if (arrAllSections.size <= 0){
+            getSections()
+        }
+        else{
+            index = arrAllSections.indexOfFirst {
+                it.sectionUrl == currentSection.sectionUrl
+            }
+            getNovelSection()
+        }
 
 
         btn_make_bookmark.setOnClickListener {
+            if (arrNovelSection.size <= 0){
+                Toast.makeText(this,"请等待加载完再添加书签",Toast.LENGTH_LONG).show()
+            }
             val bookmark = DataSupport.where("url = ?",novelInfo.url).find(novelInfo::class.java)
             if (bookmark.size <= 0){
                 novelInfo.save()
+                currentDisplaySection.save()
+                Toast.makeText(this,"添加书签" + currentDisplaySection.title + "成功",Toast.LENGTH_LONG).show()
+
+                val b = DataSupport.where("url = ?",novelInfo.url).find(novelInfo::class.java)
+                println(b)
+
+                return@setOnClickListener
             }
 
             val sectionBookmark = DataSupport.where("sectionUrl = ?",currentDisplaySection.sectionUrl)
                     .find(SectionInfo::class.java)
-            if (sectionBookmark.indexOfFirst {
-                it.sectionUrl == currentDisplaySection.sectionUrl
-            } < 0){
+
+            if (sectionBookmark.size <= 0){
+                Toast.makeText(this,"添加书签" + currentDisplaySection.title + "成功",Toast.LENGTH_LONG).show()
                 currentDisplaySection.save()
             }
             else{
                 Toast.makeText(this,"你已经添加这个书签了",Toast.LENGTH_LONG).show()
             }
-            Toast.makeText(this,"添加书签" + currentDisplaySection.title + "成功",Toast.LENGTH_LONG).show()
-//            else{
-//               val index = bookmark[0].arrBookmark.indexOfFirst {
-//                     it.sectionUrl == currentDisplaySection.sectionUrl
-//                }
-//                if (index < 0){
-//                    bookmark[0].arrBookmark.add(currentDisplaySection)
-//                    bookmark[0].save()
-//                }
-//                else{
-//                    Toast.makeText(this,"你已经添加这个书签了",Toast.LENGTH_LONG).show()
-//                    return@setOnClickListener
-//                }
-//
-//            }
+
 
         }
 
     }
 
+    fun getSections(){
+        NovelInfo.getSections(novelInfo.url,{ v: ResultInfo ->
+            runOnUiThread {
+                if (v.code != 0) {
+                    Toast.makeText(this,v.message, Toast.LENGTH_LONG).show()
+                    mAdapter.emptyView = failView
+                    return@runOnUiThread
+                }
+                arrAllSections.addAll((v.data as ArrayList<SectionInfo>).map {
+                    it.sectionUrl =  novelInfo.url + it.sectionUrl
+                    it.novelId = novelInfo.novelId
+                    it
+                })
+                index = arrAllSections.indexOfFirst {
+                    it.sectionUrl == currentSection.sectionUrl
+                }
+                getNovelSection()
 
+            }
+            return@getSections
+        })
+    }
     fun getNovelSection(){
         SectionInfo.getNovelSection(currentSection.sectionUrl,{ v: ResultInfo ->
             runOnUiThread {
@@ -119,7 +141,7 @@ class NovelActivity : AppCompatActivity() {
                 mAdapter.loadMoreComplete()
                 var section =  SectionInfo()
                 section.content = v.data as String
-                section.novelId = novelInfo.id
+                section.novelId = novelInfo.novelId
                 section.sectionUrl = currentSection.sectionUrl
                 section.title = currentSection.title
                 arrNovelSection.add(section)

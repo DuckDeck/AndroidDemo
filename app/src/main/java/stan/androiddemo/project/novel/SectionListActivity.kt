@@ -64,7 +64,7 @@ class SectionListActivity : AppCompatActivity() {
                 }
                 arrSections.addAll((v.data as ArrayList<SectionInfo>).map {
                     it.sectionUrl =  novelInfo.url + it.sectionUrl
-                    it.novelId = novelInfo.id
+                    it.novelId = novelInfo.novelId
                     it
                 })
                mAdapter.notifyDataSetChanged()
