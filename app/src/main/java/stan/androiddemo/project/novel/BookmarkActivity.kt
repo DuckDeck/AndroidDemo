@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.view.View
 import android.widget.Toast
 import com.afollestad.materialdialogs.MaterialDialog
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -17,8 +18,10 @@ import kotlinx.android.synthetic.main.activity_bookmark.*
 import org.litepal.crud.DataSupport
 import stan.androiddemo.project.novel.model.NovelInfo
 import stan.androiddemo.project.novel.model.SectionInfo
+import stan.androiddemo.tool.SwipeItemLayout
 
-class BookmarkActivity : AppCompatActivity() {
+class BookmarkActivity : AppCompatActivity(), View.OnClickListener {
+
 
     lateinit var arrBookmark:ArrayList<NovelInfo>
     lateinit var arrSection:ArrayList<SectionInfo>
@@ -30,9 +33,9 @@ class BookmarkActivity : AppCompatActivity() {
 
         arrBookmark = ArrayList(DataSupport.findAll(NovelInfo::class.java))
         arrSection = ArrayList(DataSupport.findAll(SectionInfo::class.java))
-        mAdapter = object:BaseQuickAdapter<SectionInfo,BaseViewHolder>(android.R.layout.simple_expandable_list_item_1,arrSection){
+        mAdapter = object:BaseQuickAdapter<SectionInfo,BaseViewHolder>(R.layout.recycler_swipe_item,arrSection){
             override fun convert(helper: BaseViewHolder, item: SectionInfo) {
-                helper.setText(android.R.id.text1,item.title)
+                helper.setText(R.id.txt_content,item.title)
             }
         }
 
@@ -50,6 +53,8 @@ class BookmarkActivity : AppCompatActivity() {
         recycler_bookmark.layoutManager = LinearLayoutManager(this)
         recycler_bookmark.addItemDecoration(dec)
         recycler_bookmark.adapter = mAdapter
+        recycler_bookmark.addOnItemTouchListener(SwipeItemLayout.OnSwipeItemTouchListener(this))
+
         mAdapter.notifyDataSetChanged()
 
         mAdapter.setOnItemClickListener { adapter, view, position ->
@@ -79,5 +84,15 @@ class BookmarkActivity : AppCompatActivity() {
             }.show()
         }
     }
+    override fun onClick(p0: View?) {
+        MaterialDialog.Builder(this).title("删除书签").content("你确定要删除全部书签吗？").positiveText("确定")
+                .negativeText("取消").onPositive { dialog, which ->
+            DataSupport.deleteAll(NovelInfo::class.java)
+            DataSupport.deleteAll(SectionInfo::class.java)
+
+            Toast.makeText(this,"删除全部书签成功", Toast.LENGTH_LONG).show()
+        }.show()
+    }
+
 
 }

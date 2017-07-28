@@ -74,6 +74,7 @@ class NovelActivity : AppCompatActivity() {
         btn_make_bookmark.setOnClickListener {
             if (arrNovelSection.size <= 0){
                 Toast.makeText(this,"请等待加载完再添加书签",Toast.LENGTH_LONG).show()
+                return@setOnClickListener
             }
             val bookmark = DataSupport.where("url = ?",novelInfo.url).find(novelInfo::class.java)
             if (bookmark.size <= 0){
