@@ -1,6 +1,5 @@
 package stan.androiddemo.project.novel
 
-import android.app.Dialog
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -18,9 +17,8 @@ import kotlinx.android.synthetic.main.activity_bookmark.*
 import org.litepal.crud.DataSupport
 import stan.androiddemo.project.novel.model.NovelInfo
 import stan.androiddemo.project.novel.model.SectionInfo
-import stan.androiddemo.tool.SwipeItemLayout
 
-class BookmarkActivity : AppCompatActivity(), View.OnClickListener {
+class BookmarkActivity : AppCompatActivity() {
 
 
     lateinit var arrBookmark:ArrayList<NovelInfo>
@@ -33,9 +31,9 @@ class BookmarkActivity : AppCompatActivity(), View.OnClickListener {
 
         arrBookmark = ArrayList(DataSupport.findAll(NovelInfo::class.java))
         arrSection = ArrayList(DataSupport.findAll(SectionInfo::class.java))
-        mAdapter = object:BaseQuickAdapter<SectionInfo,BaseViewHolder>(R.layout.recycler_swipe_item,arrSection){
+        mAdapter = object:BaseQuickAdapter<SectionInfo,BaseViewHolder>(android.R.layout.simple_list_item_1,arrSection){
             override fun convert(helper: BaseViewHolder, item: SectionInfo) {
-                helper.setText(R.id.txt_content,item.title)
+                helper.setText(android.R.id.text1,item.title)
             }
         }
 
@@ -53,7 +51,6 @@ class BookmarkActivity : AppCompatActivity(), View.OnClickListener {
         recycler_bookmark.layoutManager = LinearLayoutManager(this)
         recycler_bookmark.addItemDecoration(dec)
         recycler_bookmark.adapter = mAdapter
-        recycler_bookmark.addOnItemTouchListener(SwipeItemLayout.OnSwipeItemTouchListener(this))
 
         mAdapter.notifyDataSetChanged()
 
@@ -67,6 +64,24 @@ class BookmarkActivity : AppCompatActivity(), View.OnClickListener {
             intent.putExtra("novel",arrBookmark[novelIndex])
             intent.putExtra("currentSection",section)
             startActivity(intent)
+        }
+
+        mAdapter.setOnItemLongClickListener { adapter, view, position ->
+            val section = arrSection[position]
+            val sameNovelSection = arrSection.filter { it.novelId == section.novelId }
+            var novel = arrBookmark.find { it.novelId == section.id }
+            MaterialDialog.Builder(this).title("删除书签").content("你确定要删除全部书签吗？").positiveText("确定")
+                    .negativeText("取消").onPositive { dialog, which ->
+                arrSection.remove(section)
+                DataSupport.deleteAll(SectionInfo::class.java,"id = " + section.id)
+                if (sameNovelSection.size <= 1){
+                    arrBookmark.remove(novel)
+                    DataSupport.deleteAll(NovelInfo::class.java,"novelId = " + section.novelId)
+                }
+                mAdapter.notifyDataSetChanged()
+                Toast.makeText(this,"删除该书签成功", Toast.LENGTH_LONG).show()
+            }.show()
+            return@setOnItemLongClickListener true
         }
 
         btn_delete_bookmark.setOnClickListener {
@@ -84,15 +99,7 @@ class BookmarkActivity : AppCompatActivity(), View.OnClickListener {
             }.show()
         }
     }
-    override fun onClick(p0: View?) {
-        MaterialDialog.Builder(this).title("删除书签").content("你确定要删除全部书签吗？").positiveText("确定")
-                .negativeText("取消").onPositive { dialog, which ->
-            DataSupport.deleteAll(NovelInfo::class.java)
-            DataSupport.deleteAll(SectionInfo::class.java)
 
-            Toast.makeText(this,"删除全部书签成功", Toast.LENGTH_LONG).show()
-        }.show()
-    }
 
 
 }
