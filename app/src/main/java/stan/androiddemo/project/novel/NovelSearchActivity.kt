@@ -58,6 +58,7 @@ class NovelSearchActivity : AppCompatActivity() {
         }
 
         txt_search_start.setOnClickListener {
+
             val key = txt_search_input.text.toString().trim()
             if (key.isEmpty()){
                 Toast.makeText(this,"搜索条件不能为空",Toast.LENGTH_LONG).show()
