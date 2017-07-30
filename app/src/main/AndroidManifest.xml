@@ -3,6 +3,7 @@
     package="stan.androiddemo">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:name="org.litepal.LitePalApplication"
@@ -37,7 +38,23 @@
         <activity
             android:name=".project.novel.BookmarkActivity"
             android:label="@string/title_activity_bookmark"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".ThreadActivity" />
+        <activity android:name=".Thread.Service.ServiceActivity" />
+
+        <service
+            android:name=".Thread.Service.DemoService"
+            android:enabled="true"
+            android:exported="true" />
+        <service
+            android:name=".Thread.Service.DemoIntentService"
+            android:exported="false" />
+        <service
+            android:name="download.demo.DownloadService"
+            android:enabled="true"
+            android:exported="true" />
+
+        <activity android:name=".layout.materialdesign.MaterialDesignActivity"></activity>
     </application>
 
 </manifest> <!-- issue0:can not hide the title bar --><!-- just use   android:theme="@style/Theme.AppCompat.Light.NoActionBar"> -->

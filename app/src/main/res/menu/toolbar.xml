@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+<item android:title="Save"
+    android:id="@+id/menu_save"
+    android:icon="@mipmap/ic_launcher"
+    app:showAsAction="always"></item>
+    <item android:title="Delete"
+        android:id="@+id/menu_delete"
+        android:icon="@mipmap/delete"
+        app:showAsAction="ifRoom"></item>
+    <item android:title="Setting"
+        android:id="@+id/menu_setting"
+        android:icon="@mipmap/setting"
+        app:showAsAction="never"></item>
+
+</menu>

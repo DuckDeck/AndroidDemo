@@ -4,14 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="stan.androiddemo.LayoutActivity">
-
+    tools:context="stan.androiddemo.ThreadActivity">
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/appBarLayout">
         <android.support.v7.widget.Toolbar android:layout_height="wrap_content"
-            android:id="@+id/toolbar"
+            android:id="@+id/toolbar_main_thread"
             android:layout_width="match_parent"
             android:minHeight="?attr/actionBarSize"
             android:background="?attr/colorPrimary">
@@ -25,8 +24,12 @@
     </android.support.design.widget.AppBarLayout>
     <ListView
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:id="@+id/list_view_layout"
+        android:id="@+id/list_view_thread"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="parent">
     </ListView>
 </android.support.design.widget.CoordinatorLayout>
