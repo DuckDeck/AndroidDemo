@@ -5,23 +5,76 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="stan.androiddemo.layout.materialdesign.MaterialDesignActivity">
-    <android.support.design.widget.AppBarLayout
+<stan.androiddemo.UI.FixedDrawerLayout
+    android:id="@+id/drawer_layout_fixed"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/appBarLayout">
-        <android.support.v7.widget.Toolbar android:layout_height="wrap_content"
-            android:id="@+id/toolbar"
+        android:layout_height="match_parent">
+
+            <android.support.design.widget.AppBarLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <android.support.v7.widget.Toolbar
+                    android:layout_height="wrap_content"
+                    android:id="@+id/toolbar"
+
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                    android:layout_width="match_parent"
+                    android:minHeight="?attr/actionBarSize"
+                    android:background="?attr/colorPrimary"
+                    app:layout_scrollFlags="scroll|enterAlways|snap">
+                    <TextView
+                        android:id="@+id/txt_toolbar_title"
+                        android:textSize="16sp"
+                        android:text="项目列表"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </android.support.v7.widget.Toolbar>
+            </android.support.design.widget.AppBarLayout>
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:id="@+id/swipe_refresh_fruit"
             android:layout_width="match_parent"
-            android:minHeight="?attr/actionBarSize"
-            android:background="?attr/colorPrimary">
-            <TextView
-                android:id="@+id/txt_toolbar_title"
-                android:textSize="16sp"
-                android:text="项目列表"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </android.support.v7.widget.Toolbar>
-    </android.support.design.widget.AppBarLayout>
+            android:layout_height="match_parent">
+            <android.support.v7.widget.RecyclerView
+
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+
+
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/button_float"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/sp_16"
+            android:src="@mipmap/delete"
+            android:elevation="8dp"/>
+
+    </android.support.design.widget.CoordinatorLayout>
+
+    <!--<TextView-->
+        <!--android:layout_gravity="start"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:text="This is menu"-->
+        <!--android:textSize="40sp"-->
+        <!--android:background="#fff"/>-->
+    <android.support.design.widget.NavigationView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/navigation_view"
+        android:layout_gravity="start"
+        app:menu="@menu/nav_menu"
+        app:headerLayout="@layout/nav_header"></android.support.design.widget.NavigationView>
+</stan.androiddemo.UI.FixedDrawerLayout>
 
 
 
