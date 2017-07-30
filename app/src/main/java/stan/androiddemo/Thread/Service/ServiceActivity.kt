@@ -101,6 +101,8 @@ class ServiceActivity : AppCompatActivity() {
             downloadBinder.cancelDownload()
         }
 
+
+
     }
 
     override fun onDestroy() {

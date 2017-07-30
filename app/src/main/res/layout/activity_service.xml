@@ -69,6 +69,7 @@
         android:layout_height="wrap_content" />
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:orientation="vertical"
         app:layout_constraintTop_toBottomOf="@+id/btn_start_intent_service"
         android:layout_marginLeft="@dimen/dp_10"
@@ -94,4 +95,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>
+
+    <Button
+        android:textAllCaps="false"
+        android:id="@+id/btn_run_after_time"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginLeft="@dimen/dp_40"
+        android:layout_marginTop="@dimen/dp_10"
+        android:text="10秒执行"
+        android:padding="@dimen/dp_10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
 </android.support.constraint.ConstraintLayout>
