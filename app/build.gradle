@@ -7,6 +7,12 @@ apply plugin: 'kotlin-android-extensions'
 android {
     compileSdkVersion 26
     buildToolsVersion "26.0.0"
+    packagingOptions {
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/NOTICE'
+        exclude 'android/databinding/DynamicUtil.java'
+        exclude 'android/databinding/DataBindingComponent.java'
+    }
     defaultConfig {
         applicationId "stan.androiddemo"
         minSdkVersion 21
@@ -49,6 +55,5 @@ dependencies {
     })
     compile 'de.hdodenhof:circleimageview:2.1.0'
     compile 'com.android.support:cardview-v7:26.0.0-alpha1'
-    compile 'com.kelin.mvvmlight:library:1.0.0'
     implementation 'com.android.support:support-v4:26.0.0-beta2'
 }
