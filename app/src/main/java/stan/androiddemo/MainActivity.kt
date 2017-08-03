@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity() {
                 {
                     val intent = Intent(this, ThreadActivity::class.java)
                     startActivity(intent)
-                }git
+                }
                 "通信IPC"->
                 {
                     val intent = Intent(this, CommunicationActivity::class.java)

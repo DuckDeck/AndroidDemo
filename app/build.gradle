@@ -49,5 +49,6 @@ dependencies {
     })
     compile 'de.hdodenhof:circleimageview:2.1.0'
     compile 'com.android.support:cardview-v7:26.0.0-alpha1'
+    compile 'com.kelin.mvvmlight:library:1.0.0'
     implementation 'com.android.support:support-v4:26.0.0-beta2'
 }
