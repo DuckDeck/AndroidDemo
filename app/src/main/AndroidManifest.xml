@@ -55,8 +55,10 @@
             android:exported="true" />
 
         <activity android:name=".layout.materialdesign.MaterialDesignActivity" />
-        <activity android:name=".layout.materialdesign.FruitInfoActivity"
-            android:theme="@style/FruitActivityTheme"></activity>
+        <activity
+            android:name=".layout.materialdesign.FruitInfoActivity"
+            android:theme="@style/FruitActivityTheme" />
+        <activity android:name=".project.belle.BelleActivity"></activity>
     </application>
 
 </manifest> <!-- issue0:can not hide the title bar --><!-- just use   android:theme="@style/Theme.AppCompat.Light.NoActionBar"> -->

@@ -7,6 +7,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_project.*
+import stan.androiddemo.project.belle.BelleActivity
 import stan.androiddemo.project.novel.NovelSearchActivity
 import stan.androiddemo.project.weather.WeatherActivity
 
@@ -23,7 +24,7 @@ class ProjectActivity : AppCompatActivity() {
             onBackPressed()
         }
         val adapter = ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,
-                arrayListOf("Weather","Novel"))
+                arrayListOf("Weather","Novel","belle"))
         list_view_project.adapter = adapter
 
         list_view_project.onItemClickListener = AdapterView.OnItemClickListener { adapterView, view, i, l ->
@@ -37,6 +38,11 @@ class ProjectActivity : AppCompatActivity() {
                 "Novel"->
                 {
                     val intent = Intent(this, NovelSearchActivity::class.java)
+                    startActivity(intent)
+                }
+                "belle"->
+                {
+                    val intent = Intent(this, BelleActivity::class.java)
                     startActivity(intent)
                 }
             }
