@@ -13,15 +13,15 @@ import com.chad.library.adapter.base.BaseViewHolder
 import kotlinx.android.synthetic.main.fragment_image.*
 import stan.androiddemo.Model.ResultInfo
 import stan.androiddemo.R
-import stan.androiddemo.project.Mito.Model.ImageCategory
+
 import stan.androiddemo.project.Mito.Model.ImageSetInfo
-import stan.androiddemo.project.Mito.Model.ImageTheme
+
 import stan.androiddemo.project.Mito.Model.Resolution
 
 class ImageFragment : Fragment() {
 
 
-    var cat = 0
+    var cat = "全部"
     var arrImageSet = ArrayList<ImageSetInfo>()
     lateinit var mAdapter:BaseQuickAdapter<ImageSetInfo,BaseViewHolder>
     lateinit var failView: View
@@ -43,11 +43,14 @@ class ImageFragment : Fragment() {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        cat =  arguments.getInt("cat")
+        cat =  arguments.getString("cat")
         mAdapter = object:BaseQuickAdapter<ImageSetInfo,BaseViewHolder>(R.layout.image_set_item,arrImageSet){
             override fun convert(helper: BaseViewHolder, item: ImageSetInfo) {
                 Glide.with(this@ImageFragment).load(item.mainImage).into(helper.getView(R.id.img_set))
                 helper.setText(R.id.txt_image_title,item.title)
+                helper.setText(R.id.txt_image_tag,item.category.toString())
+                helper.setText(R.id.txt_image_resolution,item.resolutionStr)
+                helper.setText(R.id.txt_image_theme,item.theme.toString())
             }
         }
         recycler_images.layoutManager = GridLayoutManager(this@ImageFragment.context,2)
@@ -68,7 +71,7 @@ class ImageFragment : Fragment() {
     }
 
     fun loadData(){
-        ImageSetInfo.imageSets(ImageCategory.All,Resolution(),ImageTheme.All,index,{ v: ResultInfo ->
+        ImageSetInfo.imageSets(cat,Resolution(),"全部",index,{ v: ResultInfo ->
             activity.runOnUiThread {
                 if (v.code != 0) {
                     Toast.makeText(this@ImageFragment.context,v.message, Toast.LENGTH_LONG).show()

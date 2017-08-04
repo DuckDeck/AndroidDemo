@@ -18,21 +18,21 @@ import java.lang.Exception
 const val PCImage = "http://www.5857.com/list-9"
 class ImageSetInfo:DataSupport(){
     var url = ""
-    var category = ImageCategory.All
+    var category = ""
     var title = ""
     var mainTag = ""
     //var tags
     var resolution = Resolution()
     var resolutionStr:String = ""
         get() {return  resolution.toString()}
-    var theme = ImageTheme.All
+    var theme = ""
     var mainImage = ""
     var images = ArrayList<String>()
 
     companion object {
-        fun imageSets(cat:ImageCategory,resolution: Resolution,theme:ImageTheme, index:Int, cb: ((imageSets: ResultInfo)->Unit)){
+        fun imageSets(cat:String,resolution: Resolution,theme:String, index:Int, cb: ((imageSets: ResultInfo)->Unit)){
             val fixedIndex = index + 1
-            val url = PCImage + "-" + theme.ordinal + "-" + cat.ordinal + "-0-" + resolution.toUrlPara() + "-0-"+fixedIndex+".html"
+            val url = PCImage + "-" + ImageSetInfo.themeToUrlPara(theme) + "-" + ImageSetInfo.catToUrlPara(cat) + "-0-" + resolution.toUrlPara() + "-0-"+fixedIndex+".html"
             HttpTool.sendOKHttpRequest(url,object  :okhttp3.Callback{
                 var result = ResultInfo()
                 override fun onFailure(call: Call?, e: IOException?) {
@@ -54,9 +54,9 @@ class ImageSetInfo:DataSupport(){
                             imageSet.title = img.select("a>span").first().text()
                             imageSet.url = img.select("a").first().attr("href")
                             val imageInfo = set.select("div.listbott").first()
-//                            imageSet.category = ImageCategory.valueOf(imageInfo.select("rm").first().text())
-//                            imageSet.resolution = Resolution(imageInfo.select("span.fbl").first().text())
-//                            imageSet.theme = ImageTheme.valueOf(imageInfo.select("span.color").first().text())
+                            imageSet.category = imageInfo.select("em").first().text()
+                            imageSet.resolution = Resolution(imageInfo.select("span.fbl").first().text())
+                            imageSet.theme = imageInfo.select("span.color").first().text()
                             arrImageSets.add(imageSet)
                         }
                         result.data = arrImageSets
@@ -70,100 +70,80 @@ class ImageSetInfo:DataSupport(){
                     }
                 }
 
-
             })
-
         }
-    }
-}
-// 全部	美女	性感	明星	风光	卡通	创意	汽车	游戏	建筑	影视	植物	动物	节庆	可爱	静物	体育	日历	唯美	其它	系统	动漫	非主流	小清新
-enum class ImageCategory(value:Int){
-    All(0),Beauty(3365),Sexy(3437),Star(3366),Scene(4)
-    ,Cartoon(4),Original(4),Car(4),Game(4),Build(4),Plant(4),Animal(4)
-    ,Feast(4),Love(4),Cute(4),Still(4),Sports(4),Calendar(4),Gorgeous(4)
-    ,Other(4),System(4),Comic(4),Nonmainstream(4),Fresh(4);
 
-    companion object {
-        fun convert(str:String):ImageCategory{
+        fun catToUrlPara(str:String):Int{
             when(str){
-                "全部"->return All
-                "美女"->return Beauty
-                "性感"->return Sexy
-                "明星"->return Star
+                "全部"->return 0
+                "美女"->return 3365
+                "性感"->return 3437
+                "明星"->return 3366
+                "风光"->return 3367
+                "卡通"->return 3368
+                "创意"->return 3370
+                "汽车"->return 3371
+                "游戏"->return 3372
+                "建筑"->return 3373
+                "影视"->return 3374
+                "植物"->return 3376
+                "动物"->return 3377
+                "节庆"->return 3378
+                "可爱"->return 3379
+                "静物"->return 3369
+                "体育"->return 3380
+                "日历"->return 3424
+                "唯美"->return 3430
+                "其它"->return 3431
+                "系统"->return 3434
+                "动漫"->return 3444
+                "非主流"->return 3375
+                "小清新"->return 3381
+
             }
-            return ImageCategory.All
+            return 0
         }
-    }
 
-    override fun toString(): String {
-        when(this){
-            ImageCategory.All->"全部"
-            ImageCategory.Beauty->"美女"
-            ImageCategory.Sexy->"性感"
-            ImageCategory.Star->"明星"
+        fun themeToUrlPara(str:String):Int{
+            when(str){
+                "全部"->return 0
+                "红色"->return 3383
+                "橙色"->return 3384
+                "黄色"->return 3385
+                "绿色"->return 3386
+                "紫色"->return 3387
+                "粉色"->return 3388
+                "青色"->return 3389
+                "蓝色"->return 3390
+                "棕色"->return 3391
+                "白色"->return 3392
+                "黑色"->return 3393
+                "银色"->return 3394
+                "灰色"->return 3395
+            }
+            return 0
         }
-        return "全部"
     }
 }
-// 橙色 黄色 绿色 紫色 粉色 青色 蓝色 棕色 白色 黑色 银色 灰色
-enum class ImageTheme(value:Int){
-    All(0),Red(3383),Orange(3384),Yellow(3385),Green(3386),Purple(3387),Pink(3388)
-    ,Cyan(3389),Blue(3390),Brown(3391),White(3392),Black(3393),Silver(3394),Gray(3395);
 
-   companion object {
-       fun convert(str:String):ImageTheme{
-           when(str){
-              "全部"->return  ImageTheme.All
-               "红色"->return  ImageTheme.Red
-               "橙色"->return  ImageTheme.Orange
-               "黄色"->return  ImageTheme.Yellow
-               "绿色"->return  ImageTheme.Green
-               "紫色"->return  ImageTheme.Purple
-               "粉色"->return  ImageTheme.Pink
-               "青色"->return  ImageTheme.Cyan
-               "蓝色"->return  ImageTheme.Black
-               "棕色"->return  ImageTheme.Brown
-               "白色"->return  ImageTheme.White
-               "黑色"->return  ImageTheme.Black
-               "银色"->return  ImageTheme.Silver
-               "灰色"->return  ImageTheme.Gray
-           }
-           return  ImageTheme.All
-       }
-   }
-
-    override fun toString(): String {
-        when(this){
-            All->return "全部"
-            Red->return "红色"
-            Orange->return "橙色"
-            Yellow->return "黄色"
-            Green->return "绿色"
-            Purple->return "紫色"
-            Pink->return "粉色"
-            Cyan->return "青色"
-            Blue->return "蓝色"
-            Brown->return "棕色"
-            White->return "白色"
-            Black->return "黑色"
-            Silver->return "银色"
-            Gray->return "灰色"
-        }
-        return ""
-    }
-}
 
 class Resolution{
     constructor()
     constructor(resolution: String){
         val res = resolution.split("x")
-        if (res.size <= 1)
+        if (res.size == 1)
         {
-            pixelX = res[0].toInt()
+            val s = res[0].toIntOrNull()
+            if (s != null) pixelX = s else pixelX = 0
+
         }
-        else {
-            pixelX = res[0].toInt()
-            pixelY = res[1].toInt()
+        else if (res.size == 2) {
+            val s = res[0].toIntOrNull()
+            if (s != null) pixelX = s else pixelX = 0
+            val y = res[0].toIntOrNull()
+            if (y != null) pixelY = y else pixelY = 0
+
+
         }
     }
 
@@ -184,4 +164,6 @@ class Resolution{
 
     }
 }
+
+
 

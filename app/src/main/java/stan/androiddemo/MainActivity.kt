@@ -21,6 +21,15 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar_main)
 //        toolbar_main.title = "123123123"  // can not work
 
+        val str = "s"
+        when(str){
+            "s" ->{
+                println("123123")
+            }
+        }
+
+
+
         val adapter = ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,
                 arrayListOf("项目Demo","布局Layout","绘制View","线程Thread","通信IPC"))
         list_view_menu.adapter = adapter

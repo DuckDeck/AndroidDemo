@@ -1,31 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="160dp">
+    android:layout_height="168dp"
+    android:padding="2dp">
     <ImageView
-    android:id="@+id/img_set"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content" />
+        android:id="@+id/img_set"
+        android:layout_width="match_parent"
+        android:layout_height="120dp" />
     <TextView
+        android:layout_marginTop="@dimen/dp_4"
         android:lines="1"
         android:id="@+id/txt_image_title"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-    <LinearLayout
+        android:layout_height="20dp" />
+    <FrameLayout
+        android:padding="@dimen/dp_4"
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="40dp">
+        android:layout_height="24dp">
         <TextView
+            android:layout_gravity="left|center_vertical"
             android:id="@+id/txt_image_tag"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <TextView
+            android:layout_gravity="center|center_vertical"
             android:id="@+id/txt_image_resolution"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <TextView
+            android:layout_gravity="right|center_vertical"
             android:id="@+id/txt_image_theme"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
-    </LinearLayout>
+    </FrameLayout>
 </LinearLayout>
