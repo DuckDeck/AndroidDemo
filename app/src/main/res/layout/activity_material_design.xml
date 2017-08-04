@@ -73,7 +73,9 @@
         android:id="@+id/navigation_view"
         android:layout_gravity="start"
         app:menu="@menu/nav_menu"
-        app:headerLayout="@layout/nav_header"></android.support.design.widget.NavigationView>
+        app:headerLayout="@layout/nav_header">
+
+    </android.support.design.widget.NavigationView>
 </stan.androiddemo.UI.FixedDrawerLayout>
 
 

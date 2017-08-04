@@ -58,7 +58,7 @@
         <activity
             android:name=".layout.materialdesign.FruitInfoActivity"
             android:theme="@style/FruitActivityTheme" />
-        <activity android:name=".project.belle.BelleActivity"></activity>
+        <activity android:name=".project.Mito.MitoActivity"></activity>
     </application>
 
 </manifest> <!-- issue0:can not hide the title bar --><!-- just use   android:theme="@style/Theme.AppCompat.Light.NoActionBar"> -->
