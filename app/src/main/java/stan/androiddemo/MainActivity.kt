@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter
 import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_main.*
 import org.json.JSONObject
+import stan.androiddemo.UI.ToFixedInt
 import java.lang.reflect.Field
 
 
@@ -20,15 +21,6 @@ class MainActivity : AppCompatActivity() {
         title = "" // it works
         setSupportActionBar(toolbar_main)
 //        toolbar_main.title = "123123123"  // can not work
-
-        val str = "s"
-        when(str){
-            "s" ->{
-                println("123123")
-            }
-        }
-
-
 
         val adapter = ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,
                 arrayListOf("项目Demo","布局Layout","绘制View","线程Thread","通信IPC"))
@@ -69,14 +61,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun play(){
-        val strs = listOf("a", "bc", "def")
-        println(strs.map(String::length))
-
-        val j = JSONObject()
-        j.put("testStr","this is a test")
-
-        val s = A(j)
-        println(s.sString)
+//        val strs = listOf("a", "bc", "def")
+//        println(strs.map(String::length))
+//
+//        val j = JSONObject()
+//        j.put("testStr","this is a test")
+//
+//        val s = A(j)
+//        println(s.sString)
 
 
     }

@@ -58,7 +58,9 @@
         <activity
             android:name=".layout.materialdesign.FruitInfoActivity"
             android:theme="@style/FruitActivityTheme" />
-        <activity android:name=".project.Mito.MitoActivity"></activity>
+        <activity android:name=".project.Mito.MitoActivity" />
+        <activity android:name=".project.Mito.ImageSetActivity" />
+        <activity android:name=".project.FiveStroke.FiveStrokeActivity" android:windowSoftInputMode="stateHidden"></activity>
     </application>
 
 </manifest> <!-- issue0:can not hide the title bar --><!-- just use   android:theme="@style/Theme.AppCompat.Light.NoActionBar"> -->

@@ -1,5 +1,6 @@
 package stan.androiddemo.project.Mito
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
@@ -53,6 +54,11 @@ class ImageFragment : Fragment() {
                 helper.setText(R.id.txt_image_theme,item.theme.toString())
             }
         }
+        swipe_refresh_mito.setColorSchemeResources(R.color.colorPrimary)
+        swipe_refresh_mito.setOnRefreshListener {
+            index = 0
+            loadData()
+        }
         recycler_images.layoutManager = GridLayoutManager(this@ImageFragment.context,2)
         recycler_images.adapter = mAdapter
         loadingView = View.inflate(this@ImageFragment.context,R.layout.list_loading_hint,null)
@@ -67,12 +73,21 @@ class ImageFragment : Fragment() {
         mAdapter.setOnLoadMoreListener({
             loadData()
         },recycler_images)
+
+        mAdapter.setOnItemClickListener { adapter, view, position ->
+            val set = arrImageSet[position]
+            val intent = Intent(this@ImageFragment.context,ImageSetActivity::class.java)
+            intent.putExtra("set",set)
+            startActivity(intent)
+        }
+
         loadData()
     }
 
     fun loadData(){
         ImageSetInfo.imageSets(cat,Resolution(),"全部",index,{ v: ResultInfo ->
             activity.runOnUiThread {
+                swipe_refresh_mito.isRefreshing = false
                 if (v.code != 0) {
                     Toast.makeText(this@ImageFragment.context,v.message, Toast.LENGTH_LONG).show()
                     mAdapter.emptyView = failView

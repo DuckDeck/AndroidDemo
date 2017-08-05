@@ -1,10 +1,13 @@
 package stan.androiddemo.project.Mito.Model
 
+import android.os.Parcel
+import android.os.Parcelable
 import okhttp3.Call
 import okhttp3.Response
 import org.jsoup.Jsoup
 import org.litepal.crud.DataSupport
 import stan.androiddemo.Model.ResultInfo
+import stan.androiddemo.UI.ToFixedInt
 import stan.androiddemo.errcode_html_resolve_error
 import stan.androiddemo.errcode_netword_error
 import stan.androiddemo.tool.HttpTool
@@ -16,20 +19,40 @@ import java.lang.Exception
  */
 
 const val PCImage = "http://www.5857.com/list-9"
-class ImageSetInfo:DataSupport(){
+class ImageSetInfo() :DataSupport(),Parcelable{
     var url = ""
     var category = ""
     var title = ""
     var mainTag = ""
-    //var tags
+    var tags = ArrayList<String>()
     var resolution = Resolution()
     var resolutionStr:String = ""
         get() {return  resolution.toString()}
     var theme = ""
     var mainImage = ""
     var images = ArrayList<String>()
+    var count = 0
 
-    companion object {
+    constructor(parcel: Parcel) : this() {
+        url = parcel.readString()
+        category = parcel.readString()
+        title = parcel.readString()
+        mainTag = parcel.readString()
+        resolution = parcel.readParcelable(Resolution::class.java.classLoader)
+        theme = parcel.readString()
+        mainImage = parcel.readString()
+        count = parcel.readInt()
+    }
+
+    companion object CREATOR : Parcelable.Creator<ImageSetInfo> {
+        override fun createFromParcel(parcel: Parcel): ImageSetInfo {
+            return ImageSetInfo(parcel)
+        }
+
+        override fun newArray(size: Int): Array<ImageSetInfo?> {
+            return arrayOfNulls(size)
+        }
+
         fun imageSets(cat:String,resolution: Resolution,theme:String, index:Int, cb: ((imageSets: ResultInfo)->Unit)){
             val fixedIndex = index + 1
             val url = PCImage + "-" + ImageSetInfo.themeToUrlPara(theme) + "-" + ImageSetInfo.catToUrlPara(cat) + "-0-" + resolution.toUrlPara() + "-0-"+fixedIndex+".html"
@@ -47,12 +70,17 @@ class ImageSetInfo:DataSupport(){
                         val responseText = response.body().string()
                         val js = Jsoup.parse(responseText)
                         val imageSets = js.select("ul.clearfix").first().children()
+                        val reg = Regex("\\D+")
                         for (set in imageSets){
                             val imageSet = ImageSetInfo()
                             val img = set.select("div.listbox").first()
                             imageSet.mainImage = img.select("a>img").first().attr("src")
                             imageSet.title = img.select("a>span").first().text()
                             imageSet.url = img.select("a").first().attr("href")
+                            val c =  img.select("em.page_num").first().text().replace(reg,"").toIntOrNull()
+                            if (c != null){
+                                imageSet.count = c!!
+                            }
                             val imageInfo = set.select("div.listbott").first()
                             imageSet.category = imageInfo.select("em").first().text()
                             imageSet.resolution = Resolution(imageInfo.select("span.fbl").first().text())
@@ -60,6 +88,43 @@ class ImageSetInfo:DataSupport(){
                             arrImageSets.add(imageSet)
                         }
                         result.data = arrImageSets
+                        cb(result)
+                    }
+                    catch (e:Exception){
+                        result.code = errcode_html_resolve_error
+                        result.message = "HTML解析错误"
+                        cb(result)
+                        e.printStackTrace()
+                    }
+                }
+
+            })
+        }
+
+        fun imageSet(imgSet: ImageSetInfo,cb: (imageSets: ResultInfo) -> Unit){
+            HttpTool.sendOKHttpRequest(imgSet.url,object  :okhttp3.Callback{
+                var result = ResultInfo()
+                override fun onFailure(call: Call?, e: IOException?) {
+                    result.code = errcode_netword_error
+                    result.message = "网络错误，请重新再试"
+                    cb(result)
+                    e?.printStackTrace()
+                }
+                override fun onResponse(call: Call, response: Response) {
+                    try {
+                        val responseText = response.body().string()
+                        val js = Jsoup.parse(responseText)
+                        val tags = js.select("div.con-tags").first().select("a")
+                        for (tag in tags){
+                            imgSet.tags.add(tag.text())
+                        }
+                        val img = js.select("a.photo-a").first().child(0).attr("src")
+                        val lastIndex = img.indexOfLast { it == '/' }
+                        val u = img.substring(0,lastIndex)
+                        for(i in 0 until imgSet.count){
+                            imgSet.images.add(u + "/" + (i + 1).ToFixedInt(3) + ".jpg")
+                        }
+                        result.data = imgSet
                         cb(result)
                     }
                     catch (e:Exception){
@@ -124,10 +189,34 @@ class ImageSetInfo:DataSupport(){
             return 0
         }
     }
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeString(url)
+        parcel.writeString(category)
+        parcel.writeString(title)
+        parcel.writeString(mainTag)
+        parcel.writeParcelable(resolution, flags)
+        parcel.writeString(theme)
+        parcel.writeString(mainImage)
+        parcel.writeInt(count)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
 }
 
 
-class Resolution{
+class Resolution:Parcelable{
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeInt(pixelX)
+        parcel.writeInt(pixelY)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
     constructor()
     constructor(resolution: String){
         val res = resolution.split("x")
@@ -140,7 +229,7 @@ class Resolution{
         else if (res.size == 2) {
             val s = res[0].toIntOrNull()
             if (s != null) pixelX = s else pixelX = 0
-            val y = res[0].toIntOrNull()
+            val y = res[1].toIntOrNull()
             if (y != null) pixelY = y else pixelY = 0
 
 
@@ -149,6 +238,12 @@ class Resolution{
 
     var pixelX = 0
     var pixelY = 0
+
+    constructor(parcel: Parcel) : this() {
+        pixelX = parcel.readInt()
+        pixelY = parcel.readInt()
+    }
+
     override fun toString(): String {
         return pixelX.toString() + "x" + pixelY.toString()
     }
@@ -162,6 +257,16 @@ class Resolution{
         }
         return "0"
 
+    }
+
+    companion object CREATOR : Parcelable.Creator<Resolution> {
+        override fun createFromParcel(parcel: Parcel): Resolution {
+            return Resolution(parcel)
+        }
+
+        override fun newArray(size: Int): Array<Resolution?> {
+            return arrayOfNulls(size)
+        }
     }
 }
 
