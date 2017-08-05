@@ -76,7 +76,7 @@ class NovelInfo() :Parcelable,DataSupport(){
         }
         fun search(key:String,index:Int, cb: ((novels:ResultInfo)->Unit)){
             val url = "http://zhannei.baidu.com/cse/search?s=2041213923836881982&q=$key&p=$index&isNeedCheckDomain=1&jump=1"
-            HttpTool.sendOKHttpRequest(url,object :okhttp3.Callback{
+            HttpTool.get(url,object :okhttp3.Callback{
                 var result = ResultInfo()
                 override fun onFailure(call: Call?, e: IOException?) {
                     result.code = errcode_netword_error
@@ -117,7 +117,7 @@ class NovelInfo() :Parcelable,DataSupport(){
             })
         }
         fun getSections(url:String,cb: ((novels:ResultInfo)->Unit)){
-            HttpTool.sendOKHttpRequest(url,object :okhttp3.Callback{
+            HttpTool.get(url,object :okhttp3.Callback{
                 var result = ResultInfo()
                 override fun onFailure(call: Call?, e: IOException?) {
                     result.code = errcode_netword_error
@@ -195,7 +195,7 @@ class SectionInfo() :DataSupport(),Parcelable{
         }
 
         fun getNovelSection(url: String,cb: (novels: ResultInfo) -> Unit){
-            HttpTool.sendOKHttpRequest(url,object :okhttp3.Callback{
+            HttpTool.get(url,object :okhttp3.Callback{
                 var result = ResultInfo()
                 override fun onFailure(call: Call?, e: IOException?) {
                     result.code = errcode_netword_error

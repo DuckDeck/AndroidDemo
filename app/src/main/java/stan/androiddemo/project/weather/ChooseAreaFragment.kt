@@ -149,7 +149,7 @@ class ChooseAreaFragment : Fragment() {
 
     internal fun queryFromServer(address: String, type: String) {
         showProgressDialog()
-        HttpTool.sendOKHttpRequest(address, object : Callback {
+        HttpTool.get(address, object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 activity.runOnUiThread {
                     closeProgressDialog()

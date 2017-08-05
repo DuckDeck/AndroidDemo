@@ -46,7 +46,7 @@ class ProjectActivity : AppCompatActivity() {
                     val intent = Intent(this, MitoActivity::class.java)
                     startActivity(intent)
                 }
-                "美图"->
+                "五笔查询"->
                 {
                     val intent = Intent(this, FiveStrokeActivity::class.java)
                     startActivity(intent)

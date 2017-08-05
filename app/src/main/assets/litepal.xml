@@ -8,5 +8,6 @@
         <mapping class = "stan.androiddemo.project.weather.db.Country" />
         <mapping class = "stan.androiddemo.project.novel.model.SectionInfo" />
         <mapping class = "stan.androiddemo.project.novel.model.NovelInfo" />
+        <mapping class = "stan.androiddemo.project.FiveStroke.Model.FiveStrokeInfo" />
     </list>
 </litepal>

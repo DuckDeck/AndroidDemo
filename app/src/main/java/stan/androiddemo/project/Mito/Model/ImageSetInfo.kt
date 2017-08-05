@@ -56,7 +56,7 @@ class ImageSetInfo() :DataSupport(),Parcelable{
         fun imageSets(cat:String,resolution: Resolution,theme:String, index:Int, cb: ((imageSets: ResultInfo)->Unit)){
             val fixedIndex = index + 1
             val url = PCImage + "-" + ImageSetInfo.themeToUrlPara(theme) + "-" + ImageSetInfo.catToUrlPara(cat) + "-0-" + resolution.toUrlPara() + "-0-"+fixedIndex+".html"
-            HttpTool.sendOKHttpRequest(url,object  :okhttp3.Callback{
+            HttpTool.get(url,object  :okhttp3.Callback{
                 var result = ResultInfo()
                 override fun onFailure(call: Call?, e: IOException?) {
                     result.code = errcode_netword_error
@@ -102,7 +102,7 @@ class ImageSetInfo() :DataSupport(),Parcelable{
         }
 
         fun imageSet(imgSet: ImageSetInfo,cb: (imageSets: ResultInfo) -> Unit){
-            HttpTool.sendOKHttpRequest(imgSet.url,object  :okhttp3.Callback{
+            HttpTool.get(imgSet.url,object  :okhttp3.Callback{
                 var result = ResultInfo()
                 override fun onFailure(call: Call?, e: IOException?) {
                     result.code = errcode_netword_error

@@ -82,7 +82,7 @@ class WeatherInfoActivity : AppCompatActivity() {
 
     fun requestWeather( weatherId:String) {
         val weatherUrl = "http://guolin.tech/api/weather?cityid=$weatherId&key=bc0418b57b2d4918819d3974ac1285d9"
-        HttpTool.sendOKHttpRequest(weatherUrl, object : Callback {
+        HttpTool.get(weatherUrl, object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 e.printStackTrace()
                 runOnUiThread {
@@ -146,7 +146,7 @@ class WeatherInfoActivity : AppCompatActivity() {
 
     fun loadBingPic() {
         val requestBingPic = "http://guolin.tech/api/bing_pic"
-        HttpTool.sendOKHttpRequest(requestBingPic, object : Callback {
+        HttpTool.get(requestBingPic, object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 e.printStackTrace()
             }
