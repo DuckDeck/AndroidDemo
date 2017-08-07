@@ -60,7 +60,10 @@
             android:theme="@style/FruitActivityTheme" />
         <activity android:name=".project.Mito.MitoActivity" />
         <activity android:name=".project.Mito.ImageSetActivity" />
-        <activity android:name=".project.FiveStroke.FiveStrokeActivity" android:windowSoftInputMode="stateHidden"></activity>
+        <activity
+            android:name=".project.FiveStroke.FiveStrokeActivity"
+            android:windowSoftInputMode="stateHidden" />
+        <activity android:name=".layout.RecyclerView.RecyclerViewActivity"></activity>
     </application>
 
 </manifest> <!-- issue0:can not hide the title bar --><!-- just use   android:theme="@style/Theme.AppCompat.Light.NoActionBar"> -->
