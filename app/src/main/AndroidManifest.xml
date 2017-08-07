@@ -4,7 +4,8 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <application
         android:name="org.litepal.LitePalApplication"
         android:allowBackup="true"
@@ -63,7 +64,17 @@
         <activity
             android:name=".project.FiveStroke.FiveStrokeActivity"
             android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".layout.RecyclerView.RecyclerViewActivity"></activity>
+        <activity android:name=".layout.RecyclerView.RecyclerViewActivity" />
+        <activity android:name=".communication.Notification.NotificationActivity" />
+
+        <receiver
+            android:name=".communication.Notification.DemoReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest> <!-- issue0:can not hide the title bar --><!-- just use   android:theme="@style/Theme.AppCompat.Light.NoActionBar"> -->
