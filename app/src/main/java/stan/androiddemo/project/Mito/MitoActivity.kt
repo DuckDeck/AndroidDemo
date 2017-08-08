@@ -5,13 +5,14 @@ import android.support.v4.view.GravityCompat
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_mito.*
+import kotlinx.android.synthetic.main.activity_mito.view.*
 import stan.androiddemo.PageAdapter
 import stan.androiddemo.R
 
 class MitoActivity : AppCompatActivity() {
 
     lateinit var mAdapter:PageAdapter
-    lateinit var tabletAdapter:PageAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mito)
@@ -35,12 +36,27 @@ class MitoActivity : AppCompatActivity() {
         }
         mAdapter = PageAdapter(supportFragmentManager,fragments,titles)
         viewPager.adapter = mAdapter
-
-
-
-
-
         tabLayout.setupWithViewPager(viewPager)
+
+        navigation_view.setNavigationItemSelectedListener {
+            val id = it.itemId
+            when(id){
+                R.id.nav_computer_mito->{
+                    drawer_layout_fixed.closeDrawers()
+                    mAdapter.mFragments.map { (it as ImageFragment).refreshCat(0) }
+                }
+                R.id.nav_tablet_mito->{
+                    drawer_layout_fixed.closeDrawers()
+                    mAdapter.mFragments.map { (it as ImageFragment).refreshCat(1) }
+                }
+                R.id.nav_phone_mito->{
+                    drawer_layout_fixed.closeDrawers()
+                    mAdapter.mFragments.map { (it as ImageFragment).refreshCat(2) }
+                }
+            }
+            return@setNavigationItemSelectedListener true
+        }
+
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
@@ -48,7 +64,11 @@ class MitoActivity : AppCompatActivity() {
             android.R.id.home->{
                 drawer_layout_fixed.openDrawer(GravityCompat.START)
             }
+            //不对，不是在这里触发的
+
         }
+
+
         return true
 
     }

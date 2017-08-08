@@ -3,6 +3,7 @@ package stan.androiddemo.project.Mito
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.AsyncTask
 import android.os.Bundle
@@ -20,11 +21,14 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.Target
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
+import com.facebook.drawee.backends.pipeline.Fresco
+import com.facebook.drawee.controller.BaseControllerListener
 import com.facebook.drawee.view.SimpleDraweeView
 import com.maning.imagebrowserlibrary.MNImageBrowser
 import kotlinx.android.synthetic.main.activity_image_set.*
 import stan.androiddemo.Model.ResultInfo
 import stan.androiddemo.R
+import stan.androiddemo.project.Mito.Model.ImageInfo
 import stan.androiddemo.project.Mito.Model.ImageSetInfo
 import stan.androiddemo.tool.ImageLoad.ImageLoadBuilder
 import java.io.File
@@ -35,6 +39,8 @@ class ImageSetActivity : AppCompatActivity() {
     lateinit var mAdapter:BaseQuickAdapter<String,BaseViewHolder>
     lateinit var failView: View
     lateinit var loadingView: View
+    var ratio:Float = 1F
+    lateinit var progressLoading:Drawable
     var currentUrl = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +48,10 @@ class ImageSetActivity : AppCompatActivity() {
         title = ""
         toolbar.setNavigationOnClickListener { onBackPressed() }
         imageSet = intent.getParcelableExtra<ImageSetInfo>("set")
+        ratio = imageSet.resolution.pixelX.toFloat() / imageSet.resolution.pixelY.toFloat()
+        val d0 = VectorDrawableCompat.create(resources,R.drawable.ic_toys_black_24dp,null)
+        progressLoading = DrawableCompat.wrap(d0!!.mutate())
+        DrawableCompat.setTint(progressLoading,resources.getColor(R.color.tint_list_pink))
         txt_toolbar_title.text = imageSet.title
         mAdapter = object:BaseQuickAdapter<String,BaseViewHolder>(R.layout.mito_image_solo_item,arrImageUrl){
             override fun convert(helper: BaseViewHolder, item: String) {
@@ -59,11 +69,8 @@ class ImageSetActivity : AppCompatActivity() {
 //                }).into(helper.getView(R.id.img_mito))
 
                 val img = helper.getView<SimpleDraweeView>(R.id.img_mito)
-                img.aspectRatio = imageSet.resolution.pixelX.toFloat() / imageSet.resolution.pixelY.toFloat()
-                val d0 = VectorDrawableCompat.create(resources,R.drawable.ic_toys_black_24dp,null)
-                val d = DrawableCompat.wrap(d0!!.mutate())
-                DrawableCompat.setTint(d,resources.getColor(R.color.tint_list_pink))
-                ImageLoadBuilder.Start(this@ImageSetActivity,img,item).setProgressBarImage(d).build()
+                img.aspectRatio = ratio
+                ImageLoadBuilder.Start(this@ImageSetActivity,img,item).setProgressBarImage(progressLoading).build()
 
                 imgDownload.setOnClickListener {
                     if (ContextCompat.checkSelfPermission(this@ImageSetActivity, Manifest.permission.WRITE_EXTERNAL_STORAGE) !=

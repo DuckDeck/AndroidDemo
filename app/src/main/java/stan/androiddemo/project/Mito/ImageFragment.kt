@@ -1,9 +1,14 @@
 package stan.androiddemo.project.Mito
 
 import android.content.Intent
+import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.support.graphics.drawable.VectorDrawableCompat
 import android.support.v4.app.Fragment
+import android.support.v4.graphics.drawable.DrawableCompat
+import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.GridLayoutManager
+import android.support.v7.widget.StaggeredGridLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +16,7 @@ import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
+import com.facebook.drawee.view.SimpleDraweeView
 import kotlinx.android.synthetic.main.fragment_image.*
 import stan.androiddemo.Model.ResultInfo
 import stan.androiddemo.R
@@ -18,8 +24,13 @@ import stan.androiddemo.R
 import stan.androiddemo.project.Mito.Model.ImageSetInfo
 
 import stan.androiddemo.project.Mito.Model.Resolution
+import stan.androiddemo.tool.ImageLoad.ImageLoadBuilder
 
-class ImageFragment : Fragment() {
+class ImageFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
+    override fun onRefresh() {
+        index = 0
+        loadData()
+    }
 
 
     var cat = "全部"
@@ -28,6 +39,9 @@ class ImageFragment : Fragment() {
     lateinit var failView: View
     lateinit var loadingView: View
     var index = 0
+    var ratio:Float = 1F
+    var imageCat = 0
+    lateinit var progressLoading: Drawable
     companion object {
         fun createFragment():ImageFragment{
             val fg = ImageFragment()
@@ -45,9 +59,14 @@ class ImageFragment : Fragment() {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         cat =  arguments.getString("cat")
+        val d0 = VectorDrawableCompat.create(resources,R.drawable.ic_toys_black_24dp,null)
+        progressLoading = DrawableCompat.wrap(d0!!.mutate())
         mAdapter = object:BaseQuickAdapter<ImageSetInfo,BaseViewHolder>(R.layout.image_set_item,arrImageSet){
             override fun convert(helper: BaseViewHolder, item: ImageSetInfo) {
-                Glide.with(this@ImageFragment).load(item.mainImage).into(helper.getView(R.id.img_set))
+                val img = helper.getView<SimpleDraweeView>(R.id.img_set)
+                ratio = item.resolution.pixelX.toFloat() / item.resolution.pixelY.toFloat()
+                img.aspectRatio = ratio
+                ImageLoadBuilder.Start(this@ImageFragment.context,img,item.mainImage).setProgressBarImage(progressLoading).build()
                 helper.setText(R.id.txt_image_title,item.title)
                 helper.setText(R.id.txt_image_tag,item.category)
                 helper.setText(R.id.txt_image_resolution,item.resolutionStr)
@@ -55,11 +74,9 @@ class ImageFragment : Fragment() {
             }
         }
         swipe_refresh_mito.setColorSchemeResources(R.color.colorPrimary)
-        swipe_refresh_mito.setOnRefreshListener {
-            index = 0
-            loadData()
-        }
-        recycler_images.layoutManager = GridLayoutManager(this@ImageFragment.context,2)
+        swipe_refresh_mito.setOnRefreshListener(this)
+
+        recycler_images.layoutManager = StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL)
         recycler_images.adapter = mAdapter
         loadingView = View.inflate(this@ImageFragment.context,R.layout.list_loading_hint,null)
         failView = View.inflate(this@ImageFragment.context,R.layout.list_empty_hint,null)
@@ -84,8 +101,19 @@ class ImageFragment : Fragment() {
         loadData()
     }
 
+    fun refreshCat(cat:Int){
+        if (cat == imageCat){
+            return
+        }
+        imageCat = cat
+        if (swipe_refresh_mito != null){
+            swipe_refresh_mito.isRefreshing = true
+        }
+
+    }
+
     fun loadData(){
-        ImageSetInfo.imageSets(cat,Resolution(),"全部",index,{ v: ResultInfo ->
+        ImageSetInfo.imageSets(imageCat, cat,Resolution(),"全部",index,{ v: ResultInfo ->
             activity.runOnUiThread {
                 swipe_refresh_mito.isRefreshing = false
                 if (v.code != 0) {

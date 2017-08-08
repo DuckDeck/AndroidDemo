@@ -19,6 +19,8 @@ import java.lang.Exception
  */
 
 const val PCImage = "http://www.5857.com/list-9"
+const val PadImage = "http://www.5857.com/list-10"
+const val PhoneImage = "http://www.5857.com/list-11"
 class ImageSetInfo() :DataSupport(),Parcelable{
     var url = ""
     var category = ""
@@ -53,9 +55,16 @@ class ImageSetInfo() :DataSupport(),Parcelable{
             return arrayOfNulls(size)
         }
 
-        fun imageSets(cat:String,resolution: Resolution,theme:String, index:Int, cb: ((imageSets: ResultInfo)->Unit)){
+        fun imageSets(type:Int,cat:String,resolution: Resolution,theme:String, index:Int, cb: ((imageSets: ResultInfo)->Unit)){
             val fixedIndex = index + 1
-            val url = PCImage + "-" + ImageSetInfo.themeToUrlPara(theme) + "-" + ImageSetInfo.catToUrlPara(cat) + "-0-" + resolution.toUrlPara() + "-0-"+fixedIndex+".html"
+            var baseUrl  = PCImage
+            if (type == 1){
+                baseUrl = PadImage
+            }
+            else if (type == 2){
+                baseUrl = PhoneImage
+            }
+            val url = baseUrl + "-" + ImageSetInfo.themeToUrlPara(theme) + "-" + ImageSetInfo.catToUrlPara(cat) + "-0-" + resolution.toUrlPara() + "-0-"+fixedIndex+".html"
             HttpTool.get(url,object  :okhttp3.Callback{
                 var result = ResultInfo()
                 override fun onFailure(call: Call?, e: IOException?) {
