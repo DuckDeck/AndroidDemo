@@ -93,7 +93,7 @@ class RecyclerViewActivity : AppCompatActivity() {
                 }
                 else{
                     for (i in fromPosttion downTo  toPosition){
-                        Collections.swap(mAdapter.data,i,i-1)
+                        Collections.swap(mAdapter.data,i,i-1)  //当到第一个会报错 需要修复
                     }
                 }
                 mAdapter.notifyItemMoved(fromPosttion,toPosition)
@@ -119,7 +119,7 @@ class RecyclerViewActivity : AppCompatActivity() {
             }
             //是否支持长按Drag，默认是支持的
             override fun isLongPressDragEnabled(): Boolean {
-                return false
+                 return super.isLongPressDragEnabled()
             }
         })
         itemTouchHelper.attachToRecyclerView(recycler_view_demo)
