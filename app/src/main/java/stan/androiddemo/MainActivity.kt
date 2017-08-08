@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
 
 
         val adapter = ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,
-                arrayListOf("项目Demo","布局Layout","绘制View","线程Thread","通信IPC"))
+                arrayListOf("项目Demo","布局Layout","绘制View","线程Thread","通信IPC","存储Store"))
         list_view_menu.adapter = adapter
 
         list_view_menu.onItemClickListener = AdapterView.OnItemClickListener { _, view, _, _ ->
@@ -55,6 +55,11 @@ class MainActivity : AppCompatActivity() {
                 "通信IPC"->
                 {
                     val intent = Intent(this, CommunicationActivity::class.java)
+                    startActivity(intent)
+                }
+                "存储Store"->
+                {
+                    val intent = Intent(this, StoreActivity::class.java)
                     startActivity(intent)
                 }
             }
