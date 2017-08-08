@@ -11,7 +11,7 @@ import stan.androiddemo.R
 class MitoActivity : AppCompatActivity() {
 
     lateinit var mAdapter:PageAdapter
-
+    lateinit var tabletAdapter:PageAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mito)
@@ -35,6 +35,11 @@ class MitoActivity : AppCompatActivity() {
         }
         mAdapter = PageAdapter(supportFragmentManager,fragments,titles)
         viewPager.adapter = mAdapter
+
+
+
+
+
         tabLayout.setupWithViewPager(viewPager)
     }
 

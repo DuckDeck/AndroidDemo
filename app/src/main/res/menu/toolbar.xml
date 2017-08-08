@@ -7,7 +7,7 @@
     app:showAsAction="always"></item>
     <item android:title="Delete"
         android:id="@+id/menu_delete"
-        android:icon="@mipmap/delete"
+        android:icon="@drawable/ic_delete_forever_black_24dp"
         app:showAsAction="ifRoom"></item>
     <item android:title="Setting"
         android:id="@+id/menu_setting"

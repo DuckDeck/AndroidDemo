@@ -29,7 +29,7 @@
         android:layout_height="wrap_content" />
     <ImageView
         android:id="@+id/img_delete_letter"
-        android:src="@mipmap/delete"
+        android:src="@drawable/ic_delete_forever_black_24dp"
         android:padding="4dp"
         android:layout_width="40dp"
         android:layout_height="40dp" />

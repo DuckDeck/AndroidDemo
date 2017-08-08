@@ -3,15 +3,15 @@
     <group android:checkableBehavior="single">
         <item android:title="电脑壁纸"
             android:id="@+id/nav_computer_mito"
-            android:icon="@mipmap/computer"
+            android:icon="@drawable/ic_computer_black_24dp"
             ></item>
         <item android:title="手机壁纸"
             android:id="@+id/nav_phone_mito"
-            android:icon="@mipmap/phone"
+            android:icon="@drawable/ic_phone_iphone_black_24dp"
             ></item>
         <item android:title="平板壁纸"
             android:id="@+id/nav_tablet_mito"
-            android:icon="@mipmap/pad"
+            android:icon="@drawable/ic_tablet_black_24dp"
             ></item>
         <!--<item android:title="我的收藏"-->
             <!--android:id="@+id/nav_my_collect"-->

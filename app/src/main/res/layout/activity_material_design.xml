@@ -55,7 +55,7 @@
             android:id="@+id/button_float"
             android:layout_gravity="bottom|end"
             android:layout_margin="@dimen/sp_16"
-            android:src="@mipmap/delete"
+            android:src="@drawable/ic_delete_forever_black_24dp"
             android:elevation="8dp"/>
 
     </android.support.design.widget.CoordinatorLayout>

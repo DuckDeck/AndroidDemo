@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-<ImageView
+    android:layout_height="wrap_content"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto">
+<com.facebook.drawee.view.SimpleDraweeView
     android:layout_marginBottom="2dp"
     android:id="@+id/img_mito"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:maxHeight="2000dp"
+    android:maxWidth="2000dp"
+    fresco:progressBarAutoRotateInterval="1000"
 />
 
 
@@ -14,7 +18,7 @@
         android:id="@+id/img_download"
         android:background="@drawable/circle_gray_bg"
         android:layout_gravity="right|bottom"
-        android:src="@mipmap/download"
+        android:src="@drawable/ic_file_download_black_24dp"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:padding="6dp"

@@ -49,9 +49,9 @@ class ImageFragment : Fragment() {
             override fun convert(helper: BaseViewHolder, item: ImageSetInfo) {
                 Glide.with(this@ImageFragment).load(item.mainImage).into(helper.getView(R.id.img_set))
                 helper.setText(R.id.txt_image_title,item.title)
-                helper.setText(R.id.txt_image_tag,item.category.toString())
+                helper.setText(R.id.txt_image_tag,item.category)
                 helper.setText(R.id.txt_image_resolution,item.resolutionStr)
-                helper.setText(R.id.txt_image_theme,item.theme.toString())
+                helper.setText(R.id.txt_image_theme,item.theme)
             }
         }
         swipe_refresh_mito.setColorSchemeResources(R.color.colorPrimary)
