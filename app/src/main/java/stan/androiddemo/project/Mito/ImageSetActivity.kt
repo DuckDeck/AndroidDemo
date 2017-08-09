@@ -21,14 +21,11 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.Target
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
-import com.facebook.drawee.backends.pipeline.Fresco
-import com.facebook.drawee.controller.BaseControllerListener
 import com.facebook.drawee.view.SimpleDraweeView
 import com.maning.imagebrowserlibrary.MNImageBrowser
 import kotlinx.android.synthetic.main.activity_image_set.*
 import stan.androiddemo.Model.ResultInfo
 import stan.androiddemo.R
-import stan.androiddemo.project.Mito.Model.ImageInfo
 import stan.androiddemo.project.Mito.Model.ImageSetInfo
 import stan.androiddemo.tool.ImageLoad.ImageLoadBuilder
 import java.io.File
@@ -94,6 +91,7 @@ class ImageSetActivity : AppCompatActivity() {
             mAdapter.emptyView = loadingView
             getImages()
         }
+        mAdapter.emptyView = loadingView
         recycler_view_images.layoutManager = LinearLayoutManager(this)
         recycler_view_images.adapter = mAdapter
         getImages()

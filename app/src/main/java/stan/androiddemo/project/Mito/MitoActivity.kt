@@ -5,7 +5,6 @@ import android.support.v4.view.GravityCompat
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_mito.*
-import kotlinx.android.synthetic.main.activity_mito.view.*
 import stan.androiddemo.PageAdapter
 import stan.androiddemo.R
 
@@ -38,25 +37,26 @@ class MitoActivity : AppCompatActivity() {
         viewPager.adapter = mAdapter
         tabLayout.setupWithViewPager(viewPager)
 
-        navigation_view.setNavigationItemSelectedListener {
+
+
+        navigation_view.setNavigationItemSelectedListener { //组这些menu添加事件
             val id = it.itemId
             when(id){
                 R.id.nav_computer_mito->{
-                    drawer_layout_fixed.closeDrawers()
                     mAdapter.mFragments.map { (it as ImageFragment).refreshCat(0) }
                 }
                 R.id.nav_tablet_mito->{
-                    drawer_layout_fixed.closeDrawers()
                     mAdapter.mFragments.map { (it as ImageFragment).refreshCat(1) }
                 }
                 R.id.nav_phone_mito->{
-                    drawer_layout_fixed.closeDrawers()
                     mAdapter.mFragments.map { (it as ImageFragment).refreshCat(2) }
                 }
             }
+            drawer_layout_fixed.closeDrawers()
             return@setNavigationItemSelectedListener true
         }
 
+        navigation_view.menu.getItem(0).isChecked = true//默认选中第一项
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
@@ -67,9 +67,16 @@ class MitoActivity : AppCompatActivity() {
             //不对，不是在这里触发的
 
         }
-
-
         return true
+    }
+
+    override fun onBackPressed() {
+        if (drawer_layout_fixed.isDrawerOpen(GravityCompat.START)){
+            drawer_layout_fixed.closeDrawer(GravityCompat.START)
+        }
+        else{
+            super.onBackPressed()
+        }
 
     }
 }
