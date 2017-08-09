@@ -21,11 +21,6 @@ class MainActivity : AppCompatActivity() {
 
         title = "" // it works
         setSupportActionBar(toolbar_main)
-//        toolbar_main.title = "123123123"  // can not work
-
-        val reg = Regex("\\D+")
-        val s = "123123wrer".replace(reg,"")
-
 
         val adapter = ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,
                 arrayListOf("项目Demo","布局Layout","绘制View","线程Thread","通信IPC","存储Store"))
@@ -79,7 +74,8 @@ class MainActivity : AppCompatActivity() {
 
         val s = A(j)
         println(s.sString)
-
+        val reg = Regex("\\D+")
+        val st = "123123wrer".replace(reg,"")
 
     }
 }

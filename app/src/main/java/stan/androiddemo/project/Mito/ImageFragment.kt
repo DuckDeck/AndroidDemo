@@ -1,5 +1,6 @@
 package stan.androiddemo.project.Mito
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -7,22 +8,18 @@ import android.support.graphics.drawable.VectorDrawableCompat
 import android.support.v4.app.Fragment
 import android.support.v4.graphics.drawable.DrawableCompat
 import android.support.v4.widget.SwipeRefreshLayout
-import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.StaggeredGridLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import com.bumptech.glide.Glide
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.facebook.drawee.view.SimpleDraweeView
 import kotlinx.android.synthetic.main.fragment_image.*
 import stan.androiddemo.Model.ResultInfo
 import stan.androiddemo.R
-
 import stan.androiddemo.project.Mito.Model.ImageSetInfo
-
 import stan.androiddemo.project.Mito.Model.Resolution
 import stan.androiddemo.tool.ImageLoad.ImageLoadBuilder
 
@@ -61,6 +58,7 @@ class ImageFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
         cat =  arguments.getString("cat")
         val d0 = VectorDrawableCompat.create(resources,R.drawable.ic_toys_black_24dp,null)
         progressLoading = DrawableCompat.wrap(d0!!.mutate())
+        DrawableCompat.setTint(progressLoading,resources.getColor(R.color.tint_list_pink))
         mAdapter = object:BaseQuickAdapter<ImageSetInfo,BaseViewHolder>(R.layout.image_set_item,arrImageSet){
             override fun convert(helper: BaseViewHolder, item: ImageSetInfo) {
                 val img = helper.getView<SimpleDraweeView>(R.id.img_set)
@@ -101,6 +99,39 @@ class ImageFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
         loadData()
     }
 
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        println("onAttach" + cat)
+    }
+
+    override fun onAttachFragment(childFragment: Fragment?) {
+        super.onAttachFragment(childFragment)
+        println("onAttachFragment" + cat)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        println("onCreate" + cat)
+    }
+
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        println("onActivityCreated" + cat)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        println("onStart" + cat)
+        if (arrImageSet.size > 0){
+            if (arrImageSet.first().imgBelongCat != imageCat){
+                swipe_refresh_mito.isRefreshing = true
+                onRefresh()
+            }
+        }
+    }
+
     fun refreshCat(cat:Int){
         if (cat == imageCat){
             return
@@ -108,6 +139,7 @@ class ImageFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
         imageCat = cat
         if (swipe_refresh_mito != null){
             swipe_refresh_mito.isRefreshing = true
+            onRefresh()
         }
 
     }
@@ -115,7 +147,10 @@ class ImageFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     fun loadData(){
         ImageSetInfo.imageSets(imageCat, cat,Resolution(),"全部",index,{ v: ResultInfo ->
             activity.runOnUiThread {
-                swipe_refresh_mito.isRefreshing = false
+                if (swipe_refresh_mito != null){
+                    swipe_refresh_mito.isRefreshing = false
+                }
+
                 if (v.code != 0) {
                     Toast.makeText(this@ImageFragment.context,v.message, Toast.LENGTH_LONG).show()
                     mAdapter.emptyView = failView
@@ -138,7 +173,10 @@ class ImageFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
                     mAdapter.loadMoreComplete()
                 }
                 index ++
-                arrImageSet.addAll(imageSets)
+                arrImageSet.addAll(imageSets.map {
+                    it.imgBelongCat = imageCat
+                    it
+                })
                 mAdapter.notifyDataSetChanged()
             }
         })

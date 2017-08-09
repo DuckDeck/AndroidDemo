@@ -34,7 +34,7 @@ class ImageSetInfo() :DataSupport(),Parcelable{
     var mainImage = ""
     var images = ArrayList<String>()
     var count = 0
-
+    var imgBelongCat = 0
     constructor(parcel: Parcel) : this() {
         url = parcel.readString()
         category = parcel.readString()
@@ -92,7 +92,17 @@ class ImageSetInfo() :DataSupport(),Parcelable{
                             }
                             val imageInfo = set.select("div.listbott").first()
                             imageSet.category = imageInfo.select("em").first().text()
-                            imageSet.resolution = Resolution(imageInfo.select("span.fbl").first().text())
+                            var res = imageInfo.select("span.fbl").first().text()
+                            if (res.contains("(")){
+                                res = res.split("(")[0]
+                            }
+                            imageSet.resolution = Resolution(res)
+                            if (imageSet.resolution.pixelX == 0){
+                                if (type == 0){
+                                    imageSet.resolution.pixelX = 1920
+                                    imageSet.resolution.pixelY = 1080
+                                }
+                            }
                             imageSet.theme = imageInfo.select("span.color").first().text()
                             arrImageSets.add(imageSet)
                         }
@@ -247,7 +257,7 @@ class Resolution:Parcelable{
 
     var pixelX = 0
     var pixelY = 0
-
+    var device = ""
     constructor(parcel: Parcel) : this() {
         pixelX = parcel.readInt()
         pixelY = parcel.readInt()
