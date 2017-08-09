@@ -4,13 +4,26 @@
     android:layout_height="wrap_content"
     android:padding="2dp"
     xmlns:fresco="http://schemas.android.com/apk/res-auto">
-    <com.facebook.drawee.view.SimpleDraweeView
-        android:id="@+id/img_set"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:maxHeight="2000dp"
-        android:maxWidth="2000dp"
-        fresco:progressBarAutoRotateInterval="1000"/>
+        android:layout_height="wrap_content">
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/img_set"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxHeight="2000dp"
+            android:maxWidth="2000dp"
+            fresco:progressBarAutoRotateInterval="1000"/>
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/img_mito_collect"
+            android:padding="2dp"
+            android:background="@drawable/circle_gray_bg"
+            android:layout_margin="@dimen/dp_10"
+            android:layout_gravity="bottom|right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_star_border_black_24dp"/>
+    </FrameLayout>
     <TextView
         android:padding="@dimen/dp_4"
         android:layout_marginTop="@dimen/dp_4"

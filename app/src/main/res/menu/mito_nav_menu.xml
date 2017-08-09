@@ -13,10 +13,14 @@
             android:id="@+id/nav_tablet_mito"
             android:icon="@drawable/ic_tablet_black_24dp"
             ></item>
-        <!--<item android:title="我的收藏"-->
-            <!--android:id="@+id/nav_my_collect"-->
-            <!--android:icon="@mipmap/ic_launcher"-->
-            <!--&gt;</item>-->
+        <item android:title="精选一图"
+            android:id="@+id/nav_essential_mito"
+            android:icon="@drawable/ic_toys_black_24dp"
+            ></item>
+        <item android:title="我的收藏"
+            android:id="@+id/nav_my_collect"
+            android:icon="@drawable/ic_star_black_24dp"
+            ></item>
         <!--<item android:title="设置"-->
             <!--android:id="@+id/nav_setting"-->
             <!--android:icon="@mipmap/setting"-->

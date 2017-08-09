@@ -12,11 +12,13 @@ import android.support.v7.widget.StaggeredGridLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.facebook.drawee.view.SimpleDraweeView
 import kotlinx.android.synthetic.main.fragment_image.*
+import org.litepal.crud.DataSupport
 import stan.androiddemo.Model.ResultInfo
 import stan.androiddemo.R
 import stan.androiddemo.project.Mito.Model.ImageSetInfo
@@ -36,7 +38,7 @@ class ImageFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     lateinit var failView: View
     lateinit var loadingView: View
     var index = 0
-    var ratio:Float = 1F
+
     var imageCat = 0
     lateinit var progressLoading: Drawable
     companion object {
@@ -62,13 +64,34 @@ class ImageFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
         mAdapter = object:BaseQuickAdapter<ImageSetInfo,BaseViewHolder>(R.layout.image_set_item,arrImageSet){
             override fun convert(helper: BaseViewHolder, item: ImageSetInfo) {
                 val img = helper.getView<SimpleDraweeView>(R.id.img_set)
-                ratio = item.resolution.pixelX.toFloat() / item.resolution.pixelY.toFloat()
-                img.aspectRatio = ratio
+                img.aspectRatio = item.resolution.pixelX.toFloat() / item.resolution.pixelY.toFloat()
                 ImageLoadBuilder.Start(this@ImageFragment.context,img,item.mainImage).setProgressBarImage(progressLoading).build()
                 helper.setText(R.id.txt_image_title,item.title)
                 helper.setText(R.id.txt_image_tag,item.category)
                 helper.setText(R.id.txt_image_resolution,item.resolutionStr)
                 helper.setText(R.id.txt_image_theme,item.theme)
+
+
+
+                val imgCollect = helper.getView<ImageView>(R.id.img_mito_collect)
+
+                if (item.isCollected){
+                    imgCollect.setImageDrawable(resources.getDrawable(R.drawable.ic_star_black_24dp))
+                }
+
+
+                imgCollect.setOnClickListener {
+                    if (item.isCollected){
+                        imgCollect.setImageDrawable(resources.getDrawable(R.drawable.ic_star_border_black_24dp))
+                        DataSupport.deleteAll(ImageSetInfo::class.java,"url = " + item.url)
+                    }
+                    else{
+                        imgCollect.setImageDrawable(resources.getDrawable(R.drawable.ic_star_black_24dp))
+                        item.save()
+                    }
+                    item.isCollected = !item.isCollected
+                }
+
             }
         }
         swipe_refresh_mito.setColorSchemeResources(R.color.colorPrimary)

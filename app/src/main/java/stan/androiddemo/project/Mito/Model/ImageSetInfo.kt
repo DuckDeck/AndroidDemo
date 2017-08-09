@@ -21,6 +21,7 @@ import java.lang.Exception
 const val PCImage = "http://www.5857.com/list-9"
 const val PadImage = "http://www.5857.com/list-10"
 const val PhoneImage = "http://www.5857.com/list-11"
+const val EssentialImage = "http://www.5857.com/list-37"
 class ImageSetInfo() :DataSupport(),Parcelable{
     var url = ""
     var category = ""
@@ -29,12 +30,12 @@ class ImageSetInfo() :DataSupport(),Parcelable{
     var tags = ArrayList<String>()
     var resolution = Resolution()
     var resolutionStr:String = ""
-        get() {return  resolution.toString()}
     var theme = ""
     var mainImage = ""
     var images = ArrayList<String>()
     var count = 0
     var imgBelongCat = 0
+    var isCollected = false
     constructor(parcel: Parcel) : this() {
         url = parcel.readString()
         category = parcel.readString()
@@ -63,6 +64,9 @@ class ImageSetInfo() :DataSupport(),Parcelable{
             }
             else if (type == 2){
                 baseUrl = PhoneImage
+            }
+            else if (type == 3){
+                baseUrl = EssentialImage
             }
             val url = baseUrl + "-" + ImageSetInfo.themeToUrlPara(theme) + "-" + ImageSetInfo.catToUrlPara(cat) + "-0-" + resolution.toUrlPara() + "-0-"+fixedIndex+".html"
             HttpTool.get(url,object  :okhttp3.Callback{
@@ -98,11 +102,14 @@ class ImageSetInfo() :DataSupport(),Parcelable{
                             }
                             imageSet.resolution = Resolution(res)
                             if (imageSet.resolution.pixelX == 0){
-                                if (type == 0){
-                                    imageSet.resolution.pixelX = 1920
-                                    imageSet.resolution.pixelY = 1080
+                                when(type){
+                                    0-> imageSet.resolution = Resolution.standardComputerResolution
+                                    1-> imageSet.resolution = Resolution.standardPadResolution
+                                    2-> imageSet.resolution = Resolution.standardPhoneResolution
+                                    3-> imageSet.resolution = Resolution.standardEssentialResolution
                                 }
                             }
+                            imageSet.resolutionStr = imageSet.resolution.toString()
                             imageSet.theme = imageInfo.select("span.color").first().text()
                             arrImageSets.add(imageSet)
                         }
@@ -140,8 +147,13 @@ class ImageSetInfo() :DataSupport(),Parcelable{
                         val img = js.select("a.photo-a").first().child(0).attr("src")
                         val lastIndex = img.indexOfLast { it == '/' }
                         val u = img.substring(0,lastIndex)
-                        for(i in 0 until imgSet.count){
-                            imgSet.images.add(u + "/" + (i + 1).ToFixedInt(3) + ".jpg")
+                        if (imgSet.count == 1){
+                            imgSet.images.add(img)
+                        }
+                        else{
+                            for(i in 0 until imgSet.count){
+                                imgSet.images.add(u + "/" + (i + 1).ToFixedInt(3) + ".jpg")
+                            }
                         }
                         result.data = imgSet
                         cb(result)
@@ -226,18 +238,20 @@ class ImageSetInfo() :DataSupport(),Parcelable{
 }
 
 
-class Resolution:Parcelable{
+class Resolution():DataSupport(), Parcelable{
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeInt(pixelX)
         parcel.writeInt(pixelY)
     }
 
+   
+
     override fun describeContents(): Int {
         return 0
     }
 
-    constructor()
-    constructor(resolution: String){
+
+    constructor(resolution: String):this(){
         val res = resolution.split("x")
         if (res.size == 1)
         {
@@ -286,6 +300,11 @@ class Resolution:Parcelable{
         override fun newArray(size: Int): Array<Resolution?> {
             return arrayOfNulls(size)
         }
+
+        val standardComputerResolution = Resolution("1920x1080")
+        val standardPhoneResolution = Resolution("640x940")
+        val standardPadResolution = Resolution("1024x768")
+        val standardEssentialResolution = Resolution("1920x1080")
     }
 }
 

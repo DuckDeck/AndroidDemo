@@ -9,5 +9,7 @@
         <mapping class = "stan.androiddemo.project.novel.model.SectionInfo" />
         <mapping class = "stan.androiddemo.project.novel.model.NovelInfo" />
         <mapping class = "stan.androiddemo.project.FiveStroke.Model.FiveStrokeInfo" />
+        <mapping class = "stan.androiddemo.project.Mito.Model.ImageSetInfo" />
+        <mapping class = "stan.androiddemo.project.Mito.Model.Resolution" />
     </list>
 </litepal>

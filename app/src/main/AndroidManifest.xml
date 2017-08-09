@@ -89,7 +89,8 @@
         <activity android:name=".store.ContentProvider.ContentProviderActivity" />
         <activity android:name=".StoreActivity" />
         <activity android:name=".communication.Notification.PendingIntentActivity" />
-        <activity android:name=".project.Mito.AboutMitoActivity"></activity>
+        <activity android:name=".project.Mito.AboutMitoActivity" />
+        <activity android:name=".project.Mito.CollectActivity"></activity>
     </application>
 
 </manifest> <!-- issue0:can not hide the title bar --><!-- just use   android:theme="@style/Theme.AppCompat.Light.NoActionBar"> -->

@@ -52,6 +52,13 @@ class MitoActivity : AppCompatActivity() {
                 R.id.nav_phone_mito->{
                     mAdapter.mFragments.map { (it as ImageFragment).refreshCat(2) }
                 }
+                R.id.nav_essential_mito->{
+                    mAdapter.mFragments.map { (it as ImageFragment).refreshCat(3) }
+                }
+                R.id.nav_my_collect->{
+                    val intent = Intent(this,CollectActivity::class.java)
+                    startActivity(intent)
+                }
                 R.id.nav_about_mito->{
                     val intent = Intent(this,AboutMitoActivity::class.java)
                     startActivity(intent)
