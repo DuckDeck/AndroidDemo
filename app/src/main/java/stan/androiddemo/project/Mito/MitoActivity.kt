@@ -1,5 +1,6 @@
 package stan.androiddemo.project.Mito
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.AppCompatActivity
@@ -50,6 +51,10 @@ class MitoActivity : AppCompatActivity() {
                 }
                 R.id.nav_phone_mito->{
                     mAdapter.mFragments.map { (it as ImageFragment).refreshCat(2) }
+                }
+                R.id.nav_about_mito->{
+                    val intent = Intent(this,AboutMitoActivity::class.java)
+                    startActivity(intent)
                 }
             }
             drawer_layout_fixed.closeDrawers()

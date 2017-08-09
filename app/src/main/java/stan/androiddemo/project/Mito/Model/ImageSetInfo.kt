@@ -7,7 +7,7 @@ import okhttp3.Response
 import org.jsoup.Jsoup
 import org.litepal.crud.DataSupport
 import stan.androiddemo.Model.ResultInfo
-import stan.androiddemo.UI.ToFixedInt
+import stan.androiddemo.tool.ToFixedInt
 import stan.androiddemo.errcode_html_resolve_error
 import stan.androiddemo.errcode_netword_error
 import stan.androiddemo.tool.HttpTool
