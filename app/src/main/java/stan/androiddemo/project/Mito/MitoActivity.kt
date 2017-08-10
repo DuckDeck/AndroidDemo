@@ -57,11 +57,11 @@ class MitoActivity : AppCompatActivity() {
                 }
                 R.id.nav_my_collect->{
                     val intent = Intent(this,CollectActivity::class.java)
-                    startActivity(intent)
+                    startActivityForResult(intent,0x00001)
                 }
                 R.id.nav_about_mito->{
                     val intent = Intent(this,AboutMitoActivity::class.java)
-                    startActivity(intent)
+                    startActivityForResult(intent,0x00001)
                 }
             }
             drawer_layout_fixed.closeDrawers()
@@ -80,6 +80,12 @@ class MitoActivity : AppCompatActivity() {
 
         }
         return true
+    }
+
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        navigation_view.menu.getItem(0).isChecked = true
     }
 
     override fun onBackPressed() {

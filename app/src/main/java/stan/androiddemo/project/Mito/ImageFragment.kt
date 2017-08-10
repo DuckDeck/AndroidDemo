@@ -84,12 +84,20 @@ class ImageFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
                     if (item.isCollected){
                         imgCollect.setImageDrawable(resources.getDrawable(R.drawable.ic_star_border_black_24dp))
                         DataSupport.deleteAll(ImageSetInfo::class.java,"url = " + item.url)
+                        item.isCollected = !item.isCollected
                     }
                     else{
                         imgCollect.setImageDrawable(resources.getDrawable(R.drawable.ic_star_black_24dp))
-                        item.save()
+                        item.isCollected = !item.isCollected
+                        val result =  item.save()
+                        if (result){
+                            Toast.makeText(this@ImageFragment.context,"收藏成功",Toast.LENGTH_LONG).show()
+                        }
+                        else{
+                            Toast.makeText(this@ImageFragment.context,"收藏失败",Toast.LENGTH_LONG).show()
+                        }
                     }
-                    item.isCollected = !item.isCollected
+
                 }
 
             }
@@ -196,8 +204,13 @@ class ImageFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
                     mAdapter.loadMoreComplete()
                 }
                 index ++
+                val collectedImages = DataSupport.findAll(ImageSetInfo::class.java)
                 arrImageSet.addAll(imageSets.map {
                     it.imgBelongCat = imageCat
+                    val img = it
+                    if (collectedImages.find { it.url == img.url } != null){
+                        it.isCollected = true
+                    }
                     it
                 })
                 mAdapter.notifyDataSetChanged()

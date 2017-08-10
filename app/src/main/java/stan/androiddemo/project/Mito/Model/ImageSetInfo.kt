@@ -7,10 +7,10 @@ import okhttp3.Response
 import org.jsoup.Jsoup
 import org.litepal.crud.DataSupport
 import stan.androiddemo.Model.ResultInfo
-import stan.androiddemo.tool.ToFixedInt
 import stan.androiddemo.errcode_html_resolve_error
 import stan.androiddemo.errcode_netword_error
 import stan.androiddemo.tool.HttpTool
+import stan.androiddemo.tool.ToFixedInt
 import java.io.IOException
 import java.lang.Exception
 
@@ -100,6 +100,9 @@ class ImageSetInfo() :DataSupport(),Parcelable{
                             if (res.contains("(")){
                                 res = res.split("(")[0]
                             }
+
+
+
                             imageSet.resolution = Resolution(res)
                             if (imageSet.resolution.pixelX == 0){
                                 when(type){
@@ -109,6 +112,7 @@ class ImageSetInfo() :DataSupport(),Parcelable{
                                     3-> imageSet.resolution = Resolution.standardEssentialResolution
                                 }
                             }
+
                             imageSet.resolutionStr = imageSet.resolution.toString()
                             imageSet.theme = imageInfo.select("span.color").first().text()
                             arrImageSets.add(imageSet)

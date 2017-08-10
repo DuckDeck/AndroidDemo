@@ -1,13 +1,15 @@
 package stan.androiddemo.project.Mito
 
+import android.content.Intent
 import android.graphics.drawable.Drawable
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.graphics.drawable.VectorDrawableCompat
 import android.support.v4.graphics.drawable.DrawableCompat
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.StaggeredGridLayoutManager
 import android.view.View
 import android.widget.ImageView
+import android.widget.TextView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.facebook.drawee.view.SimpleDraweeView
@@ -23,6 +25,7 @@ class CollectActivity : AppCompatActivity() {
     var arrImageSet = ArrayList<ImageSetInfo>()
     lateinit var mAdapter: BaseQuickAdapter<ImageSetInfo, BaseViewHolder>
     lateinit var failView: View
+    lateinit var errorHintView:TextView
     lateinit var progressLoading: Drawable
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,27 +63,27 @@ class CollectActivity : AppCompatActivity() {
 
 
                 imgCollect.setOnClickListener {
-                    if (item.isCollected){
-                        imgCollect.setImageDrawable(resources.getDrawable(R.drawable.ic_star_border_black_24dp))
-                        DataSupport.deleteAll(ImageSetInfo::class.java,"url = " + item.url)
-                    }
-                    else{
-                        imgCollect.setImageDrawable(resources.getDrawable(R.drawable.ic_star_black_24dp))
-                        item.save()
-                    }
-                    item.isCollected = !item.isCollected
+                    DataSupport.deleteAll(ImageSetInfo::class.java,"url = ' " + item.url + "'")
                 }
-
             }
         }
+
 
 
         recycler_collect.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         recycler_collect.adapter = mAdapter
         failView = View.inflate(this,R.layout.list_empty_hint,null)
-
+        errorHintView = failView.findViewById(R.id.txt_hint)
         if (arrImageSet.size <= 0){
+            errorHintView.text = "暂无收藏"
             mAdapter.emptyView = failView
+        }
+
+        mAdapter.setOnItemClickListener { adapter, view, position ->
+            val set = arrImageSet[position]
+            val intent = Intent(this,ImageSetActivity::class.java)
+            intent.putExtra("set",set)
+            startActivity(intent)
         }
 
     }
