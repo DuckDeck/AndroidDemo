@@ -78,7 +78,9 @@ class ImageFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
                 if (item.isCollected){
                     imgCollect.setImageDrawable(resources.getDrawable(R.drawable.ic_star_black_24dp))
                 }
-
+                else{
+                    imgCollect.setImageDrawable(resources.getDrawable(R.drawable.ic_star_border_black_24dp))
+                }
 
                 imgCollect.setOnClickListener {
                     if (item.isCollected){

@@ -10,6 +10,7 @@ import android.support.v7.widget.StaggeredGridLayoutManager
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.facebook.drawee.view.SimpleDraweeView
@@ -63,7 +64,27 @@ class CollectActivity : AppCompatActivity() {
 
 
                 imgCollect.setOnClickListener {
-                    DataSupport.deleteAll(ImageSetInfo::class.java,"url = ' " + item.url + "'")
+                    if (item.isCollected){
+                        imgCollect.setImageDrawable(resources.getDrawable(R.drawable.ic_star_border_black_24dp))
+                        val result = DataSupport.deleteAll(ImageSetInfo::class.java,"title = '" + item.title + "' ")
+                        item.isCollected = !item.isCollected
+                    }
+                    else{
+                        imgCollect.setImageDrawable(resources.getDrawable(R.drawable.ic_star_black_24dp))
+                        item.isCollected = !item.isCollected
+                        val result =  item.save()
+                        if (result){
+                            Toast.makeText(this.mContext,"收藏成功", Toast.LENGTH_LONG).show()
+                        }
+                        else{
+                            Toast.makeText(this.mContext,"收藏失败", Toast.LENGTH_LONG).show()
+                        }
+                    }
+
+//                    val result =  DataSupport.deleteAll(ImageSetInfo::class.java,"url = ' " + item.url + "'")
+//                    item.isCollected = false
+//                    imgCollect.setImageDrawable(resources.getDrawable(R.drawable.ic_star_border_black_24dp))
+
                 }
             }
         }

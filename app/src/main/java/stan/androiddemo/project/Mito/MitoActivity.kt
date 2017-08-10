@@ -72,7 +72,7 @@ class MitoActivity : AppCompatActivity() {
             return@setNavigationItemSelectedListener true
         }
 
-        navigation_view.menu.getItem(currentSelectCat).isChecked = true//默认选中第一项
+        navigation_view.menu.getItem(0).isChecked = true//默认选中第一项
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
@@ -89,7 +89,7 @@ class MitoActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        navigation_view.menu.getItem(0).isChecked = true
+        navigation_view.menu.getItem(currentSelectCat).isChecked = true
     }
 
     override fun onBackPressed() {
