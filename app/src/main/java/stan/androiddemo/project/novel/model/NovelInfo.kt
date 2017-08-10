@@ -88,7 +88,7 @@ class NovelInfo() :Parcelable,DataSupport(){
                 override fun onResponse(call: Call, response: Response) {
                     val arrNovels = ArrayList<NovelInfo>()
                     try {
-                        val responseText = response.body().string()
+                        val responseText = response.body()!!.string()
                         val js =Jsoup.parse(responseText)
                         val novelhtmls = js.select("div.result-item")
                         for(e in novelhtmls){
@@ -131,7 +131,7 @@ class NovelInfo() :Parcelable,DataSupport(){
                         //issue3 when you convert something to string ,java use a default charset to convert, when the default charset do not match the stream, the chines to show random code and lost
                         //the origin charset, you can not convert it ti the correct charset, so the first thing is to convert to bytes ,bytes do not contain the charset ,then usr String(str,charset)
                         //to convert the right charset
-                        val responseText = String(response.body().bytes(), charset("GBK"))
+                        val responseText = String(response.body()!!.bytes(), charset("GBK"))
                         val js =Jsoup.parse(responseText)
                         val sectionHtml = js.select("div#list").first().child(0).children()
                         for (s in sectionHtml){
@@ -205,7 +205,7 @@ class SectionInfo() :DataSupport(),Parcelable{
                 }
                 override fun onResponse(call: Call, response: Response) {
                     try {
-                        val responseText = String(response.body().bytes(), charset("GBK"))
+                        val responseText = String(response.body()!!.bytes(), charset("GBK"))
                         val js =Jsoup.parse(responseText)
                         val sectionHtml = js.select("div#content").first().html().replace("&nbsp;","")
                         result.data = sectionHtml

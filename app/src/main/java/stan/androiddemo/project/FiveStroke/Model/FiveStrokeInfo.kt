@@ -43,7 +43,7 @@ class FiveStrokeInfo:DataSupport(){
                 override fun onResponse(call: Call, response: Response) {
                     val arr = ArrayList<FiveStrokeInfo>()
                     try {
-                        val responseText = String(response.body().bytes(), charset("GBK"))
+                        val responseText = String(response.body()!!.bytes(), charset("GBK"))
                         val js = Jsoup.parse(responseText)
                         val letters = js.select("#zgbg").first().select("tr.tbhover")
                         for (l in letters){

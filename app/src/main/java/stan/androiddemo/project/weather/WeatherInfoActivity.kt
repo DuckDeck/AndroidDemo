@@ -4,10 +4,10 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
 import android.os.Build
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.v4.view.GravityCompat
+import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
@@ -93,7 +93,7 @@ class WeatherInfoActivity : AppCompatActivity() {
 
             @Throws(IOException::class)
             override fun onResponse(call: Call, response: Response) {
-                val responseText = response.body().string()
+                val responseText = response.body()!!.string()
                 val weather = Utility.handleWeatherResponse(responseText)
                 runOnUiThread {
                     if (weather != null && "ok" == weather.status) {
@@ -116,7 +116,7 @@ class WeatherInfoActivity : AppCompatActivity() {
         val intent = Intent(this, AutoUpdateService::class.java)
         startService(intent)
         val cityName = weather.basic!!.cityName
-        val updateTime = weather.basic!!.update!!.updateTime!!.split(" ")[1]
+        val updateTime = weather.basic!!.update!!.updateTime.split(" ")[1]
         val degree = weather.now!!.temperature + "C"
         val weatherInfo = weather.now!!.more!!.info
         title_city.text = cityName
@@ -136,8 +136,8 @@ class WeatherInfoActivity : AppCompatActivity() {
             api_text.text = weather.aqi!!.city!!.aqi
             pm25_text.text = weather.aqi!!.city!!.pm25
         }
-        comfort_text.text = "舒适度:" + weather!!.suggestion!!.comfort!!.info
-        car_wash_text.text = "洗车指数:" + weather!!.suggestion!!.carWash!!.info
+        comfort_text.text = "舒适度:" + weather.suggestion!!.comfort!!.info
+        car_wash_text.text = "洗车指数:" + weather.suggestion!!.carWash!!.info
         sport_text.text = "运动建议:" + weather.suggestion!!.sport!!.info
         drawer_layout_fixed.setVisibility(View.VISIBLE)
     } else {
@@ -153,7 +153,7 @@ class WeatherInfoActivity : AppCompatActivity() {
 
             @Throws(IOException::class)
             override fun onResponse(call: Call, response: Response) {
-                val bingPic = response.body().string()
+                val bingPic = response.body()!!.string()
                 //this is a bug can not convert the body to teh url
                 //not a bug ,usr the string() can convert the httpbody to url correctly
                 val editor = PreferenceManager.getDefaultSharedPreferences(this@WeatherInfoActivity).edit()

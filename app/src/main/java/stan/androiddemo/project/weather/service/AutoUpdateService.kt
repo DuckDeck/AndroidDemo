@@ -49,7 +49,7 @@ class AutoUpdateService: Service() {
 
                 @Throws(IOException::class)
                 override fun onResponse(call: Call, response: Response) {
-                    val responseText = response.body().string()
+                    val responseText = response.body()!!.string()
                     val weather1 = Utility.handleWeatherResponse(responseText)
                     if (weather1 != null && "OK" == weather1!!.status) {
                         val editor = PreferenceManager.getDefaultSharedPreferences(this@AutoUpdateService).edit()
@@ -71,7 +71,7 @@ class AutoUpdateService: Service() {
 
             @Throws(IOException::class)
             override fun onResponse(call: Call, response: Response) {
-                val bingPic = response.body().string()
+                val bingPic = response.body()!!.string()
                 //this is a bug can not convert the body to teh url
                 //not a bug ,usr the string() can convert the httpbody to url correctly
                 val editor = PreferenceManager.getDefaultSharedPreferences(this@AutoUpdateService).edit()

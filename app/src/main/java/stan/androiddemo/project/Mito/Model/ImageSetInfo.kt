@@ -80,7 +80,7 @@ class ImageSetInfo() :DataSupport(),Parcelable{
                 override fun onResponse(call: Call, response: Response) {
                     val arrImageSets = ArrayList<ImageSetInfo>()
                     try {
-                        val responseText = response.body().string()
+                        val responseText = response.body()!!.string()
                         val js = Jsoup.parse(responseText)
                         val imageSets = js.select("ul.clearfix").first().children()
                         val reg = Regex("\\D+")
@@ -142,7 +142,7 @@ class ImageSetInfo() :DataSupport(),Parcelable{
                 }
                 override fun onResponse(call: Call, response: Response) {
                     try {
-                        val responseText = response.body().string()
+                        val responseText = response.body()!!.string()
                         val js = Jsoup.parse(responseText)
                         val tags = js.select("div.con-tags").first().select("a")
                         for (tag in tags){

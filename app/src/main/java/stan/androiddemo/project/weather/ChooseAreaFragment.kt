@@ -1,20 +1,20 @@
 package stan.androiddemo.project.weather
 
-import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
-
+import android.widget.ArrayAdapter
+import android.widget.ListView
+import android.widget.ProgressBar
+import android.widget.Toast
 import kotlinx.android.synthetic.main.fragment_choose_area.*
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.Response
 import org.litepal.crud.DataSupport
-
 import stan.androiddemo.R
 import stan.androiddemo.project.weather.db.City
 import stan.androiddemo.project.weather.db.Country
@@ -22,7 +22,7 @@ import stan.androiddemo.project.weather.db.Province
 import stan.androiddemo.project.weather.utility.Utility
 import stan.androiddemo.tool.HttpTool
 import java.io.IOException
-import java.util.ArrayList
+import java.util.*
 
 
 class ChooseAreaFragment : Fragment() {
@@ -74,7 +74,7 @@ class ChooseAreaFragment : Fragment() {
 
             }
         })
-        back_button.setOnClickListener({ sender ->
+        back_button.setOnClickListener({
             if (currentLevel == LEVEL_COUNTRY) {
                 queryCities()
             } else if (currentLevel == LEVEL_CITY) {
@@ -159,7 +159,7 @@ class ChooseAreaFragment : Fragment() {
 
             @Throws(IOException::class)
             override fun onResponse(call: Call, response: Response) {
-                val responseText = response.body().string()
+                val responseText = response.body()!!.string()
                 var result = false
                 if ("province" == type) {
                     result = Utility.handleProvinceResponse(responseText)
