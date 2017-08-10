@@ -12,7 +12,7 @@ import stan.androiddemo.R
 class MitoActivity : AppCompatActivity() {
 
     lateinit var mAdapter:PageAdapter
-
+    var currentSelectCat = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mito)
@@ -44,15 +44,19 @@ class MitoActivity : AppCompatActivity() {
             val id = it.itemId
             when(id){
                 R.id.nav_computer_mito->{
+                    currentSelectCat = 0
                     mAdapter.mFragments.map { (it as ImageFragment).refreshCat(0) }
                 }
                 R.id.nav_tablet_mito->{
+                    currentSelectCat = 1
                     mAdapter.mFragments.map { (it as ImageFragment).refreshCat(1) }
                 }
                 R.id.nav_phone_mito->{
+                    currentSelectCat = 2
                     mAdapter.mFragments.map { (it as ImageFragment).refreshCat(2) }
                 }
                 R.id.nav_essential_mito->{
+                    currentSelectCat = 3
                     mAdapter.mFragments.map { (it as ImageFragment).refreshCat(3) }
                 }
                 R.id.nav_my_collect->{
@@ -68,7 +72,7 @@ class MitoActivity : AppCompatActivity() {
             return@setNavigationItemSelectedListener true
         }
 
-        navigation_view.menu.getItem(0).isChecked = true//默认选中第一项
+        navigation_view.menu.getItem(currentSelectCat).isChecked = true//默认选中第一项
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
