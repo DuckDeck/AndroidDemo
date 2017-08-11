@@ -3,9 +3,7 @@ package stan.androiddemo.UI
 import android.graphics.Color
 import android.os.Bundle
 import android.support.v7.widget.RecyclerView
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.TextView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
@@ -13,9 +11,10 @@ import com.chad.library.adapter.base.listener.OnItemClickListener
 import kotlinx.android.synthetic.main.fragment_base_recycler.*
 import rx.Subscription
 import stan.androiddemo.R
+import stan.androiddemo.project.petal.Event.OnFragmentRefreshListener
 
 
-abstract class BasePetalRecyclerFragment<T> : BasePetalFragment() {
+abstract class BasePetalRecyclerFragment<T> : BasePetalFragment(),OnFragmentRefreshListener{
 
     abstract fun getLayoutManager(): RecyclerView.LayoutManager
 
@@ -33,20 +32,15 @@ abstract class BasePetalRecyclerFragment<T> : BasePetalFragment() {
 
     lateinit var errorText:TextView
 
+    var arrItem = ArrayList<T>()
+
     var index = 0
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
-        return inflater!!.inflate(R.layout.fragment_base_recycler, container, false)
 
-
-    }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         initView()
-
         initData()
     }
 
@@ -123,7 +117,29 @@ abstract class BasePetalRecyclerFragment<T> : BasePetalFragment() {
         return  null
     }
 
-    fun refresh(){
+    fun loadError(msg:String="加载失败，请重新再试"){
+        errorText.text = msg
+        mAdapter.emptyView = errorView
+    }
+
+    fun loadSuccess(list:List<T>){
+        if (list.size <= 0 && index == 0){
+            errorText.text = "暂无数据"
+            mAdapter.emptyView = errorView
+            return
+        }
+        else if(list.size <= 0 && index != 0){
+            mAdapter.loadMoreComplete()
+            return
+        }
+        if (index == 0){
+            arrItem.clear()
+        }
+        arrItem.addAll(list)
+        mAdapter.notifyDataSetChanged()
+    }
+
+    override fun refresh() {
         index = 0
         initData()
     }
