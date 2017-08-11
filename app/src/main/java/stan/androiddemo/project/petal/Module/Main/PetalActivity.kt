@@ -12,14 +12,14 @@ import com.jakewharton.rxbinding.view.RxView
 import kotlinx.android.synthetic.main.activity_petal.*
 import rx.functions.Action1
 import stan.androiddemo.R
-import stan.androiddemo.project.petal.Base.BaseActivity
+import stan.androiddemo.project.petal.Base.BasePetalActivity
 import stan.androiddemo.project.petal.Config.Config
 import stan.androiddemo.project.petal.Module.PetalList.PetalListFragment
 import stan.androiddemo.tool.CompatUtils
 import java.util.concurrent.TimeUnit
 
 
-class PetalActivity : BaseActivity() {
+class PetalActivity : BasePetalActivity() {
 
     lateinit var fragmentManage: FragmentManager
     lateinit var types:Array<String>

@@ -15,7 +15,7 @@ import rx.Subscription
 import stan.androiddemo.R
 
 
-abstract class BaseRecyclerFragment<T> : BasePetalFragment() {
+abstract class BasePetalRecyclerFragment<T> : BasePetalFragment() {
 
     abstract fun getLayoutManager(): RecyclerView.LayoutManager
 

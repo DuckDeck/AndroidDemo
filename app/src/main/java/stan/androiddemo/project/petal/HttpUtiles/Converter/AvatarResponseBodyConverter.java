@@ -12,9 +12,9 @@ import java.lang.reflect.Type;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import licola.demo.com.huabandemo.Util.Logger;
-import licola.demo.com.huabandemo.Util.Utils;
 import okhttp3.ResponseBody;
+import stan.androiddemo.tool.Logger;
+import stan.androiddemo.tool.Utils;
 
 /**
  * Created by LiCola on  2016/04/17  18:23

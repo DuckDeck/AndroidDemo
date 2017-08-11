@@ -7,7 +7,7 @@ import rx.subscriptions.CompositeSubscription
 /**
  * Created by stanhu on 11/8/2017.
  */
-abstract class  BaseFragment: Fragment() {
+abstract class BasePetalFragment : Fragment() {
     protected var TAG = getTheTAG()
 
     protected abstract fun getTheTAG(): String
