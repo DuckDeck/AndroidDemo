@@ -6,5 +6,6 @@ package stan.androiddemo.project.petal.Config
 class Config{
     companion object {
         val throttDuration = 300
+       const val Authorization = "Authorization"
     }
 }

@@ -5,7 +5,8 @@
     android:id="@+id/swipe_petal_refresh"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    >
 
     <FrameLayout
         android:id="@+id/frame_layout_petal_with_refresh"

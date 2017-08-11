@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark">
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="160dp"
+    android:background="@drawable/petal_header_bg">
+<com.facebook.drawee.view.SimpleDraweeView
+    android:layout_width="64dp"
+    android:layout_height="64dp"
+    android:id="@+id/img_petal_my_header"
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentTop="true"
+    android:layout_marginLeft="16dp"
+    android:layout_marginTop="40dp"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="56dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="16dp"
+        android:gravity="bottom"
+        android:orientation="vertical"
+        android:paddingBottom="16dp">
+
+        <TextView
+            android:id="@+id/tv_nav_username"
+            style="@style/nav_text_style"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/nav_user_name"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_nav_email"
+            style="@style/nav_text_style"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/nav_user_email" />
+
+    </LinearLayout>
+</RelativeLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:id="@+id/linearLayout_petal_nav_operation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <Button
+        style="@style/nav_Button"
+        android:id="@+id/btn_nav_attention"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/nav_attention"/>
+
+        <Button
+            style="@style/nav_Button"
+            android:id="@+id/btn_nav_gather"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/nav_gather"/>
+
+        <Button
+            style="@style/nav_Button"
+            android:id="@+id/btn_nav_message"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/nav_message"/>
+
+        <Button
+            style="@style/nav_Button"
+            android:id="@+id/btn_nav_friends"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/nav_friends"/>
+    </LinearLayout>
+</LinearLayout>

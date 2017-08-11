@@ -1,12 +1,8 @@
 package stan.androiddemo.UI
 
-import android.content.Context
 import android.graphics.Color
-import android.net.Uri
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,13 +10,12 @@ import android.widget.TextView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.chad.library.adapter.base.listener.OnItemClickListener
-import kotlinx.android.synthetic.main.activity_section_list.*
 import kotlinx.android.synthetic.main.fragment_base_recycler.*
-
+import rx.Subscription
 import stan.androiddemo.R
 
 
-abstract class BaseRecyclerFragment<T> : Fragment() {
+abstract class BaseRecyclerFragment<T> : BaseFragment() {
 
     abstract fun getLayoutManager(): RecyclerView.LayoutManager
 
@@ -28,7 +23,7 @@ abstract class BaseRecyclerFragment<T> : Fragment() {
 
     abstract fun itemLayoutConvert(helper: BaseViewHolder, t: T)
 
-    abstract fun requestListData(page: Int)
+    abstract fun requestListData(page: Int): Subscription
 
     lateinit var mAdapter:BaseQuickAdapter<T,BaseViewHolder>
 
@@ -51,6 +46,8 @@ abstract class BaseRecyclerFragment<T> : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         initView()
+
+        initData()
     }
 
     open  protected fun initView(){
@@ -88,13 +85,16 @@ abstract class BaseRecyclerFragment<T> : Fragment() {
         if (isNeedPaging()){
             mAdapter.setEnableLoadMore(true)
             mAdapter.setOnLoadMoreListener(BaseQuickAdapter.RequestLoadMoreListener {
-                requestListData(index)
+                addSubscription(requestListData(index))
             },recycler_base_fragment)
         }
 
         mAdapter.emptyView = loadingView
 
+    }
 
+    open fun initData(){
+        addSubscription(requestListData(index))
     }
 
     protected fun getBackgroundColor(): Int {

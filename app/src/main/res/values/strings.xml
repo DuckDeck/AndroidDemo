@@ -6,9 +6,6 @@
     <string name="title_activity_bookmark">BookmarkActivity</string>
 
 
-
-
-
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
@@ -129,7 +126,6 @@
     <string name="dialog_delete_positive">Delete</string>
 
     <string name="dialog_delete_message">will delete all image in this %s board</string>
-
 
 
     <!-- Strings related to Settings -->
