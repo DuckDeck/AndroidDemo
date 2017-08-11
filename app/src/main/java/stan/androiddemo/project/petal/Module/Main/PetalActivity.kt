@@ -104,7 +104,7 @@ class PetalActivity : BasePetalActivity() {
         val tt = titles[position]
         fragment = PetalListFragment.createListFragment(type,tt)
         mListenerRefresh = fragment
-        transaction.replace(R.id.swipe_petal_refresh,fragment)
+        transaction.replace(R.id.frame_layout_petal_with_refresh,fragment)
         transaction.commit()
         title = tt
     }

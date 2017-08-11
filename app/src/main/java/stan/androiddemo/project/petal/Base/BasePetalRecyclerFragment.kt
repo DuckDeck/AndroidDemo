@@ -47,7 +47,7 @@ abstract class BasePetalRecyclerFragment<T> : BasePetalFragment(),OnFragmentRefr
     open  protected fun initView(){
         recycler_base_fragment.setBackgroundColor(getBackgroundColor())
         index = startPageNumber()
-        mAdapter = object:BaseQuickAdapter<T,BaseViewHolder>(getItemLayoutId()){
+        mAdapter = object:BaseQuickAdapter<T,BaseViewHolder>(getItemLayoutId(),arrItem){
             override fun convert(helper: BaseViewHolder, item: T) {
                 itemLayoutConvert(helper,item)
             }
@@ -132,15 +132,16 @@ abstract class BasePetalRecyclerFragment<T> : BasePetalFragment(),OnFragmentRefr
             mAdapter.loadMoreComplete()
             return
         }
-        if (index == 0){
+        if (index == startPageNumber()){
             arrItem.clear()
         }
         arrItem.addAll(list)
+        index ++
         mAdapter.notifyDataSetChanged()
     }
 
     override fun refresh() {
-        index = 0
+        index = startPageNumber()
         initData()
     }
 

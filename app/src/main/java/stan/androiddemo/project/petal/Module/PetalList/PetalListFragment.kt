@@ -3,6 +3,8 @@ package stan.androiddemo.project.petal.Module.PetalList
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.support.graphics.drawable.VectorDrawableCompat
+import android.support.v4.graphics.drawable.DrawableCompat
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.StaggeredGridLayoutManager
 import com.chad.library.adapter.base.BaseViewHolder
@@ -18,6 +20,7 @@ import stan.androiddemo.project.petal.Config.Config
 import stan.androiddemo.project.petal.HttpUtiles.RetrofitClient
 import stan.androiddemo.project.petal.Model.PinsMainInfo
 import stan.androiddemo.project.petal.Module.Main.PetalActivity
+import stan.androiddemo.tool.ImageLoad.ImageLoadBuilder
 import stan.androiddemo.tool.Logger
 
 
@@ -25,9 +28,9 @@ class PetalListFragment : BasePetalRecyclerFragment<PinsMainInfo>() {
 
     lateinit var mKey: String//用于联网查询的关键字
     var mLimit = Config.LIMIT
-    val mUrlSmallFormat = context.resources.getString(R.string.url_image_small)
-    val mUrlGeneralFormat = context.resources.getString(R.string.url_image_general)
-    val mUrlBigFormat = context.resources.getString(R.string.url_image_big)
+//    val mUrlSmallFormat = context.resources.getString(R.string.url_image_small)
+    lateinit var  mUrlGeneralFormat :String
+//    val mUrlBigFormat = context.resources.getString(R.string.url_image_big)
     lateinit var progressLoading: Drawable
     override fun getTheTAG(): String {
         return this.toString()
@@ -46,7 +49,11 @@ class PetalListFragment : BasePetalRecyclerFragment<PinsMainInfo>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val d0 = VectorDrawableCompat.create(resources,R.drawable.ic_toys_black_24dp,null)
+        progressLoading = DrawableCompat.wrap(d0!!.mutate())
+        DrawableCompat.setTint(progressLoading,resources.getColor(R.color.tint_list_pink))
         mKey = arguments.getString("key")
+        mUrlGeneralFormat = context.resources.getString(R.string.url_image_general)
     }
 
     override fun onAttach(context: Context?) {
@@ -71,7 +78,7 @@ class PetalListFragment : BasePetalRecyclerFragment<PinsMainInfo>() {
         val ratio = t.file!!.width.toFloat() / t.file!!.height.toFloat()
         val img = helper.getView<SimpleDraweeView>(R.id.img_card_main)
         img.aspectRatio = ratio
-
+        ImageLoadBuilder.Start(context,img,imgUrl).setProgressBarImage(progressLoading).build()
     }
 
     override fun requestListData(page: Int): Subscription {
