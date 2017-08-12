@@ -58,7 +58,7 @@ class SearchPetalActivity : BasePetalActivity() {
 
         auto_txt_search_petal.setOnItemClickListener { _, _, i, _ ->
             Logger.d(arrListHttpHint[i])
-            TODO("start search")
+            SearchPetalResultActivity.launch(this,arrListHttpHint[i])
         }
 
         RxTextView.editorActions(auto_txt_search_petal, Func1 {
@@ -91,8 +91,9 @@ class SearchPetalActivity : BasePetalActivity() {
     fun addHistoryChildText(flowHistory: FlowLayout,str: String){
         val txt = LayoutInflater.from(mContext).inflate(R.layout.petal_txt_history_view_item,flowHistory,false) as TextView
         txt.text = str
+        flowHistory.addView(txt)
         txt.setOnClickListener {
-            TODO("search result")
+            SearchPetalResultActivity.launch(this,str)
         }
     }
 
@@ -162,7 +163,7 @@ class SearchPetalActivity : BasePetalActivity() {
 
     fun initActionSearch(){
         if (auto_txt_search_petal.text.length > 0){
-
+            SearchPetalResultActivity.launch(this,auto_txt_search_petal.text.toString())
         }
     }
 

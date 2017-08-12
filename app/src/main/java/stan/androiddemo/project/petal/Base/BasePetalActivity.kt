@@ -72,7 +72,7 @@ public abstract class BasePetalActivity :AppCompatActivity(){
     }
 
 
-    fun isTranslucentStatusBar():Boolean{   return true }
+   open fun isTranslucentStatusBar():Boolean{   return true }
 
     fun getLoginData(){
         UserSingleton.instance.isLogin(application)

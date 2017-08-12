@@ -1,5 +1,6 @@
 package stan.androiddemo.UI
 
+import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.support.v7.widget.RecyclerView
@@ -11,6 +12,7 @@ import com.chad.library.adapter.base.listener.OnItemClickListener
 import kotlinx.android.synthetic.main.fragment_base_recycler.*
 import rx.Subscription
 import stan.androiddemo.R
+import stan.androiddemo.project.petal.Module.Search.SearchPetalResultActivity
 
 
 abstract class BasePetalRecyclerFragment<T> : BasePetalFragment() {
@@ -36,7 +38,8 @@ abstract class BasePetalRecyclerFragment<T> : BasePetalFragment() {
     var index = 0
 
     lateinit var  mUrlGeneralFormat :String
-
+    lateinit var mUrlSmallFormat: String//小图地址
+    lateinit var mUrlBigFormat: String//大图地址
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -47,6 +50,8 @@ abstract class BasePetalRecyclerFragment<T> : BasePetalFragment() {
     open  protected fun initView(){
         recycler_base_fragment.setBackgroundColor(getBackgroundColor())
         mUrlGeneralFormat = context.resources.getString(R.string.url_image_general)
+        mUrlSmallFormat = context.resources.getString(R.string.url_image_small)
+        mUrlBigFormat = context.resources.getString(R.string.url_image_big)
         index = startPageNumber()
         mAdapter = object:BaseQuickAdapter<T,BaseViewHolder>(getItemLayoutId(),arrItem){
             override fun convert(helper: BaseViewHolder, item: T) {
@@ -99,6 +104,14 @@ abstract class BasePetalRecyclerFragment<T> : BasePetalFragment() {
 
     open fun initData(){
         addSubscription(requestListData(index))
+    }
+
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        if (context is SearchPetalResultActivity){
+            mAuthorization = context.mAuthorization
+        }
     }
 
     protected fun getBackgroundColor(): Int {

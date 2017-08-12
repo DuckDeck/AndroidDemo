@@ -82,14 +82,14 @@ class SearchPetalResultBoardFragment : BasePetalRecyclerFragment<BoardPinsInfo>(
         helper.setText(R.id.txt_board_title,t.title)
         helper.setText(R.id.txt_board_gather, String.format(mGatherFormat,t.pin_count))
         helper.setText(R.id.txt_board_attention, String.format(mAttentionFormat,t.follow_count))
-        helper.setText(R.id.txt_board_username, String.format(mUsernameFormat,t.user))
+        helper.setText(R.id.txt_board_username, String.format(mUsernameFormat,t.user?.username))
         var url = ""
         if (t.pins!= null && t.pins!!.size > 0){
             if (t.pins!!.first().file?.key != null){
                 url = t.pins!!.first().file!!.key!!
             }
         }
-        url =  String.format(mGatherFormat,url)
+        url =  String.format(mUrlGeneralFormat,url)
         val img = helper.getView<SimpleDraweeView>(R.id.img_card_board)
         img.aspectRatio = 1F
         ImageLoadBuilder.Start(context,img,url).setProgressBarImage(progressLoading).build()

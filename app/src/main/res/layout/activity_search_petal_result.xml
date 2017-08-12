@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     tools:context="stan.androiddemo.project.petal.Module.Search.SearchPetalResultActivity">
 
     <android.support.design.widget.AppBarLayout
@@ -15,14 +16,16 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:navigationIcon="?attr/homeAsUpIndicator"
             android:background="?attr/colorPrimary"
             app:titleTextColor="@android:color/white"
+            app:layout_scrollFlags="scroll|enterAlways"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
-        <TableLayout
+        <android.support.design.widget.TabLayout
             android:id="@+id/tabLayout_search_petal_result"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"></TableLayout>
+            android:layout_height="wrap_content"></android.support.design.widget.TabLayout>
 
     </android.support.design.widget.AppBarLayout>
 <android.support.v4.view.ViewPager
