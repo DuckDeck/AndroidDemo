@@ -10,12 +10,11 @@ import android.view.Menu
 import android.widget.Button
 import com.jakewharton.rxbinding.view.RxView
 import kotlinx.android.synthetic.main.activity_petal.*
-import kotlinx.android.synthetic.main.petal_swipe_frame.*
+
 import rx.functions.Action1
 import stan.androiddemo.R
 import stan.androiddemo.project.petal.Base.BasePetalActivity
 import stan.androiddemo.project.petal.Config.Config
-import stan.androiddemo.project.petal.Event.OnFragmentRefreshListener
 import stan.androiddemo.project.petal.Module.PetalList.PetalListFragment
 import stan.androiddemo.tool.CompatUtils
 import java.util.concurrent.TimeUnit
@@ -28,7 +27,7 @@ class PetalActivity : BasePetalActivity() {
     lateinit var titles:Array<String>
     override fun getTag(): String {return this.toString()}
     lateinit var fragment:PetalListFragment
-    protected lateinit var mListenerRefresh:OnFragmentRefreshListener
+
     override fun getLayoutId(): Int {
         return R.layout.activity_petal
     }
@@ -103,7 +102,6 @@ class PetalActivity : BasePetalActivity() {
         val type = types[position]
         val tt = titles[position]
         fragment = PetalListFragment.createListFragment(type,tt)
-        mListenerRefresh = fragment
         transaction.replace(R.id.frame_layout_petal_with_refresh,fragment)
         transaction.commit()
         title = tt
@@ -116,9 +114,7 @@ class PetalActivity : BasePetalActivity() {
                     println("11111111111")
                 })
 
-        swipe_petal_refresh.setOnRefreshListener {
-            mListenerRefresh.refresh()
-        }
+
     }
 
     override fun onBackPressed() {

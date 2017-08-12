@@ -21,13 +21,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fitsSystemWindows="true"
-                android:theme="@style/nav_text_style"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                app:titleTextColor="@android:color/white"
                 app:popupTheme="@style/Theme.AppCompat.Light">
 
             </android.support.v7.widget.Toolbar>
         </android.support.design.widget.AppBarLayout>
 
-        <include layout="@layout/petal_swipe_frame"></include>
+        <FrameLayout
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:id="@+id/frame_layout_petal_with_refresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></FrameLayout>
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/float_button_search"

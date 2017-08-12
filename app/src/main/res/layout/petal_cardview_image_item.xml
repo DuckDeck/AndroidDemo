@@ -65,21 +65,21 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/tv_card_gather"
+                    android:id="@+id/txt_card_gather"
                     style="@style/card_text_secondary_info"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     tools:text="被采集的数量"
-
+                    android:drawablePadding="@dimen/dp_4"
                     />
 
                 <TextView
-                    android:id="@+id/tv_card_like"
+                    android:id="@+id/txt_card_like"
                     style="@style/card_text_secondary_info"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     tools:text="被喜欢的数量"
-
+                    android:drawablePadding="@dimen/dp_4"
                     />
 
         </LinearLayout>
