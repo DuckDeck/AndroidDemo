@@ -11,10 +11,9 @@ import com.chad.library.adapter.base.listener.OnItemClickListener
 import kotlinx.android.synthetic.main.fragment_base_recycler.*
 import rx.Subscription
 import stan.androiddemo.R
-import stan.androiddemo.project.petal.Event.OnFragmentRefreshListener
 
 
-abstract class BasePetalRecyclerFragment<T> : BasePetalFragment(),OnFragmentRefreshListener{
+abstract class BasePetalRecyclerFragment<T> : BasePetalFragment() {
 
     abstract fun getLayoutManager(): RecyclerView.LayoutManager
 
@@ -47,11 +46,13 @@ abstract class BasePetalRecyclerFragment<T> : BasePetalFragment(),OnFragmentRefr
     open  protected fun initView(){
         recycler_base_fragment.setBackgroundColor(getBackgroundColor())
         index = startPageNumber()
-        mAdapter = object:BaseQuickAdapter<T,BaseViewHolder>(getItemLayoutId()){
+        mAdapter = object:BaseQuickAdapter<T,BaseViewHolder>(getItemLayoutId(),arrItem){
             override fun convert(helper: BaseViewHolder, item: T) {
                 itemLayoutConvert(helper,item)
             }
         }
+
+
 
         recycler_base_fragment.layoutManager = getLayoutManager()
         if (getItemDecoration() != null){
@@ -85,6 +86,13 @@ abstract class BasePetalRecyclerFragment<T> : BasePetalFragment(),OnFragmentRefr
 
         mAdapter.emptyView = loadingView
 
+
+        swipe_refresh_base_fragment.isEnabled = isCanRefresh()
+        swipe_refresh_base_fragment.setOnRefreshListener {
+            index = startPageNumber()
+            initData()
+        }
+
     }
 
     open fun initData(){
@@ -105,6 +113,10 @@ abstract class BasePetalRecyclerFragment<T> : BasePetalFragment(),OnFragmentRefr
 
     //这里可以使用一个统一的配置文件好一些
 
+    fun isCanRefresh():Boolean{
+        return true
+    }
+
     protected fun isNeedPaging(): Boolean {
         return true
     }
@@ -118,29 +130,42 @@ abstract class BasePetalRecyclerFragment<T> : BasePetalFragment(),OnFragmentRefr
     }
 
     fun loadError(msg:String="加载失败，请重新再试"){
-        errorText.text = msg
-        mAdapter.emptyView = errorView
+        if (index == startPageNumber()){
+            swipe_refresh_base_fragment.isRefreshing = false
+            errorText.text = msg
+            mAdapter.emptyView = errorView
+        }
+        else {
+            mAdapter.loadMoreFail()
+        }
+
     }
 
     fun loadSuccess(list:List<T>){
-        if (list.size <= 0 && index == 0){
+        swipe_refresh_base_fragment.isRefreshing = false
+        if (list.size <= 0 && index == startPageNumber()){
             errorText.text = "暂无数据"
             mAdapter.emptyView = errorView
             return
         }
-        else if(list.size <= 0 && index != 0){
+        else if(list.size <= 0 && index != startPageNumber()){
             mAdapter.loadMoreComplete()
             return
         }
-        if (index == 0){
+        if (index == startPageNumber()){
             arrItem.clear()
         }
+        else{
+            mAdapter.loadMoreEnd()
+        }
         arrItem.addAll(list)
+        index ++
         mAdapter.notifyDataSetChanged()
     }
 
-    override fun refresh() {
-        index = 0
+    fun setRefresh() {
+        swipe_refresh_base_fragment.isRefreshing = true
+        index = startPageNumber()
         initData()
     }
 

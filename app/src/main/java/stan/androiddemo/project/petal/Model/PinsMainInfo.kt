@@ -10,6 +10,19 @@ class PinsMainInfo{
      var file_id: Int = 0
 
      var file: PinsFileInfo? = null
+
+     var imgRatio:Float = 1F
+     get() {
+          if (file != null) {
+               var r = file!!.width.toFloat() / file!!.height.toFloat()
+               if (r < 0.7) {
+                    r = 0.7F
+               }
+               return r
+          }
+          return 1F
+     }
+
      var media_type: Int = 0
      var source: String? = null
      var link: String? = null
