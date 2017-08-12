@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="stan.androiddemo.project.petal.Module.Search.SearchPetalActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fitsSystemWindows="true"
+            app:navigationIcon="?attr/homeAsUpIndicator"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:titleTextColor="@android:color/white"
+            app:popupTheme="@style/Theme.AppCompat.Light">
+            <AutoCompleteTextView
+                android:id="@+id/auto_txt_search_petal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:completionThreshold="1"
+                android:hint="@string/hint_search"
+                android:inputType="textAutoComplete"
+                android:maxLines="1"
+                android:imeOptions="actionSearch"
+                android:popupBackground="@color/white"
+                />
+        </android.support.v7.widget.Toolbar>
+
+    </android.support.design.widget.AppBarLayout>
+
+<ScrollView
+    android:id="@+id/scroll_search_petal"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:id="@+id/linearLayout_search_petal"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:padding="12dp"
+                android:text="@string/text_search_history"
+                android:textColor="@color/secondary_text" />
+
+            <ImageButton
+                android:id="@+id/image_btn_clear_history"
+                style="@style/ibtn_padding_bg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:src="@drawable/ic_close_black_24dp" />
+        </LinearLayout>
+        <stan.androiddemo.UI.FlowLayout
+            android:id="@+id/flow_search_history_petal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"></stan.androiddemo.UI.FlowLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            android:text="@string/text_reference"
+            android:textColor="@color/secondary_text" />
+
+        <stan.androiddemo.UI.FlowLayout
+            android:id="@+id/flow_search_reference_petal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"></stan.androiddemo.UI.FlowLayout>
+    </LinearLayout>
+
+</ScrollView>
+
+</android.support.design.widget.CoordinatorLayout>

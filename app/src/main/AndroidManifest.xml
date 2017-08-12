@@ -94,7 +94,13 @@
         <activity
             android:name=".project.petal.Module.Guide.GuideActivity"
             android:theme="@style/AppPetalTheme" />
-        <activity android:name=".project.petal.Module.Main.PetalActivity" android:theme="@style/AppPetalTheme"></activity>
+        <activity
+            android:name=".project.petal.Module.Main.PetalActivity"
+            android:theme="@style/AppPetalTheme" />
+        <activity
+            android:name=".project.petal.Module.Search.SearchPetalActivity"
+            android:label="@string/title_activity_search_petal"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest> <!-- issue0:can not hide the title bar --><!-- just use   android:theme="@style/Theme.AppCompat.Light.NoActionBar"> -->

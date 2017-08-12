@@ -186,4 +186,5 @@
 
     <string name="pref_title_vibrate">Vibrate</string>
     <string name="text_gather_warning">has been to gather to %s</string>
+    <string name="title_activity_search_petal">SearchPetalActivity</string>
 </resources>

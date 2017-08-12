@@ -17,5 +17,7 @@ class Config{
         val TOKENTYPE = "TokenType"
         val TOKENEXPIRESIN = "TokeExpiresIn"
         val ISLOGIN = "isLogin"
+        val HISTORYTEXT = "historyText"
+
     }
 }
