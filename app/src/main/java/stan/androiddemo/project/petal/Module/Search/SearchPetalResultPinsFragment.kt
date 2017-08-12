@@ -33,7 +33,7 @@ import stan.androiddemo.tool.ImageLoad.ImageLoadBuilder
  */
 class SearchPetalResultPinsFragment : BasePetalRecyclerFragment<PinsMainInfo>() {
     lateinit var mKey: String//用于联网查询的关键字
-    lateinit var  mUrlGeneralFormat :String
+
     lateinit var progressLoading: Drawable
     var mLimit = Config.LIMIT
     override fun getTheTAG(): String {
@@ -55,8 +55,7 @@ class SearchPetalResultPinsFragment : BasePetalRecyclerFragment<PinsMainInfo>() 
         val d0 = VectorDrawableCompat.create(resources,R.drawable.ic_toys_black_24dp,null)
         progressLoading = DrawableCompat.wrap(d0!!.mutate())
         DrawableCompat.setTint(progressLoading,resources.getColor(R.color.tint_list_pink))
-       mKey = arguments.getString("type")
-        mUrlGeneralFormat = context.resources.getString(R.string.url_image_general)
+        mKey = arguments.getString("type")
     }
 
     override fun getLayoutManager(): RecyclerView.LayoutManager {

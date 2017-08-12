@@ -56,4 +56,17 @@
         <item name="android:background">@android:color/transparent</item>
     </style>
 
+
+    <style name="text_image_detail_secondary" parent="text_secondary">
+        <item name="android:textSize">@dimen/card_context_size_14sp</item>
+    </style>
+
+    <style name="text_primary">
+        <item name="android:textSize">@dimen/card_context_size_16sp</item>
+        <item name="android:textColor">?android:textColorPrimary</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:gravity">center|left</item>
+    </style>
+
 </resources>

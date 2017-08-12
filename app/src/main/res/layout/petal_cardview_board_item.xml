@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/card_petal_main_board"
+    android:layout_marginLeft="@dimen/card_spacing_default_half"
+    android:layout_marginRight="@dimen/card_spacing_default_half"
+    android:layout_marginTop="@dimen/text_spacing_default"
+    app:cardCornerRadius="@dimen/card_radius_default"
+    app:elevation="@dimen/card_elevation_static"
+    >
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <FrameLayout
+            android:id="@+id/frame_layout_board"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:foreground="@drawable/drawable_default_selector">
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxHeight="2000dp"
+                android:maxWidth="2000dp"
+                android:id="@+id/img_card_board"
+                fresco:progressBarAutoRotateInterval="1000"
+                tools:layout_height="100dp"/>
+            <RelativeLayout
+                android:id="@+id/relative_layout_board_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|right"
+                android:background="@drawable/bg_petal_gradient_board"
+                android:paddingBottom="@dimen/text_spacing_default"
+                android:paddingLeft="@dimen/text_margin"
+                android:paddingRight="@dimen/text_margin"
+                android:paddingTop="@dimen/text_spacing_default">
+                <TextView
+                    android:id="@+id/txt_board_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginBottom="@dimen/text_spacing_default"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/card_context_size_16sp"
+                    tools:text="title"
+                    />
+
+                <TextView
+                    android:id="@+id/txt_board_gather"
+                    style="@style/text_secondary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@id/txt_board_title"
+                    android:textColor="@color/white"
+                    tools:text="采集数量" />
+
+                <TextView
+                    android:id="@+id/txt_board_attention"
+                    style="@style/text_secondary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/txt_board_title"
+                    android:layout_marginLeft="@dimen/text_spacing_default"
+                    android:layout_toRightOf="@id/txt_board_gather"
+                    android:textColor="@color/white"
+                    tools:text="关注数量" />
+            </RelativeLayout>
+        </FrameLayout>
+
+        <TextView
+            style="@style/card_text_secondary_info"
+            android:id="@+id/txt_board_username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?selectableItemBackground"
+            tools:text="用户名"/>
+
+    </LinearLayout>
+
+
+</android.support.v7.widget.CardView>

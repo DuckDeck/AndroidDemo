@@ -35,6 +35,7 @@ abstract class BasePetalRecyclerFragment<T> : BasePetalFragment() {
 
     var index = 0
 
+    lateinit var  mUrlGeneralFormat :String
 
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -45,6 +46,7 @@ abstract class BasePetalRecyclerFragment<T> : BasePetalFragment() {
 
     open  protected fun initView(){
         recycler_base_fragment.setBackgroundColor(getBackgroundColor())
+        mUrlGeneralFormat = context.resources.getString(R.string.url_image_general)
         index = startPageNumber()
         mAdapter = object:BaseQuickAdapter<T,BaseViewHolder>(getItemLayoutId(),arrItem){
             override fun convert(helper: BaseViewHolder, item: T) {

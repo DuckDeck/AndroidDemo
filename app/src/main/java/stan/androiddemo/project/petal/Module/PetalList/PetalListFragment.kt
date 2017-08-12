@@ -36,7 +36,7 @@ class PetalListFragment : BasePetalRecyclerFragment<PinsMainInfo>() {
     lateinit var mKey: String//用于联网查询的关键字
     var mLimit = Config.LIMIT
     var maxId = 0
-    lateinit var  mUrlGeneralFormat :String
+
     lateinit var progressLoading: Drawable
 
     override fun getTheTAG(): String {
@@ -61,7 +61,7 @@ class PetalListFragment : BasePetalRecyclerFragment<PinsMainInfo>() {
         progressLoading = DrawableCompat.wrap(d0!!.mutate())
         DrawableCompat.setTint(progressLoading,resources.getColor(R.color.tint_list_pink))
         mKey = arguments.getString("type")
-        mUrlGeneralFormat = context.resources.getString(R.string.url_image_general)
+
     }
 
 
