@@ -10,8 +10,6 @@ import android.view.Menu
 import android.widget.Button
 import com.jakewharton.rxbinding.view.RxView
 import kotlinx.android.synthetic.main.activity_petal.*
-
-import rx.functions.Action1
 import stan.androiddemo.R
 import stan.androiddemo.project.petal.Base.BasePetalActivity
 import stan.androiddemo.project.petal.Config.Config
@@ -111,7 +109,7 @@ class PetalActivity : BasePetalActivity() {
     override fun initResAndListener() {
         float_button_search.setImageResource(R.drawable.ic_search_black_24dp)
         RxView.clicks(float_button_search).throttleFirst(Config.throttDuration.toLong(),TimeUnit.MILLISECONDS)
-                .subscribe(Action1 {
+                .subscribe({
                     SearchPetalActivity.launch(this)
                 })
 

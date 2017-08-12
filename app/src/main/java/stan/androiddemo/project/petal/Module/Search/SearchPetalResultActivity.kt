@@ -8,6 +8,8 @@ import stan.androiddemo.project.petal.Base.BasePetalActivity
 class SearchPetalResultActivity : BasePetalActivity() {
 
 
+    lateinit var searchKey :String
+
     override fun getTag(): String {
         return  this.toString()
     }

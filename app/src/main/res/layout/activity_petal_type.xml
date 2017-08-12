@@ -4,32 +4,32 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="stan.androiddemo.project.petal.Module.Search.SearchPetalResultActivity">
+    android:fitsSystemWindows="true"
+    tools:context="stan.androiddemo.project.petal.Module.Type.PetalTypeActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:fitsSystemWindows="true"
+        >
 
         <android.support.v7.widget.Toolbar
+            android:fitsSystemWindows="true"
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary"
+            app:navigationIcon="?attr/homeAsUpIndicator"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:titleTextColor="@android:color/white"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
-
-        <TableLayout
-            android:id="@+id/tabLayout_search_petal_result"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"></TableLayout>
+            app:popupTheme="@style/Theme.AppCompat.Light"/>
 
     </android.support.design.widget.AppBarLayout>
-<android.support.v4.view.ViewPager
+
+    <FrameLayout
+        android:id="@+id/frame_layout_petal_with_refresh"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    android:id="@+id/viewPager_search_petal_result"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"></android.support.v4.view.ViewPager>
+    android:layout_height="match_parent"></FrameLayout>
 
 
 </android.support.design.widget.CoordinatorLayout>

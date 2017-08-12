@@ -149,14 +149,14 @@ abstract class BasePetalRecyclerFragment<T> : BasePetalFragment() {
             return
         }
         else if(list.size <= 0 && index != startPageNumber()){
-            mAdapter.loadMoreComplete()
+            mAdapter.loadMoreEnd()
             return
         }
         if (index == startPageNumber()){
             arrItem.clear()
         }
         else{
-            mAdapter.loadMoreEnd()
+            mAdapter.loadMoreComplete()
         }
         arrItem.addAll(list)
         index ++

@@ -22,6 +22,7 @@ import stan.androiddemo.project.petal.API.SearchAPI
 import stan.androiddemo.project.petal.Base.BasePetalActivity
 import stan.androiddemo.project.petal.Config.Config
 import stan.androiddemo.project.petal.HttpUtiles.RetrofitClient
+import stan.androiddemo.project.petal.Module.Type.PetalTypeActivity
 import stan.androiddemo.tool.CompatUtils
 import stan.androiddemo.tool.Logger
 import stan.androiddemo.tool.SPUtils
@@ -125,11 +126,11 @@ class SearchPetalActivity : BasePetalActivity() {
         ,null,null)
         btn.text = str
         btn.setBackgroundColor(Color.WHITE)
-        btn.setTag(type)
+        btn.tag = type
         btn.layoutParams = layoutParams
         btn.gravity = Gravity.CENTER
         btn.setOnClickListener {
-
+            PetalTypeActivity.launch(this,str,type)
         }
         flowHistory.addView(btn)
     }
