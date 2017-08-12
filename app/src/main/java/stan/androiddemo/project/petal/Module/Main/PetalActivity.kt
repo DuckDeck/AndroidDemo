@@ -16,6 +16,7 @@ import stan.androiddemo.R
 import stan.androiddemo.project.petal.Base.BasePetalActivity
 import stan.androiddemo.project.petal.Config.Config
 import stan.androiddemo.project.petal.Module.PetalList.PetalListFragment
+import stan.androiddemo.project.petal.Module.Search.SearchPetalActivity
 import stan.androiddemo.tool.CompatUtils
 import java.util.concurrent.TimeUnit
 
@@ -111,7 +112,7 @@ class PetalActivity : BasePetalActivity() {
         float_button_search.setImageResource(R.drawable.ic_search_black_24dp)
         RxView.clicks(float_button_search).throttleFirst(Config.throttDuration.toLong(),TimeUnit.MILLISECONDS)
                 .subscribe(Action1 {
-                    println("11111111111")
+                    SearchPetalActivity.launch(this)
                 })
 
 

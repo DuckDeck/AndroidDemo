@@ -5,10 +5,7 @@ import android.widget.ArrayAdapter
 import android.widget.Filter
 import java.util.*
 
-/**
- * Created by LiCola on  2016/03/21  0:41
- * 主要用在输入提示的adapter
- */
+
 class SearcHHintAdapter(context: Context, resource: Int, private var mObjects: List<String>?) : ArrayAdapter<String>(context, resource, mObjects) {
 
     private var mFilter: Filter? = null

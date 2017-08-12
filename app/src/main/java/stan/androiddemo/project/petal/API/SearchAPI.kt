@@ -14,6 +14,6 @@ interface SearchAPI{
     //https//api.huaban.com/search/hint?q=%E4%BA%BA
     //搜索关键字 提示
     @GET("search/hint")
-    abstract fun httpsSearHintBean(@Header(Config.Authorization) authorization: String, @Query("q") key: String): Observable<SearchHintBean>
+    fun httpsSearHintBean(@Header(Config.Authorization) authorization: String, @Query("q") key: String): Observable<SearchHintBean>
 
 }

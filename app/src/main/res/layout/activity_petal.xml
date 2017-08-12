@@ -41,7 +41,8 @@
             android:layout_gravity="bottom|end"
             android:layout_margin="@dimen/fab_margin"
             android:tint="@color/white"
-            app:rippleColor="@color/primary_dark" />
+            app:rippleColor="@color/primary_dark"
+            app:layout_behavior="stan.androiddemo.project.petal.Widget.ScrollAwareFABBehavior"/>
 
 
     </android.support.design.widget.CoordinatorLayout>

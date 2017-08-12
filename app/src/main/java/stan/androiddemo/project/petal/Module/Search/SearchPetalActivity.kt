@@ -2,36 +2,36 @@ package stan.androiddemo.project.petal.Module.Search
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
-import android.support.design.widget.Snackbar
-import android.support.v7.app.AppCompatActivity
-import android.view.Gravity
-import android.view.LayoutInflater
-import android.view.ViewGroup
+import android.view.*
+import android.view.inputmethod.EditorInfo
 import android.widget.ArrayAdapter
+import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.jakewharton.rxbinding.widget.RxTextView
-import stan.androiddemo.R
-
 import kotlinx.android.synthetic.main.activity_search_petal.*
 import licola.demo.com.huabandemo.Module.Search.SearcHHintAdapter
 import rx.android.schedulers.AndroidSchedulers
 import rx.functions.Func1
 import rx.schedulers.Schedulers
+import stan.androiddemo.R
 import stan.androiddemo.UI.FlowLayout
 import stan.androiddemo.project.petal.API.SearchAPI
 import stan.androiddemo.project.petal.Base.BasePetalActivity
 import stan.androiddemo.project.petal.Config.Config
 import stan.androiddemo.project.petal.HttpUtiles.RetrofitClient
 import stan.androiddemo.tool.CompatUtils
+import stan.androiddemo.tool.Logger
 import stan.androiddemo.tool.SPUtils
+import stan.androiddemo.tool.Utils
 import java.util.concurrent.TimeUnit
 
 class SearchPetalActivity : BasePetalActivity() {
     lateinit var mAdapter:ArrayAdapter<String>
     val arrListHttpHint = ArrayList<String>()
-
+    var itemWidth = 0
     companion object {
         fun launch(activity:Activity){
             val intent = Intent(activity,SearchPetalActivity::class.java)
@@ -54,6 +54,19 @@ class SearchPetalActivity : BasePetalActivity() {
         mAdapter = SearcHHintAdapter(mContext,android.R.layout.simple_spinner_dropdown_item,arrListHttpHint)
         auto_txt_search_petal.setAdapter(mAdapter)
         initHintHttp()
+
+        auto_txt_search_petal.setOnItemClickListener { _, _, i, _ ->
+            Logger.d(arrListHttpHint[i])
+            TODO("start search")
+        }
+
+        RxTextView.editorActions(auto_txt_search_petal, Func1 {
+            it == EditorInfo.IME_ACTION_SEARCH
+        }).throttleFirst(500,TimeUnit.MILLISECONDS)
+                .subscribe {
+                   initActionSearch()
+                }
+        initClearHistory()
     }
 
     override fun onResume() {
@@ -94,8 +107,33 @@ class SearchPetalActivity : BasePetalActivity() {
     }
 
     fun initFlowReference(flowHistory: FlowLayout){
-
+        val txtList = resources.getStringArray(R.array.title_array_all)
+        val typeList = resources.getStringArray(R.array.type_array_all)
+        itemWidth = Utils.getScreenWidth(mContext) / 3 - 2
+        for (i in 0 until txtList.size){
+            addReferenceButton(flow_search_reference_petal,txtList[i],typeList[i],R.drawable.ic_loyalty_black_24dp)
+        }
     }
+
+    fun addReferenceButton(flowHistory: FlowLayout,str: String,type:String,resId:Int){
+        val btn = Button(mContext)
+        val layoutParams = LinearLayout.LayoutParams(itemWidth,ViewGroup.LayoutParams.WRAP_CONTENT)
+        layoutParams.gravity = Gravity.CENTER
+        layoutParams.setMargins(1,1,1,1)
+        btn.setCompoundDrawablesRelativeWithIntrinsicBounds(null,
+                CompatUtils.getTintListDrawable(mContext,resId,R.color.tint_list_pink)
+        ,null,null)
+        btn.text = str
+        btn.setBackgroundColor(Color.WHITE)
+        btn.setTag(type)
+        btn.layoutParams = layoutParams
+        btn.gravity = Gravity.CENTER
+        btn.setOnClickListener {
+
+        }
+        flowHistory.addView(btn)
+    }
+
     fun initHintHttp(){
         RxTextView.textChanges(auto_txt_search_petal).observeOn(Schedulers.io())
                 .filter { it.length > 0 }
@@ -119,5 +157,34 @@ class SearchPetalActivity : BasePetalActivity() {
                     }
                 })
 
+    }
+
+    fun initActionSearch(){
+        if (auto_txt_search_petal.text.length > 0){
+
+        }
+    }
+
+    fun initClearHistory(){
+        image_btn_clear_history.setOnClickListener {
+            flow_search_history_petal.removeAllViews()
+            SPUtils.remove(mContext,Config.HISTORYTEXT)
+            addChildNoHistoryTip(flow_search_history_petal,resources.getString(R.string.hint_not_history))
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.petal_search_menu,menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when(item!!.itemId){
+            R.id.action_search->{
+                initActionSearch()
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 }
