@@ -8,6 +8,7 @@ import android.view.View
 import android.view.WindowManager
 import rx.Subscription
 import rx.subscriptions.CompositeSubscription
+import stan.androiddemo.R
 import stan.androiddemo.project.petal.Config.Config
 import stan.androiddemo.project.petal.Config.UserSingleton
 import stan.androiddemo.tool.Base64Utils
@@ -28,6 +29,12 @@ public abstract class BasePetalActivity :AppCompatActivity(){
     var isLogin = false
 
     var mAuthorization:String = ""
+
+
+    lateinit var mFormatImageUrlBig: String
+    //大图的后缀
+
+    lateinit var mFormatImageGeneral: String
 
     lateinit var mContext:Context
 
@@ -65,6 +72,8 @@ public abstract class BasePetalActivity :AppCompatActivity(){
             }
         }
 
+        mFormatImageGeneral = resources.getString(R.string.url_image_general)
+        mFormatImageUrlBig = resources.getString(R.string.url_image_big)
         setContentView(getLayoutId())
         mContext = this
         getLoginData()

@@ -2,6 +2,7 @@ package stan.androiddemo.project.petal.Module.ImageDetail
 
 
 import android.content.Context
+import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.support.graphics.drawable.VectorDrawableCompat
@@ -32,6 +33,7 @@ import stan.androiddemo.project.petal.Module.Type.PetalTypeActivity
 import stan.androiddemo.tool.CompatUtils
 import stan.androiddemo.tool.ImageLoad.ImageLoadBuilder
 import stan.androiddemo.tool.Logger
+import stan.androiddemo.tool.TimeUtils
 
 
 class PetalImageDetailFragment : BasePetalRecyclerFragment<PinsMainInfo>() {
@@ -47,11 +49,11 @@ class PetalImageDetailFragment : BasePetalRecyclerFragment<PinsMainInfo>() {
     lateinit var  txt_image_user:TextView
     lateinit var  txt_image_time:TextView
     lateinit var  txt_image_board:TextView
-    lateinit var  img_image_user:ImageView
-    lateinit var  img_image_board_1:ImageView
-    lateinit var  img_image_board_2:ImageView
-    lateinit var  img_image_board_3:ImageView
-    lateinit var  img_image_board_4:ImageView
+    lateinit var  img_image_user:SimpleDraweeView
+    lateinit var  img_image_board_1:SimpleDraweeView
+    lateinit var  img_image_board_2:SimpleDraweeView
+    lateinit var  img_image_board_3:SimpleDraweeView
+    lateinit var  img_image_board_4:SimpleDraweeView
     lateinit var ibtn_image_board_chevron_right:ImageButton
     lateinit var ibtn_image_user_chevron_right:ImageButton
     lateinit var mRLImageUser:RelativeLayout
@@ -109,11 +111,11 @@ class PetalImageDetailFragment : BasePetalRecyclerFragment<PinsMainInfo>() {
         txt_image_time = headView.findViewById<TextView>( R.id.txt_image_about)
         txt_image_board = headView.findViewById<TextView>( R.id.txt_image_board)
 
-        img_image_user = headView.findViewById<ImageView>( R.id.img_image_user)
-        img_image_board_1 = headView.findViewById<ImageView>( R.id.img_image_board_1)
-        img_image_board_2 = headView.findViewById<ImageView>(R.id.img_image_board_2)
-        img_image_board_3 = headView.findViewById<ImageView>(R.id.img_image_board_3)
-        img_image_board_4 = headView.findViewById<ImageView>( R.id.img_image_board_4)
+        img_image_user = headView.findViewById<SimpleDraweeView>( R.id.img_image_user)
+        img_image_board_1 = headView.findViewById<SimpleDraweeView>( R.id.img_image_board_1)
+        img_image_board_2 = headView.findViewById<SimpleDraweeView>(R.id.img_image_board_2)
+        img_image_board_3 = headView.findViewById<SimpleDraweeView>(R.id.img_image_board_3)
+        img_image_board_4 = headView.findViewById<SimpleDraweeView>( R.id.img_image_board_4)
 
         ibtn_image_board_chevron_right = headView.findViewById(R.id.ibtn_image_board_chevron_right)
         ibtn_image_user_chevron_right = headView.findViewById(R.id.ibtn_image_user_chevron_right)
@@ -140,6 +142,76 @@ class PetalImageDetailFragment : BasePetalRecyclerFragment<PinsMainInfo>() {
                         R.color.tint_list_grey
                 ),null,null,null)
         return headView
+    }
+
+
+    fun setImageDetailInfo(pinsDetailBean:PinsDetailBean){
+        val pin = pinsDetailBean.pin ?: return
+        setImageTextInfo(pin!!.raw_text,pin!!.link,pin!!.source,pin!!.repin_count,pin!!.like_count)
+        setImageUserInfo(pin!!.user?.avatar,pin!!.user?.username,pin!!.created_at)
+        val url1 = String.format(mUrlSmallFormat, pin!!.board?.pins!![0].file?.key)
+        val url2 = String.format(mUrlSmallFormat, pin!!.board?.pins!![1].file?.key)
+        val url3 = String.format(mUrlSmallFormat, pin!!.board?.pins!![2].file?.key)
+        val url4 = String.format(mUrlSmallFormat, pin!!.board?.pins!![3].file?.key)
+        setImageBoardInfo(url1,url2,url3,url4,pin!!.board?.title)
+    }
+
+    fun setImageDetailInfo(bean:PinsMainInfo){
+
+        setImageTextInfo(bean.raw_text,bean.link,bean.source,bean.repin_count,bean.like_count)
+        setImageUserInfo(bean.pinsUserInfo?.avatar,bean.pinsUserInfo?.username,bean.pinsUserInfo!!.created_at)
+        val url = String.format(mUrlSmallFormat, bean.file?.key)
+
+        setImageBoardInfo(url,url,url,url,bean.pinsBoardInfo?.title)
+    }
+
+    fun setImageTextInfo(raw:String?,link:String?,source:String?,gather:Int,like:Int){
+        if (!raw.isNullOrEmpty()){
+            txt_image_text.text = raw!!
+        }
+        else{
+            txt_image_text.text = resources.getString(R.string.text_image_describe_null)
+        }
+
+        if (!link.isNullOrEmpty() && !source.isNullOrEmpty()){
+            txt_image_link.text = source!!
+            txt_image_link.tag = link!!
+        }
+        else{
+            txt_image_link.visibility = View.GONE
+        }
+        txt_image_gather.text = String.format(resources.getString(R.string.text_gather_number),gather)
+        txt_image_like.text = String.format(resources.getString(R.string.text_like_number),like)
+    }
+
+    fun setImageUserInfo(urlHead:String?,userName:String?,createTime:Int){
+        var url = ""
+        if (!urlHead.isNullOrEmpty()){
+            url = urlHead!!
+            if (!urlHead!!.contains(resources.getString(R.string.httpRoot))){
+                url = String.format(mUrlSmallFormat,urlHead!!)
+            }
+            ImageLoadBuilder.Start(context,img_image_user,url).setPlaceHolderImage(
+                    CompatUtils.getTintDrawable(context,R.drawable.ic_account_circle_black_48dp,Color.GRAY)
+            ).setIsCircle(true)
+                    .build()
+        }
+        txt_image_user.text = userName
+        txt_image_time.text = TimeUtils.getTimeDifference(createTime,System.currentTimeMillis())
+    }
+
+    fun setImageBoardInfo(url1:String?,url2:String?,url3:String?,url4:String?,boardName:String?){
+        if (!boardName.isNullOrEmpty()){
+            txt_image_board.text = boardName!!
+        }
+        else{
+            txt_image_board.text = "暂无画板信息"
+        }
+        ImageLoadBuilder.Start(context,img_image_board_1,url1).setIsRadius(true,5F).build()
+        ImageLoadBuilder.Start(context,img_image_board_2,url2).setIsRadius(true,5F).build()
+        ImageLoadBuilder.Start(context,img_image_board_3,url3).setIsRadius(true,5F).build()
+        ImageLoadBuilder.Start(context,img_image_board_4,url4).setIsRadius(true,5F).build()
+
     }
 
     override fun itemLayoutConvert(helper: BaseViewHolder, t: PinsMainInfo) {
@@ -192,15 +264,21 @@ class PetalImageDetailFragment : BasePetalRecyclerFragment<PinsMainInfo>() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object:Subscriber<PinsDetailBean>(){
                     override fun onError(e: Throwable?) {
-                        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                        setImageDetailInfo(mPinsBean!!)
                     }
 
                     override fun onNext(t: PinsDetailBean?) {
-                        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                        if (t == null){
+                            setImageDetailInfo(mPinsBean!!)
+                        }
+                        else{
+                            setImageDetailInfo(t!!)
+                        }
+
                     }
 
                     override fun onCompleted() {
-                        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
                     }
                 })
     }
@@ -240,6 +318,7 @@ class PetalImageDetailFragment : BasePetalRecyclerFragment<PinsMainInfo>() {
         }
         if (context is PetalImageDetailActivity){
             mAuthorization = context.mAuthorization
+            mPinsBean = context.mPinsBean
         }
     }
 

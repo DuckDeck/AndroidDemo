@@ -13,6 +13,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import com.chad.library.adapter.base.BaseViewHolder
 import com.facebook.drawee.view.SimpleDraweeView
+import org.greenrobot.eventbus.EventBus
 import rx.Observable
 import rx.Subscriber
 import rx.Subscription
@@ -25,6 +26,7 @@ import stan.androiddemo.project.petal.API.PetalAPI
 import stan.androiddemo.project.petal.Config.Config
 import stan.androiddemo.project.petal.HttpUtiles.RetrofitClient
 import stan.androiddemo.project.petal.Model.PinsMainInfo
+import stan.androiddemo.project.petal.Module.ImageDetail.PetalImageDetailActivity
 import stan.androiddemo.project.petal.Module.Main.PetalActivity
 import stan.androiddemo.project.petal.Module.Type.PetalTypeActivity
 import stan.androiddemo.tool.CompatUtils
@@ -101,6 +103,11 @@ class PetalListFragment : BasePetalRecyclerFragment<PinsMainInfo>() {
         val img = helper.getView<SimpleDraweeView>(R.id.img_card_main)
         img.aspectRatio = t.imgRatio
 
+        img.setOnClickListener {
+                EventBus.getDefault().postSticky(t)
+                mListener?.onClickPinsItemImage(t,it)
+        }
+
         if (t.raw_text.isNullOrEmpty() && t.like_count <= 0 && t.repin_count <= 0){
             helper.getView<LinearLayout>(R.id.linearLayout_image_title_info).visibility = View.GONE
         }
@@ -122,9 +129,9 @@ class PetalListFragment : BasePetalRecyclerFragment<PinsMainInfo>() {
             if (imgType!!.toLowerCase().contains("gif")  )  {
                helper.getView<ImageButton>(R.id.imgbtn_card_gif).visibility = View.VISIBLE
             }
-        }
-        else{
-            helper.getView<ImageButton>(R.id.imgbtn_card_gif).visibility = View.INVISIBLE
+            else{
+                helper.getView<ImageButton>(R.id.imgbtn_card_gif).visibility = View.INVISIBLE
+            }
         }
 
         ImageLoadBuilder.Start(context,img,imgUrl).setProgressBarImage(progressLoading).build()
@@ -167,6 +174,7 @@ class PetalListFragment : BasePetalRecyclerFragment<PinsMainInfo>() {
 
                 })
     }
+
 
 
 

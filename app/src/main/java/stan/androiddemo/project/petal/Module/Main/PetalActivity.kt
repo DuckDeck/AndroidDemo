@@ -8,19 +8,24 @@ import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Button
 import com.jakewharton.rxbinding.view.RxView
 import kotlinx.android.synthetic.main.activity_petal.*
 import stan.androiddemo.R
 import stan.androiddemo.project.petal.Base.BasePetalActivity
 import stan.androiddemo.project.petal.Config.Config
+import stan.androiddemo.project.petal.Event.OnPinsFragmentInteractionListener
+import stan.androiddemo.project.petal.Model.PinsMainInfo
+import stan.androiddemo.project.petal.Module.ImageDetail.PetalImageDetailActivity
 import stan.androiddemo.project.petal.Module.PetalList.PetalListFragment
 import stan.androiddemo.project.petal.Module.Search.SearchPetalActivity
 import stan.androiddemo.tool.CompatUtils
 import java.util.concurrent.TimeUnit
 
 
-class PetalActivity : BasePetalActivity() {
+class PetalActivity : BasePetalActivity(),OnPinsFragmentInteractionListener {
+
 
     lateinit var fragmentManage: FragmentManager
     lateinit var types:Array<String>
@@ -141,6 +146,13 @@ class PetalActivity : BasePetalActivity() {
 
     }
 
+    override fun onClickPinsItemImage(bean: PinsMainInfo, view: View) {
+        PetalImageDetailActivity.launch(this,PetalImageDetailActivity.ACTION_MAIN)
+    }
+
+    override fun onClickPinsItemText(bean: PinsMainInfo, view: View) {
+
+    }
 
 
 

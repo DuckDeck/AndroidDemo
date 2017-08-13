@@ -12,6 +12,7 @@ import com.chad.library.adapter.base.listener.OnItemClickListener
 import kotlinx.android.synthetic.main.fragment_base_recycler.*
 import rx.Subscription
 import stan.androiddemo.R
+import stan.androiddemo.project.petal.Event.OnPinsFragmentInteractionListener
 import stan.androiddemo.project.petal.Module.Search.SearchPetalResultActivity
 
 
@@ -37,6 +38,8 @@ abstract class BasePetalRecyclerFragment<T> : BasePetalFragment() {
 
     var index = 0
 
+
+    protected var mListener: OnPinsFragmentInteractionListener? = null
 
     lateinit var  mUrlGeneralFormat :String
     lateinit var mUrlSmallFormat: String//小图地址
@@ -68,16 +71,16 @@ abstract class BasePetalRecyclerFragment<T> : BasePetalFragment() {
         }
         recycler_base_fragment.adapter = mAdapter
 
-        recycler_base_fragment.addOnItemTouchListener( object:OnItemClickListener() {
-            override fun onSimpleItemClick(adapter: BaseQuickAdapter<*, *>?, view: View?, position: Int) {
-                    onRecyclerViewItemClick(mAdapter.getItem(position)!!)
-            }
-
-            override fun onItemChildClick(adapter: BaseQuickAdapter<*, *>?, view: View?, position: Int) {
-                onRecyclerViewItemChildClick(view!!,mAdapter.getItem(position)!!)
-            }
-
-        })
+//        recycler_base_fragment.addOnItemTouchListener( object:OnItemClickListener() {
+//            override fun onSimpleItemClick(adapter: BaseQuickAdapter<*, *>?, view: View?, position: Int) {
+//                    onRecyclerViewItemClick(mAdapter.getItem(position)!!,position)
+//            }
+//
+//            override fun onItemChildClick(adapter: BaseQuickAdapter<*, *>?, view: View?, position: Int) {
+//                onRecyclerViewItemChildClick(view!!,mAdapter.getItem(position)!!,position)
+//            }
+//
+//        })
 
         loadingView = layoutInflater.inflate(R.layout.list_loading_hint,recycler_base_fragment,false)
         errorView = layoutInflater.inflate(R.layout.list_empty_hint,recycler_base_fragment,false)
@@ -105,6 +108,20 @@ abstract class BasePetalRecyclerFragment<T> : BasePetalFragment() {
             initData()
         }
 
+        if (isNeedViewClick()){
+            mAdapter.setOnItemClickListener { adapter, view, position ->
+                onRecyclerViewItemClick(arrItem[position],position)
+            }
+        }
+
+        if (isNeedChildViewClick()){
+            mAdapter.setOnItemChildClickListener { adapter, view, position ->
+                onRecyclerViewItemChildClick(view,arrItem[position],position)
+            }
+        }
+
+
+
     }
 
     open fun initData(){
@@ -114,6 +131,9 @@ abstract class BasePetalRecyclerFragment<T> : BasePetalFragment() {
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
+        if (context is OnPinsFragmentInteractionListener){
+            mListener = context
+        }
         if (context is SearchPetalResultActivity){
             mAuthorization = context.mAuthorization
         }
@@ -123,11 +143,11 @@ abstract class BasePetalRecyclerFragment<T> : BasePetalFragment() {
         return Color.WHITE
     }
 
-    protected fun onRecyclerViewItemClick(item: T) {
+    protected fun onRecyclerViewItemClick(item: T,position:Int) {
 
     }
 
-    protected fun onRecyclerViewItemChildClick(view: View, item: T) {
+    open fun onRecyclerViewItemChildClick(view: View, item: T,position:Int) {
 
     }
 
@@ -147,6 +167,14 @@ abstract class BasePetalRecyclerFragment<T> : BasePetalFragment() {
 
     protected fun startPageNumber(): Int {
         return 0
+    }
+
+    open fun isNeedChildViewClick():Boolean{
+        return  false
+    }
+
+    open fun isNeedViewClick():Boolean{
+        return  false
     }
 
     open fun getItemDecoration(): RecyclerView.ItemDecoration?{
