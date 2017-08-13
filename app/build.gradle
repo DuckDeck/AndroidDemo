@@ -81,4 +81,7 @@ dependencies {
     compile 'com.squareup.okhttp3:okhttp:3.8.0'
     compile 'com.squareup.okhttp3:logging-interceptor:3.8.0'
     compile 'com.squareup.okio:okio:1.7.0'
+
+    //事件解耦
+    compile 'org.greenrobot:eventbus:3.0.0'
 }

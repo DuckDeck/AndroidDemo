@@ -37,6 +37,7 @@ abstract class BasePetalRecyclerFragment<T> : BasePetalFragment() {
 
     var index = 0
 
+
     lateinit var  mUrlGeneralFormat :String
     lateinit var mUrlSmallFormat: String//小图地址
     lateinit var mUrlBigFormat: String//大图地址
@@ -83,6 +84,10 @@ abstract class BasePetalRecyclerFragment<T> : BasePetalFragment() {
 
         errorText = errorView.findViewById<TextView>(R.id.txt_hint)
 
+        if (headView() != null){
+            mAdapter.setHeaderView(headView()!!)
+        }
+
 
         if (isNeedPaging()){
             mAdapter.setEnableLoadMore(true)
@@ -124,6 +129,10 @@ abstract class BasePetalRecyclerFragment<T> : BasePetalFragment() {
 
     protected fun onRecyclerViewItemChildClick(view: View, item: T) {
 
+    }
+
+    open fun headView():View?{
+        return  null
     }
 
     //这里可以使用一个统一的配置文件好一些
