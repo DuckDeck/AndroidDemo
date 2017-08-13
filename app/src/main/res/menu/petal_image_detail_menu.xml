@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".Module.Main.ScrollingActivity">
+    xmlns:tools="http://schemas.android.com/tools">
     <item android:id="@+id/action_like"
         android:title="@string/action_bar_like"
         android:checked="true"
-        tools:icon="@drawable/drawable_animation_favorite_do"
+        tools:icon="@drawable/drawable_animation_petal_favorite_do"
         app:showAsAction="ifRoom"
         />
     <item android:id="@+id/action_download"

@@ -39,11 +39,11 @@
             android:maxLines="1"
             android:textColor="?android:textColorSecondary"
             android:textSize="@dimen/card_context_size_14sp"
-
             tools:text="图片的来源" />
 
 
         <TextView
+            android:drawablePadding="2dp"
             android:id="@+id/txt_image_gather"
             style="@style/card_text_secondary_info"
             android:layout_width="wrap_content"
@@ -57,6 +57,7 @@
             />
 
         <TextView
+            android:drawablePadding="2dp"
             android:id="@+id/txt_image_like"
             style="@style/card_text_secondary_info"
             android:layout_width="wrap_content"

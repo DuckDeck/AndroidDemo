@@ -250,10 +250,11 @@ class PetalImageDetailFragment : BasePetalRecyclerFragment<PinsMainInfo>() {
             if (imgType!!.toLowerCase().contains("gif")  )  {
                 helper.getView<ImageButton>(R.id.imgbtn_card_gif).visibility = View.VISIBLE
             }
+            else{
+                helper.getView<ImageButton>(R.id.imgbtn_card_gif).visibility = View.INVISIBLE
+            }
         }
-        else{
-            helper.getView<ImageButton>(R.id.imgbtn_card_gif).visibility = View.INVISIBLE
-        }
+
 
         ImageLoadBuilder.Start(context,img,imgUrl).setProgressBarImage(progressLoading).build()
     }
@@ -298,7 +299,7 @@ class PetalImageDetailFragment : BasePetalRecyclerFragment<PinsMainInfo>() {
                         loadSuccess(t!!)                    }
 
                     override fun onCompleted() {
-                        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
                     }
 
                     override fun onError(e: Throwable?) {
@@ -322,5 +323,8 @@ class PetalImageDetailFragment : BasePetalRecyclerFragment<PinsMainInfo>() {
         }
     }
 
+    override fun isCanRefresh(): Boolean {
+        return false
+    }
 
 }

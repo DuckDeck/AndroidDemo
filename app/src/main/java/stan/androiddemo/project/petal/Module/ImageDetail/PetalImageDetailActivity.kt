@@ -8,6 +8,7 @@ import android.graphics.drawable.Animatable
 import android.graphics.drawable.Drawable
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.graphics.drawable.AnimatedVectorDrawableCompat
 import android.view.Menu
 import android.view.MenuItem
 import com.facebook.drawee.controller.BaseControllerListener
@@ -73,6 +74,8 @@ class PetalImageDetailActivity : BasePetalActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //注册eventbus
+        setSupportActionBar(toolbar)
+        title = ""
         toolbar.setNavigationOnClickListener { onBackPressed() }
         EventBus.getDefault().register(this)
         mActionFrom = intent.getIntExtra("action",ACTION_DEFAULT)
@@ -88,7 +91,8 @@ class PetalImageDetailActivity : BasePetalActivity() {
 
         img_image_detail_bg.aspectRatio = mPinsBean.imgRatio
 
-        supportFragmentManager.beginTransaction().replace(R.id.frame_layout_petal_with_refresh,PetalImageDetailFragment.newInstance(mPinsId))
+        supportFragmentManager.beginTransaction().replace(R.id.frame_layout_petal_with_refresh,
+                PetalImageDetailFragment.newInstance(mPinsId)).commit()
 
     }
 
@@ -159,7 +163,7 @@ class PetalImageDetailActivity : BasePetalActivity() {
                         super.onFailure(id, throwable)
                         Logger.d(throwable.toString())
                     }
-                })
+                }).build()
     }
 
 
@@ -168,6 +172,22 @@ class PetalImageDetailActivity : BasePetalActivity() {
         menuInflater.inflate(R.menu.petal_image_detail_menu,menu)
         return true
     }
+
+    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+        val drawableCompat:AnimatedVectorDrawableCompat?
+        if (isLike){
+            drawableCompat = AnimatedVectorDrawableCompat.create(mContext
+            ,R.drawable.drawable_animation_petal_favorite_undo)
+        }
+        else{
+            drawableCompat = AnimatedVectorDrawableCompat.create(mContext
+                    ,R.drawable.drawable_animation_petal_favorite_do)
+        }
+        menu?.findItem(R.id.action_like)?.icon = drawableCompat
+        return super.onPrepareOptionsMenu(menu)
+    }
+
+
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when(item!!.itemId){

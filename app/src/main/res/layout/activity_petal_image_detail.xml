@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
-            app:contentScrim="@color/grey_700"
+            app:contentScrim="@color/grey_a700"
             app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
             app:statusBarScrim="@color/transparent">
             <com.facebook.drawee.view.SimpleDraweeView
@@ -35,7 +35,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="112dp"
-            android:background="@drawable/bg_petal_gradient_board"
+            android:background="@drawable/bg_petal_gradient_tool_bar"
             app:layout_collapseMode="pin"
             app:popupTheme="@style/AppTheme.PopupOverlay"></android.support.v7.widget.Toolbar>
         </android.support.design.widget.CollapsingToolbarLayout>

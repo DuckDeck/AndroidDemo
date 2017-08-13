@@ -157,7 +157,7 @@ abstract class BasePetalRecyclerFragment<T> : BasePetalFragment() {
 
     //这里可以使用一个统一的配置文件好一些
 
-    fun isCanRefresh():Boolean{
+    open fun isCanRefresh():Boolean{
         return true
     }
 
