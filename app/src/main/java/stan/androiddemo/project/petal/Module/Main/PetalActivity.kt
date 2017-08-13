@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentManager
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.view.Menu
+import android.view.MenuItem
 import android.widget.Button
 import com.jakewharton.rxbinding.view.RxView
 import kotlinx.android.synthetic.main.activity_petal.*
@@ -60,7 +61,13 @@ class PetalActivity : BasePetalActivity() {
         drawer_layout_petal.addDrawerListener(toggle)
         toggle.syncState()
         navigation_view_petal.setNavigationItemSelectedListener {
+            if (it.groupId == R.id.menu_group_type){
+                fragment.mKey = types[it.itemId]
+                fragment.setRefresh()
+                title = titles[it.itemId]
 
+            }
+            drawer_layout_petal.closeDrawer(GravityCompat.START)
             return@setNavigationItemSelectedListener true
         }
     }
@@ -106,14 +113,22 @@ class PetalActivity : BasePetalActivity() {
         title = tt
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.petal_search_result,menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        //do something
+        return super.onOptionsItemSelected(item)
+    }
+
     override fun initResAndListener() {
         float_button_search.setImageResource(R.drawable.ic_search_black_24dp)
         RxView.clicks(float_button_search).throttleFirst(Config.throttDuration.toLong(),TimeUnit.MILLISECONDS)
                 .subscribe({
                     SearchPetalActivity.launch(this)
                 })
-
-
     }
 
     override fun onBackPressed() {
@@ -125,6 +140,9 @@ class PetalActivity : BasePetalActivity() {
         }
 
     }
+
+
+
 
     companion object {
         fun launch(activity:Activity){

@@ -8,6 +8,7 @@ import android.support.v4.graphics.drawable.DrawableCompat
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.StaggeredGridLayoutManager
 import android.view.View
+import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.chad.library.adapter.base.BaseViewHolder
@@ -115,6 +116,17 @@ class PetalListFragment : BasePetalRecyclerFragment<PinsMainInfo>() {
             helper.setText(R.id.txt_card_gather,t.repin_count.toString())
             helper.setText(R.id.txt_card_like,t.like_count.toString())
         }
+
+        var imgType = t.file?.type
+        if (!imgType.isNullOrEmpty()){
+            if (imgType!!.toLowerCase().contains("gif")  )  {
+               helper.getView<ImageButton>(R.id.imgbtn_card_gif).visibility = View.VISIBLE
+            }
+        }
+        else{
+            helper.getView<ImageButton>(R.id.imgbtn_card_gif).visibility = View.INVISIBLE
+        }
+
         ImageLoadBuilder.Start(context,img,imgUrl).setProgressBarImage(progressLoading).build()
 
 
