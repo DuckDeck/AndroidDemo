@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="stan.androiddemo.project.petal.Module.Login.PetalLoginActivity">
+<android.support.design.widget.AppBarLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:navigationIcon="?attr/homeAsUpIndicator"
+        android:fitsSystemWindows="true"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:titleTextColor="@android:color/white"
+        app:popupTheme="@style/Theme.AppCompat.Light"></android.support.v7.widget.Toolbar>
+</android.support.design.widget.AppBarLayout>
+
+    <LinearLayout
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:fitsSystemWindows="true">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/icon_title_logo"/>
+        <ScrollView
+            android:id="@+id/scroll_petal_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <LinearLayout
+                android:id="@+id/linearLayout_login"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/activity_vertical_margin"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingTop="@dimen/activity_vertical_margin"
+                android:gravity="center"
+                >
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/auto_text_username"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/prompt_username"
+                        android:inputType="textEmailAddress"
+                        android:maxLines="1"
+                        />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/edit_password"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/prompt_password"
+                        android:imeActionId="@+id/login"
+                        android:imeActionLabel="@string/action_sign_in_short"
+                        android:imeOptions="actionDone"
+                        android:inputType="textPassword"
+                        android:maxLines="1"
+                        />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <Button
+                    android:id="@+id/btn_login"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/action_sign_in"
+                    android:textSize="@dimen/card_context_size_18sp"
+                    android:textStyle="bold"
+                    android:layout_margin="@dimen/button_padding_default"
+                    android:textColor="@color/white"
+                    android:background="?colorAccent"
+                    />
+
+                <Button
+                    android:id="@+id/btn_register"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/action_register"
+                    android:textSize="@dimen/card_context_size_18sp"
+                    android:textStyle="bold"
+                    android:layout_margin="@dimen/button_padding_default"
+                    android:textColor="@color/white"
+                    android:background="@color/secondary_text"
+                    />
+                <ProgressBar
+                    android:id="@+id/progress_login"
+                    style="?android:attr/progressBarStyleLarge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="invisible"
+                    tools:visibility="visible" />
+            </LinearLayout>
+
+        </ScrollView>
+    </LinearLayout>
+
+</android.support.design.widget.CoordinatorLayout>

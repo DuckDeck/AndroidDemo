@@ -110,7 +110,8 @@
             android:name=".project.petal.Module.Type.PetalTypeActivity"
             android:label="@string/title_activity_petal_type"
             android:theme="@style/AppPetalTheme" />
-        <activity android:name=".project.petal.Module.ImageDetail.PetalImageDetailActivity"></activity>
+        <activity android:name=".project.petal.Module.ImageDetail.PetalImageDetailActivity" />
+        <activity android:name=".project.petal.Module.Login.PetalLoginActivity" android:theme="@style/AppPetalTheme"></activity>
     </application>
 
 </manifest> <!-- issue0:can not hide the title bar --><!-- just use   android:theme="@style/Theme.AppCompat.Light.NoActionBar"> -->

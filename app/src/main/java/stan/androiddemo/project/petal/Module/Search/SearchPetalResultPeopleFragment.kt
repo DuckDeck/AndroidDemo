@@ -5,16 +5,10 @@ import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.support.graphics.drawable.VectorDrawableCompat
-import android.support.v4.app.Fragment
 import android.support.v4.graphics.drawable.DrawableCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.StaggeredGridLayoutManager
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.ImageButton
-import android.widget.TextView
 import com.chad.library.adapter.base.BaseViewHolder
 import com.facebook.drawee.view.SimpleDraweeView
 import rx.Subscriber
@@ -24,11 +18,9 @@ import rx.schedulers.Schedulers
 
 import stan.androiddemo.R
 import stan.androiddemo.UI.BasePetalRecyclerFragment
-import stan.androiddemo.UI.BaseRecyclerFragment
 import stan.androiddemo.project.petal.API.SearchAPI
 import stan.androiddemo.project.petal.Config.Config
 import stan.androiddemo.project.petal.HttpUtiles.RetrofitClient
-import stan.androiddemo.project.petal.Model.BoardPinsInfo
 import stan.androiddemo.project.petal.Observable.ErrorHelper
 import stan.androiddemo.tool.CompatUtils
 import stan.androiddemo.tool.ImageLoad.ImageLoadBuilder
@@ -86,12 +78,12 @@ class SearchPetalResultPeopleFragment : BasePetalRecyclerFragment<SearchPeopleBe
                 url = String.format(mUrlSmallFormat,url)
             }
             ImageLoadBuilder.Start(context,img,url).setPlaceHolderImage(CompatUtils.getTintDrawable(context,
-                            R.drawable.ic_account_circle_black_48dp, Color.GRAY))
+                            R.drawable.ic_account_circle_gray_48dp, Color.GRAY))
                     .setIsCircle(true)
                     .build()
         }
         else{
-            img.hierarchy.setPlaceholderImage(R.drawable.ic_account_circle_black_48dp)
+            img.hierarchy.setPlaceholderImage(R.drawable.ic_account_circle_gray_48dp)
         }
     }
 

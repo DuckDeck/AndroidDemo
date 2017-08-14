@@ -30,7 +30,7 @@
         android:paddingBottom="16dp">
 
         <TextView
-            android:id="@+id/tv_nav_username"
+            android:id="@+id/txt_nav_username"
             style="@style/nav_text_style"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -38,7 +38,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/tv_nav_email"
+            android:id="@+id/txt_nav_email"
             style="@style/nav_text_style"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

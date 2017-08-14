@@ -6,13 +6,10 @@ import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.support.graphics.drawable.VectorDrawableCompat
-import android.support.v4.app.Fragment
 import android.support.v4.graphics.drawable.DrawableCompat
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.StaggeredGridLayoutManager
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.*
 import com.chad.library.adapter.base.BaseViewHolder
 import com.facebook.drawee.view.SimpleDraweeView
@@ -29,7 +26,6 @@ import stan.androiddemo.project.petal.Config.Config
 import stan.androiddemo.project.petal.HttpUtiles.RetrofitClient
 import stan.androiddemo.project.petal.Model.PinsMainInfo
 import stan.androiddemo.project.petal.Module.Main.PetalActivity
-import stan.androiddemo.project.petal.Module.Type.PetalTypeActivity
 import stan.androiddemo.tool.CompatUtils
 import stan.androiddemo.tool.ImageLoad.ImageLoadBuilder
 import stan.androiddemo.tool.Logger
@@ -192,7 +188,7 @@ class PetalImageDetailFragment : BasePetalRecyclerFragment<PinsMainInfo>() {
                 url = String.format(mUrlSmallFormat,urlHead!!)
             }
             ImageLoadBuilder.Start(context,img_image_user,url).setPlaceHolderImage(
-                    CompatUtils.getTintDrawable(context,R.drawable.ic_account_circle_black_48dp,Color.GRAY)
+                    CompatUtils.getTintDrawable(context,R.drawable.ic_account_circle_gray_48dp,Color.GRAY)
             ).setIsCircle(true)
                     .build()
         }

@@ -2,6 +2,7 @@ package stan.androiddemo.project.petal.Module.Main
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.support.v4.app.FragmentManager
 import android.support.v4.view.GravityCompat
@@ -10,6 +11,8 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Button
+import android.widget.TextView
+import com.facebook.drawee.view.SimpleDraweeView
 import com.jakewharton.rxbinding.view.RxView
 import kotlinx.android.synthetic.main.activity_petal.*
 import stan.androiddemo.R
@@ -18,20 +21,32 @@ import stan.androiddemo.project.petal.Config.Config
 import stan.androiddemo.project.petal.Event.OnPinsFragmentInteractionListener
 import stan.androiddemo.project.petal.Model.PinsMainInfo
 import stan.androiddemo.project.petal.Module.ImageDetail.PetalImageDetailActivity
+import stan.androiddemo.project.petal.Module.Login.PetalLoginActivity
 import stan.androiddemo.project.petal.Module.PetalList.PetalListFragment
 import stan.androiddemo.project.petal.Module.Search.SearchPetalActivity
 import stan.androiddemo.tool.CompatUtils
+import stan.androiddemo.tool.ImageLoad.ImageLoadBuilder
+import stan.androiddemo.tool.Logger
+import stan.androiddemo.tool.SPUtils
 import java.util.concurrent.TimeUnit
 
 
 class PetalActivity : BasePetalActivity(),OnPinsFragmentInteractionListener {
 
 
+
     lateinit var fragmentManage: FragmentManager
     lateinit var types:Array<String>
     lateinit var titles:Array<String>
-    override fun getTag(): String {return this.toString()}
+
+    private var mUserName = ""
+    private var mUserId = ""
+
     lateinit var fragment:PetalListFragment
+    lateinit var imgNavHead:SimpleDraweeView
+    lateinit var txtNavUsername:TextView
+    lateinit var txtNavUserEmail:TextView
+    override fun getTag(): String {return this.toString()}
 
     override fun getLayoutId(): Int {
         return R.layout.activity_petal
@@ -50,6 +65,11 @@ class PetalActivity : BasePetalActivity(),OnPinsFragmentInteractionListener {
         initNavMenuView()
 
         selectFragment(0)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setNavUserInfo()
     }
 
     //取出各种需要用的全局变量
@@ -79,6 +99,20 @@ class PetalActivity : BasePetalActivity(),OnPinsFragmentInteractionListener {
     //初始化HeadNav
     fun initNavHeadView(){
         val headView = navigation_view_petal.inflateHeaderView(R.layout.petal_nav_header)
+        imgNavHead = headView.findViewById(R.id.img_petal_my_header)
+        imgNavHead.setOnClickListener {
+            if (isLogin){
+                TODO("to userinfipage")
+            }
+            else{
+                PetalLoginActivity.launch(this@PetalActivity)
+            }
+        }
+        txtNavUsername = headView.findViewById(R.id.txt_nav_username)
+        txtNavUsername.setOnClickListener {
+
+        }
+        txtNavUserEmail = headView.findViewById(R.id.txt_nav_email)
         val btnAttention = headView.findViewById<Button>(R.id.btn_nav_attention)
         btnAttention.setCompoundDrawablesRelativeWithIntrinsicBounds(null,
                 CompatUtils.getTintDrawable(mContext,R.drawable.ic_loyalty_black_24dp
@@ -97,6 +131,31 @@ class PetalActivity : BasePetalActivity(),OnPinsFragmentInteractionListener {
                         ,resources.getColor(R.color.tint_list_pink)),null,null)
 
     }
+
+    fun setNavUserInfo(){
+        val drawable = CompatUtils.getTintDrawable(mContext,R.drawable.ic_account_circle_gray_48dp,Color.GRAY)
+        if (isLogin){
+            var key = SPUtils.get(mContext,Config.USERHEADKEY,"") as String
+            if (!key.isNullOrEmpty()){
+               key = resources.getString(R.string.urlImageRoot) + key
+                ImageLoadBuilder.Start(mContext,imgNavHead,key).setPlaceHolderImage(drawable).setIsCircle(true,true).build()
+            }
+            else{
+                Logger.d("User Head Key is empty")
+            }
+            if (!mUserName.isNullOrEmpty()){
+                txtNavUsername.text = mUserName
+            }
+            val email = SPUtils.get(mContext,Config.USEREMAIL,"") as String
+            if (!email.isNullOrEmpty()){
+                txtNavUserEmail.text = email
+            }
+        }
+        else{
+            ImageLoadBuilder.Start(mContext,imgNavHead,"").setPlaceHolderImage(drawable).setIsCircle(true,true).build()
+        }
+    }
+
     //初始化NavMenu
     fun initNavMenuView(){
         val menu = navigation_view_petal.menu
@@ -132,7 +191,7 @@ class PetalActivity : BasePetalActivity(),OnPinsFragmentInteractionListener {
         float_button_search.setImageResource(R.drawable.ic_search_black_24dp)
         RxView.clicks(float_button_search).throttleFirst(Config.throttDuration.toLong(),TimeUnit.MILLISECONDS)
                 .subscribe({
-                    SearchPetalActivity.launch(this)
+                    SearchPetalActivity.launch(this@PetalActivity)
                 })
     }
 
@@ -147,11 +206,11 @@ class PetalActivity : BasePetalActivity(),OnPinsFragmentInteractionListener {
     }
 
     override fun onClickPinsItemImage(bean: PinsMainInfo, view: View) {
-        PetalImageDetailActivity.launch(this,PetalImageDetailActivity.ACTION_MAIN)
+        PetalImageDetailActivity.launch(this@PetalActivity,PetalImageDetailActivity.ACTION_MAIN)
     }
 
     override fun onClickPinsItemText(bean: PinsMainInfo, view: View) {
-
+        PetalImageDetailActivity.launch(this@PetalActivity,PetalImageDetailActivity.ACTION_MAIN)
     }
 
 
