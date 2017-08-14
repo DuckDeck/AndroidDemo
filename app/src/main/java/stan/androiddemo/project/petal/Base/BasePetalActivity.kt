@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.view.WindowManager
+import android.widget.Toast
 import rx.Subscription
 import rx.subscriptions.CompositeSubscription
 import stan.androiddemo.R
@@ -110,5 +111,9 @@ public abstract class BasePetalActivity :AppCompatActivity(){
 
     fun checkException(e:Throwable,mRootView:View){
         NetUtils.checkHttpException(mContext,e,mRootView)
+    }
+
+    fun toast(msg:String){
+        Toast.makeText(mContext,msg,Toast.LENGTH_SHORT).show()
     }
 }

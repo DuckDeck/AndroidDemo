@@ -7,9 +7,11 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.support.design.widget.Snackbar
+import android.text.SpannableStringBuilder
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import com.jakewharton.rxbinding.view.RxView
 import com.jakewharton.rxbinding.widget.RxTextView
 import kotlinx.android.synthetic.main.activity_petal_login.*
@@ -69,15 +71,14 @@ class PetalLoginActivity : BasePetalActivity() {
             NetUtils.showSnackBar(scroll_petal_login,message)
         }
         addUsernameAutoComplete()
+        auto_text_username.text = SpannableStringBuilder("3421902@qq.com")
+        edit_password.text = SpannableStringBuilder("stanhu520")
     }
 
     override fun initResAndListener() {
         super.initResAndListener()
 
-        RxTextView.textChanges(auto_text_username)
-                .subscribe({
-                    emailAdapter.notifyDataSetChanged()
-                })
+
 
         RxTextView.editorActions(edit_password, Func1 {
             it == EditorInfo.IME_ACTION_DONE
@@ -98,6 +99,7 @@ class PetalLoginActivity : BasePetalActivity() {
         val emailArray = arrayListOf("qq.com","163.com","126.com")
         emailAdapter = ArrayAdapter<String>(mContext,android.R.layout.simple_spinner_dropdown_item,emailArray)
         auto_text_username.setAdapter(emailAdapter)
+        TODO("下拉菜单")
     }
 
     fun attempLogin(){
@@ -165,14 +167,10 @@ class PetalLoginActivity : BasePetalActivity() {
                     }
                     override fun onNext(t: BoardListInfo?) {
                         showProgrss(false)
-                        NetUtils.showSnackBar(scroll_petal_login,resources.getString(R.string.snack_message_login_success))
-                                .setCallback(object:Snackbar.Callback(){
-                                    override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
-                                        super.onDismissed(transientBottomBar, event)
-                                        TODO("login to user activity")
-                                    }
-                                })
+                        toast("登录成功")
                         saveUserInfo(mUserBean,mTokenBean,username,password,t!!.boards!!)
+
+                        finish()
                     }
 
                     override fun onCompleted() {

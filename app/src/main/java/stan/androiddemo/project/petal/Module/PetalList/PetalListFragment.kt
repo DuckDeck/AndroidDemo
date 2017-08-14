@@ -22,10 +22,12 @@ import rx.schedulers.Schedulers
 import stan.androiddemo.R
 import stan.androiddemo.UI.BasePetalRecyclerFragment
 import stan.androiddemo.project.petal.API.ListPinsBean
+import stan.androiddemo.project.petal.API.OperateAPI
 import stan.androiddemo.project.petal.API.PetalAPI
 import stan.androiddemo.project.petal.Config.Config
 import stan.androiddemo.project.petal.HttpUtiles.RetrofitClient
 import stan.androiddemo.project.petal.Model.PinsMainInfo
+import stan.androiddemo.project.petal.Module.Login.PetalLoginActivity
 import stan.androiddemo.project.petal.Module.Main.PetalActivity
 import stan.androiddemo.project.petal.Module.Type.PetalTypeActivity
 import stan.androiddemo.tool.CompatUtils
@@ -114,11 +116,27 @@ class PetalListFragment : BasePetalRecyclerFragment<PinsMainInfo>() {
         }
 
         txtGather.setOnClickListener {
-            Logger.d("点击了Gather")
+            if (!isLogin){
+                toast("请先登录再操作")
+                return@setOnClickListener
+            }
+            //不做like操作了，
+            t.repin_count ++
+            txtGather.text = t.repin_count.toString()
+            txtGather.setCompoundDrawablesRelativeWithIntrinsicBounds(CompatUtils.getTintListDrawable(context,
+                    R.drawable.ic_favorite_black_18dp,R.color.tint_list_pink),null,null,null)
         }
 
         txtLike.setOnClickListener {
-            Logger.d("点击了Like")
+            if (!isLogin){
+                toast("请先登录再操作")
+                return@setOnClickListener
+            }
+            //不做like操作了，
+            t.like_count ++
+            helper.setText(R.id.txt_card_like,t.like_count.toString())
+            txtLike.setCompoundDrawablesRelativeWithIntrinsicBounds(CompatUtils.getTintListDrawable(context,
+                    R.drawable.ic_camera_black_18dp,R.color.tint_list_pink),null,null,null)
         }
 
         if (t.raw_text.isNullOrEmpty() && t.like_count <= 0 && t.repin_count <= 0){
@@ -187,6 +205,7 @@ class PetalListFragment : BasePetalRecyclerFragment<PinsMainInfo>() {
 
                 })
     }
+
 
 
 
