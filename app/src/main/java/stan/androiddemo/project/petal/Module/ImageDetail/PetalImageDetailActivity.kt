@@ -6,7 +6,6 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.Animatable
 import android.graphics.drawable.Drawable
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.graphics.drawable.AnimatedVectorDrawableCompat
 import android.view.Menu
@@ -16,13 +15,22 @@ import com.facebook.imagepipeline.image.ImageInfo
 import kotlinx.android.synthetic.main.activity_petal_image_detail.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
+import rx.Subscriber
+import rx.android.schedulers.AndroidSchedulers
+import rx.schedulers.Schedulers
 import stan.androiddemo.R
+import stan.androiddemo.project.petal.API.OperateAPI
 import stan.androiddemo.project.petal.Base.BasePetalActivity
+import stan.androiddemo.project.petal.Config.Config
+import stan.androiddemo.project.petal.HttpUtiles.RetrofitClient
 import stan.androiddemo.project.petal.Model.PinsMainInfo
+import stan.androiddemo.project.petal.Widget.GatherDialogFragment
 import stan.androiddemo.tool.AnimatorUtils
 import stan.androiddemo.tool.CompatUtils
 import stan.androiddemo.tool.ImageLoad.ImageLoadBuilder
 import stan.androiddemo.tool.Logger
+import stan.androiddemo.tool.SPUtils
+import java.util.concurrent.TimeUnit
 
 class PetalImageDetailActivity : BasePetalActivity() {
     private val KEYPARCELABLE = "Parcelable"
@@ -37,6 +45,8 @@ class PetalImageDetailActivity : BasePetalActivity() {
 
     private var isLike = false//该图片是否被喜欢操作 默认false 没有被操作过
     private var isGathered = false//该图片是否被采集过
+
+    var arrBoardId:List<String>? = null
 
     lateinit var mDrawableCancel: Drawable
     lateinit var mDrawableRefresh: Drawable
@@ -174,19 +184,11 @@ class PetalImageDetailActivity : BasePetalActivity() {
     }
 
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
-        val drawableCompat:AnimatedVectorDrawableCompat?
-        if (isLike){
-            drawableCompat = AnimatedVectorDrawableCompat.create(mContext
-            ,R.drawable.drawable_animation_petal_favorite_undo)
-        }
-        else{
-            drawableCompat = AnimatedVectorDrawableCompat.create(mContext
-                    ,R.drawable.drawable_animation_petal_favorite_do)
-        }
-        menu?.findItem(R.id.action_like)?.icon = drawableCompat
+        val drawableCompat = if (isLike) AnimatedVectorDrawableCompat.create(mContext
+                ,R.drawable.drawable_animation_petal_favorite_undo) else  AnimatedVectorDrawableCompat.create(mContext
+                ,R.drawable.drawable_animation_petal_favorite_do)
         return super.onPrepareOptionsMenu(menu)
     }
-
 
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
@@ -195,17 +197,65 @@ class PetalImageDetailActivity : BasePetalActivity() {
                 //这里原代码有一个逻辑要处理
             }
             R.id.action_like->{
-
+                actionLike(item)
             }
             R.id.action_download->{
 
             }
             R.id.action_gather->{
-
+                showGatherDialog()
             }
-
         }
         return true
+    }
+
+    fun setMenuIconLikeDynamic(item:MenuItem?,like:Boolean){
+        val drawableCompat = if (like) AnimatedVectorDrawableCompat.create(mContext
+                ,R.drawable.drawable_animation_petal_favorite_undo) else  AnimatedVectorDrawableCompat.create(mContext
+                ,R.drawable.drawable_animation_petal_favorite_do)
+        item?.icon = drawableCompat
+    }
+
+    fun  actionLike(menu: MenuItem){
+         val operation = if (isLike) Config.OPERATEUNLIKE else Config.OPERATELIKE
+         RetrofitClient.createService(OperateAPI::class.java).httpsLikeOperate(mAuthorization,mPinsId,operation)
+                 .subscribeOn(Schedulers.io())
+                 .delay(600, TimeUnit.MILLISECONDS)
+                 .observeOn(AndroidSchedulers.mainThread())
+                 .subscribe(object:Subscriber<LikePinsOperateBean>(){
+                     override fun onStart() {
+                         super.onStart()
+                         menu.isEnabled = false
+                         (menu.icon as AnimatedVectorDrawableCompat)?.start()
+                     }
+                     override fun onCompleted() {
+                         menu.isEnabled = true
+                     }
+
+                     override fun onNext(t: LikePinsOperateBean?) {
+                         isLike = !isLike
+                         setMenuIconLikeDynamic(menu,isLike)
+                     }
+
+                     override fun onError(e: Throwable?) {
+                         menu.isEnabled = true
+                         checkException(e!!,appBarLayout_image_detail)
+                     }
+
+                 })
+     }
+
+    fun showGatherDialog(){
+        val arrayBoardTitle = SPUtils.get(mContext,Config.BOARDTILTARRAY,"") as String
+        val boardId = SPUtils.get(mContext,Config.BOARDIDARRAY,"") as String
+        val arr = if (arrayBoardTitle != null ) arrayBoardTitle.split(",") else listOf("")
+        arrBoardId = if (boardId != null) boardId.split(",") else listOf("")
+        val fragment = GatherDialogFragment.create(mAuthorization,mPinsId,mPinsBean.raw_text!!, ArrayList(arr))
+        fragment.show(supportFragmentManager,null)
+    }
+
+    fun  actionGather(describe:String,selectPosition:Int){
+
     }
 
     override fun onDestroy() {

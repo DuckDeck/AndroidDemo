@@ -19,6 +19,7 @@ import rx.functions.Action1
 import rx.functions.Func1
 import rx.schedulers.Schedulers
 import stan.androiddemo.R
+
 import stan.androiddemo.project.petal.API.TokenAPI
 import stan.androiddemo.project.petal.API.UserAPI
 import stan.androiddemo.project.petal.Base.BasePetalActivity
@@ -36,7 +37,7 @@ class PetalLoginActivity : BasePetalActivity() {
 
     lateinit var mTokenBean:TokenBean
     lateinit var mUserBean:UserMeAndOtherBean
-
+    lateinit var emailAdapter:ArrayAdapter<String>
     companion object {
         fun launch(activity: Activity){
             val intent = Intent(activity,PetalLoginActivity::class.java)
@@ -60,9 +61,11 @@ class PetalLoginActivity : BasePetalActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setSupportActionBar(toolbar)
+        toolbar.setNavigationOnClickListener { onBackPressed() }
         val message = intent.getStringExtra("message")
-        if (message.isNullOrEmpty()){
+        if (!message.isNullOrEmpty()){
             NetUtils.showSnackBar(scroll_petal_login,message)
         }
         addUsernameAutoComplete()
@@ -70,6 +73,12 @@ class PetalLoginActivity : BasePetalActivity() {
 
     override fun initResAndListener() {
         super.initResAndListener()
+
+        RxTextView.textChanges(auto_text_username)
+                .subscribe({
+                    emailAdapter.notifyDataSetChanged()
+                })
+
         RxTextView.editorActions(edit_password, Func1 {
             it == EditorInfo.IME_ACTION_DONE
         }).throttleFirst(500,TimeUnit.MILLISECONDS)
@@ -87,9 +96,8 @@ class PetalLoginActivity : BasePetalActivity() {
 
     fun addUsernameAutoComplete(){
         val emailArray = arrayListOf("qq.com","163.com","126.com")
-        val adapater = ArrayAdapter<String>(mContext,android.R.layout.simple_spinner_dropdown_item,emailArray)
-        auto_text_username.setAdapter(adapater)
-
+        emailAdapter = ArrayAdapter<String>(mContext,android.R.layout.simple_spinner_dropdown_item,emailArray)
+        auto_text_username.setAdapter(emailAdapter)
     }
 
     fun attempLogin(){

@@ -31,6 +31,10 @@ class Config{
         val BOARDIDARRAY = "boardIdArray"
 
 
+        val OPERATELIKE = "like"
+        val OPERATEUNLIKE = "unlike"
+
+
         var REGEX_EMAIL = "\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*"
 
     }

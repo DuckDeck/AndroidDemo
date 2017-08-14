@@ -56,4 +56,11 @@ abstract class BasePetalFragment : Fragment() {
     protected fun checkException(e: Throwable?) {
         NetUtils.checkHttpException(context, e, mRootView)
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (this.mCompositeSubscription != null){
+            this.mCompositeSubscription = null
+        }
+    }
 }
