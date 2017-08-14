@@ -65,7 +65,7 @@ class PetalUserInfoActivity : BasePetalActivity() {
         }
 
         tv_user_friend.setCompoundDrawablesWithIntrinsicBounds(null,
-                CompatUtils.getTintDrawable(mContext,R.drawable.ic_chevron__white_24dp, Color.WHITE)
+                CompatUtils.getTintDrawable(mContext,R.drawable.ic_chevron_right_white_24dp, Color.WHITE)
         ,null,null)
     }
 
