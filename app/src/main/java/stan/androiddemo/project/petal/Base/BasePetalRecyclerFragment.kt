@@ -8,7 +8,6 @@ import android.view.View
 import android.widget.TextView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
-import com.chad.library.adapter.base.listener.OnItemClickListener
 import kotlinx.android.synthetic.main.fragment_base_recycler.*
 import rx.Subscription
 import stan.androiddemo.R
@@ -48,8 +47,11 @@ abstract class BasePetalRecyclerFragment<T> : BasePetalFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         initView()
+        initListener()
         initData()
+
     }
+
 
     open  protected fun initView(){
         recycler_base_fragment.setBackgroundColor(getBackgroundColor())
@@ -123,6 +125,8 @@ abstract class BasePetalRecyclerFragment<T> : BasePetalFragment() {
 
 
     }
+
+    open fun initListener(){}
 
     open fun initData(){
         addSubscription(requestListData(index))

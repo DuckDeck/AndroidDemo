@@ -13,7 +13,7 @@ import stan.androiddemo.project.petal.Config.Config
 import stan.androiddemo.project.petal.HttpUtiles.RetrofitClient
 import stan.androiddemo.project.petal.Module.Login.TokenBean
 import stan.androiddemo.project.petal.Module.Main.PetalActivity
-import stan.androiddemo.project.petal.Observable.AnimatorObSubscribe
+import stan.androiddemo.project.petal.Observable.AnimatorOnSubscribe
 import stan.androiddemo.tool.*
 
 class GuideActivity : BasePetalActivity() {
@@ -32,7 +32,7 @@ class GuideActivity : BasePetalActivity() {
         super.onResume()
         val animation = AnimatorInflater.loadAnimator(mContext,R.animator.guide_animator)
         animation.setTarget(img_app_guide)
-        Observable.create(AnimatorObSubscribe(animation)).observeOn(Schedulers.io()).subscribeOn(AndroidSchedulers.mainThread())
+        Observable.create(AnimatorOnSubscribe(animation)).observeOn(Schedulers.io()).subscribeOn(AndroidSchedulers.mainThread())
                 .filter {
                     isLogin
                 }

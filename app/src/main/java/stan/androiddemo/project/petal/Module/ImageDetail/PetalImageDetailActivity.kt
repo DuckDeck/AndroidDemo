@@ -6,15 +6,19 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.Animatable
 import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Bundle
+import android.support.design.widget.FloatingActionButton
 import android.support.graphics.drawable.AnimatedVectorDrawableCompat
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import com.facebook.drawee.controller.BaseControllerListener
 import com.facebook.imagepipeline.image.ImageInfo
 import kotlinx.android.synthetic.main.activity_petal_image_detail.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
+import rx.Observable
 import rx.Subscriber
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
@@ -22,17 +26,24 @@ import stan.androiddemo.R
 import stan.androiddemo.project.petal.API.OperateAPI
 import stan.androiddemo.project.petal.Base.BasePetalActivity
 import stan.androiddemo.project.petal.Config.Config
+import stan.androiddemo.project.petal.Event.OnDialogInteractionListener
+import stan.androiddemo.project.petal.Event.OnImageDetailFragmentInteractionListener
 import stan.androiddemo.project.petal.HttpUtiles.RetrofitClient
 import stan.androiddemo.project.petal.Model.PinsMainInfo
+import stan.androiddemo.project.petal.Observable.AnimatorOnSubscribe
 import stan.androiddemo.project.petal.Widget.GatherDialogFragment
 import stan.androiddemo.tool.AnimatorUtils
 import stan.androiddemo.tool.CompatUtils
 import stan.androiddemo.tool.ImageLoad.ImageLoadBuilder
 import stan.androiddemo.tool.Logger
 import stan.androiddemo.tool.SPUtils
+import java.util.*
 import java.util.concurrent.TimeUnit
 
-class PetalImageDetailActivity : BasePetalActivity() {
+class PetalImageDetailActivity : BasePetalActivity(), OnDialogInteractionListener,OnImageDetailFragmentInteractionListener {
+
+
+
     private val KEYPARCELABLE = "Parcelable"
     private var mActionFrom: Int = 0
 
@@ -50,6 +61,7 @@ class PetalImageDetailActivity : BasePetalActivity() {
 
     lateinit var mDrawableCancel: Drawable
     lateinit var mDrawableRefresh: Drawable
+
 
 
     override fun getTag(): String {return this.toString() }
@@ -93,6 +105,7 @@ class PetalImageDetailActivity : BasePetalActivity() {
 
         mDrawableCancel = CompatUtils.getTintDrawable(mContext,R.drawable.ic_cancel_black_24dp,Color.GRAY)
         mDrawableRefresh = CompatUtils.getTintDrawable(mContext,R.drawable.ic_refresh_black_24dp,Color.GRAY)
+
         mImageUrl = mPinsBean.file!!.key!!
         mImageType = mPinsBean.file!!.type!!
         mPinsId = mPinsBean.pin_id.toString()
@@ -123,7 +136,7 @@ class PetalImageDetailActivity : BasePetalActivity() {
         super.initResAndListener()
         fab_image_detail.setImageResource(R.drawable.ic_camera_white_24dp)
         fab_image_detail.setOnClickListener {
-
+            showGatherDialog()
         }
     }
 
@@ -177,16 +190,43 @@ class PetalImageDetailActivity : BasePetalActivity() {
     }
 
 
+    override fun onClickPinsItemImage(bean: PinsMainInfo, view: View) {
+        PetalImageDetailActivity.launch(this@PetalImageDetailActivity,PetalImageDetailActivity.ACTION_THIS)
+    }
+
+    override fun onClickPinsItemText(bean: PinsMainInfo, view: View) {
+        PetalImageDetailActivity.launch(this@PetalImageDetailActivity,PetalImageDetailActivity.ACTION_THIS)
+    }
+
+    override fun onClickBoardField(key: String, title: String) {
+        TODO("BoardDetailActivity")
+//        BoardDetailActivity.launch(this, key, title)
+    }
+
+    override fun onClickUserField(key: String, title: String) {
+        TODO("UserActivity")
+//        UserActivity.launch(this, key, title)
+    }
+
+    override fun onClickImageLink(link: String) {
+        val uri = Uri.parse(link)
+        val int = Intent(Intent.ACTION_VIEW,uri)
+        if (int.resolveActivity(this@PetalImageDetailActivity.packageManager) != null){
+            startActivity(int)
+        }
+        else{
+            Logger.d("checkResolveIntent = null")
+        }
+    }
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-         super.onCreateOptionsMenu(menu)
+        super.onCreateOptionsMenu(menu)
         menuInflater.inflate(R.menu.petal_image_detail_menu,menu)
         return true
     }
 
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
-        val drawableCompat = if (isLike) AnimatedVectorDrawableCompat.create(mContext
-                ,R.drawable.drawable_animation_petal_favorite_undo) else  AnimatedVectorDrawableCompat.create(mContext
-                ,R.drawable.drawable_animation_petal_favorite_do)
+         setMenuIconLikeDynamic(menu?.findItem(R.id.action_like),isLike)
         return super.onPrepareOptionsMenu(menu)
     }
 
@@ -217,6 +257,10 @@ class PetalImageDetailActivity : BasePetalActivity() {
     }
 
     fun  actionLike(menu: MenuItem){
+        if (!isLogin){
+            toast("请先登录再操作")
+            return
+        }
          val operation = if (isLike) Config.OPERATEUNLIKE else Config.OPERATELIKE
          RetrofitClient.createService(OperateAPI::class.java).httpsLikeOperate(mAuthorization,mPinsId,operation)
                  .subscribeOn(Schedulers.io())
@@ -246,16 +290,59 @@ class PetalImageDetailActivity : BasePetalActivity() {
      }
 
     fun showGatherDialog(){
+        if (!isLogin){
+            toast("请先登录再操作")
+            return
+        }
         val arrayBoardTitle = SPUtils.get(mContext,Config.BOARDTILTARRAY,"") as String
         val boardId = SPUtils.get(mContext,Config.BOARDIDARRAY,"") as String
-        val arr = if (arrayBoardTitle != null ) arrayBoardTitle.split(",") else listOf("")
-        arrBoardId = if (boardId != null) boardId.split(",") else listOf("")
+        val arr = arrayBoardTitle?.split(",")
+        arrBoardId = boardId?.split(",")
         val fragment = GatherDialogFragment.create(mAuthorization,mPinsId,mPinsBean.raw_text!!, ArrayList(arr))
         fragment.show(supportFragmentManager,null)
     }
 
-    fun  actionGather(describe:String,selectPosition:Int){
 
+
+    override fun onDialogClick(option: Boolean, info: HashMap<String, Any>) {
+        if (option){
+            val desc = info["describe"] as String
+            val position = info["position"] as Int
+            val animation = AnimatorUtils.getRotationAD(fab_image_detail)
+
+            Observable.create(AnimatorOnSubscribe(animation)).observeOn(Schedulers.io())
+                    .subscribeOn(AndroidSchedulers.mainThread())
+                    .flatMap {
+                        RetrofitClient.createService(OperateAPI::class.java).httpsGatherPins(mAuthorization,arrBoardId!![position],desc,mPinsId)
+                    }
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(object :Subscriber<GatherResultBean>(){
+                        override fun onNext(t: GatherResultBean?) {
+                            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                        }
+
+                        override fun onError(e: Throwable?) {
+                            checkException(e!!,appBarLayout_image_detail)
+                            setFabDrawableAnimator(R.drawable.ic_done_white_24dp,fab_image_detail)
+                        }
+
+                        override fun onCompleted() {
+                            setFabDrawableAnimator(R.drawable.ic_report_white_24dp,fab_image_detail)
+                            isGathered = !isGathered
+                        }
+
+                    })
+        }
+    }
+
+    fun setFabDrawableAnimator(resId:Int,mFabActionBtn:FloatingActionButton){
+        mFabActionBtn.hide(object:FloatingActionButton.OnVisibilityChangedListener(){
+            override fun onHidden(fab: FloatingActionButton?) {
+                super.onHidden(fab)
+                fab?.setImageResource(resId)
+                fab?.show()
+            }
+        })
     }
 
     override fun onDestroy() {

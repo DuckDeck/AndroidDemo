@@ -10,7 +10,7 @@ import stan.androiddemo.tool.Logger
 /**
  * Created by stanhu on 11/8/2017.
  */
-class AnimatorObSubscribe:Observable.OnSubscribe<Unit>{
+class AnimatorOnSubscribe :Observable.OnSubscribe<Unit>{
     lateinit var  animator: Animator
 
     constructor(animator:Animator){

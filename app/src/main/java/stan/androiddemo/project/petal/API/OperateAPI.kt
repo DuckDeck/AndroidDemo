@@ -4,6 +4,7 @@ import retrofit2.http.*
 import rx.Observable
 import stan.androiddemo.project.petal.Config.Config
 import stan.androiddemo.project.petal.Module.ImageDetail.GatherInfoBean
+import stan.androiddemo.project.petal.Module.ImageDetail.GatherResultBean
 import stan.androiddemo.project.petal.Module.ImageDetail.LikePinsOperateBean
 
 /**
@@ -21,5 +22,11 @@ interface OperateAPI{
     abstract fun httpsGatherInfo(@Header(Config.Authorization) authorization: String,
                                  @Path("viaId") viaId: String, @Query("check") check: Boolean): Observable<GatherInfoBean>
 
+    @FormUrlEncoded
+    @POST("pins/")
+    abstract fun httpsGatherPins(@Header(Config.Authorization) authorization: String,
+                                 @Field("board_id") boardId: String,
+                                 @Field("text") describe: String,
+                                 @Field("via") PinsIda: String): Observable<GatherResultBean>
 
 }

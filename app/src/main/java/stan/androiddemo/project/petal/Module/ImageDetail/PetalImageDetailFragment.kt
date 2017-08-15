@@ -10,19 +10,23 @@ import android.support.v4.graphics.drawable.DrawableCompat
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.StaggeredGridLayoutManager
 import android.view.View
-import android.widget.*
+import android.widget.ImageButton
+import android.widget.LinearLayout
+import android.widget.RelativeLayout
+import android.widget.TextView
 import com.chad.library.adapter.base.BaseViewHolder
 import com.facebook.drawee.view.SimpleDraweeView
 import licola.demo.com.huabandemo.Module.ImageDetail.PinsDetailBean
+import org.greenrobot.eventbus.EventBus
 import rx.Subscriber
 import rx.Subscription
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
-
 import stan.androiddemo.R
 import stan.androiddemo.UI.BasePetalRecyclerFragment
 import stan.androiddemo.project.petal.API.ImageDetailAPI
 import stan.androiddemo.project.petal.Config.Config
+import stan.androiddemo.project.petal.Event.OnImageDetailFragmentInteractionListener
 import stan.androiddemo.project.petal.HttpUtiles.RetrofitClient
 import stan.androiddemo.project.petal.Model.PinsMainInfo
 import stan.androiddemo.project.petal.Module.Main.PetalActivity
@@ -84,6 +88,27 @@ class PetalImageDetailFragment : BasePetalRecyclerFragment<PinsMainInfo>() {
         mKey = arguments.getString("type")
     }
 
+    override fun initListener() {
+        super.initListener()
+        val lin = mListener as OnImageDetailFragmentInteractionListener
+        txt_image_link.setOnClickListener {
+            lin.onClickImageLink(it.tag as String)
+        }
+        txt_image_gather.setOnClickListener {
+
+        }
+        txt_image_like.setOnClickListener {  }
+
+        mRLImageUser.setOnClickListener {
+            lin.onClickUserField(mUserId!!,mUserName!!)
+        }
+
+        mRLImageBoard.setOnClickListener {
+            lin.onClickBoardField(mUserId!!,mUserName!!)
+        }
+
+    }
+
     override fun initData() {
         addSubscription(requestOtherData())
         super.initData()
@@ -96,6 +121,8 @@ class PetalImageDetailFragment : BasePetalRecyclerFragment<PinsMainInfo>() {
     override fun getItemLayoutId(): Int {
         return R.layout.petal_cardview_image_item
     }
+
+
 
     override fun headView(): View? {
         val headView = layoutInflater.inflate(R.layout.petal_image_detail_head_view,null)
@@ -143,6 +170,12 @@ class PetalImageDetailFragment : BasePetalRecyclerFragment<PinsMainInfo>() {
 
     fun setImageDetailInfo(pinsDetailBean:PinsDetailBean){
         val pin = pinsDetailBean.pin ?: return
+
+        mBoardId = pin.board_id.toString()
+        mUserId = pin.user_id.toString()
+        mBoardName = pin.board!!.title
+        mUserName = pin.user!!.urlname
+
         setImageTextInfo(pin!!.raw_text,pin!!.link,pin!!.source,pin!!.repin_count,pin!!.like_count)
         setImageUserInfo(pin!!.user?.avatar,pin!!.user?.username,pin!!.created_at)
         val url1 = String.format(mUrlSmallFormat, pin!!.board?.pins!![0].file?.key)
@@ -212,8 +245,10 @@ class PetalImageDetailFragment : BasePetalRecyclerFragment<PinsMainInfo>() {
 
     override fun itemLayoutConvert(helper: BaseViewHolder, t: PinsMainInfo) {
 
+        val img = helper.getView<SimpleDraweeView>(R.id.img_card_main)
         val txtGather = helper.getView<TextView>(R.id.txt_card_gather)
         var txtLike = helper.getView<TextView>(R.id.txt_card_like)
+        val linearlayoutTitleInfo =  helper.getView<LinearLayout>(R.id.linearLayout_image_title_info)
         //只能在这里设置TextView的drawable了
 
         txtGather.setCompoundDrawablesRelativeWithIntrinsicBounds(CompatUtils.getTintListDrawable(context,
@@ -222,14 +257,14 @@ class PetalImageDetailFragment : BasePetalRecyclerFragment<PinsMainInfo>() {
                 R.drawable.ic_camera_black_18dp,R.color.tint_list_grey),null,null,null)
 
         val imgUrl = String.format(mUrlGeneralFormat,t.file!!.key)
-        val img = helper.getView<SimpleDraweeView>(R.id.img_card_main)
+
         img.aspectRatio = t.imgRatio
 
         if (t.raw_text.isNullOrEmpty() && t.like_count <= 0 && t.repin_count <= 0){
-            helper.getView<LinearLayout>(R.id.linearLayout_image_title_info).visibility = View.GONE
+            linearlayoutTitleInfo.visibility = View.GONE
         }
         else{
-            helper.getView<LinearLayout>(R.id.linearLayout_image_title_info).visibility = View.VISIBLE
+            linearlayoutTitleInfo.visibility = View.VISIBLE
             if (!t.raw_text.isNullOrEmpty()){
                 helper.getView<TextView>(R.id.txt_card_title).text = t.raw_text!!
                 helper.getView<TextView>(R.id.txt_card_title).visibility = View.VISIBLE
@@ -239,6 +274,41 @@ class PetalImageDetailFragment : BasePetalRecyclerFragment<PinsMainInfo>() {
             }
             helper.setText(R.id.txt_card_gather,t.repin_count.toString())
             helper.setText(R.id.txt_card_like,t.like_count.toString())
+        }
+
+
+        img.setOnClickListener {
+            EventBus.getDefault().postSticky(t)
+            mListener?.onClickPinsItemImage(t,it)
+        }
+
+        linearlayoutTitleInfo.setOnClickListener {
+            EventBus.getDefault().postSticky(t)
+            mListener?.onClickPinsItemText(t,it)
+        }
+
+        txtGather.setOnClickListener {
+            if (!isLogin){
+                toast("请先登录再操作")
+                return@setOnClickListener
+            }
+            //不做like操作了，
+            t.repin_count ++
+            txtGather.text = t.repin_count.toString()
+            txtGather.setCompoundDrawablesRelativeWithIntrinsicBounds(CompatUtils.getTintListDrawable(context,
+                    R.drawable.ic_favorite_black_18dp,R.color.tint_list_pink),null,null,null)
+        }
+
+        txtLike.setOnClickListener {
+            if (!isLogin){
+                toast("请先登录再操作")
+                return@setOnClickListener
+            }
+            //不做like操作了，
+            t.like_count ++
+            helper.setText(R.id.txt_card_like,t.like_count.toString())
+            txtLike.setCompoundDrawablesRelativeWithIntrinsicBounds(CompatUtils.getTintListDrawable(context,
+                    R.drawable.ic_camera_black_18dp,R.color.tint_list_pink),null,null,null)
         }
 
         var imgType = t.file?.type
@@ -316,7 +386,9 @@ class PetalImageDetailFragment : BasePetalRecyclerFragment<PinsMainInfo>() {
         if (context is PetalImageDetailActivity){
             mAuthorization = context.mAuthorization
             mPinsBean = context.mPinsBean
+            mListener = context
         }
+
     }
 
     override fun isCanRefresh(): Boolean {
