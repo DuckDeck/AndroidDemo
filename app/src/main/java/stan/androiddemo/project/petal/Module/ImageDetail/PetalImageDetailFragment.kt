@@ -146,11 +146,11 @@ class PetalImageDetailFragment : BasePetalRecyclerFragment<PinsMainInfo>() {
         mRLImageBoard = headView.findViewById(R.id.relativelayout_image_board)
 
 
-        txt_image_gather.setCompoundDrawablesRelativeWithIntrinsicBounds(
+        txt_image_gather.setCompoundDrawablesWithIntrinsicBounds(
                 CompatUtils.getTintListDrawable(context,R.drawable.ic_camera_black_24dp,
                         R.color.tint_list_grey
         ),null,null,null)
-        txt_image_like.setCompoundDrawablesRelativeWithIntrinsicBounds(
+        txt_image_like.setCompoundDrawablesWithIntrinsicBounds(
                 CompatUtils.getTintListDrawable(context,R.drawable.ic_favorite_black_24dp,
                         R.color.tint_list_grey
                 ),null,null,null)
@@ -160,7 +160,7 @@ class PetalImageDetailFragment : BasePetalRecyclerFragment<PinsMainInfo>() {
         ibtn_image_user_chevron_right.setImageDrawable(
                 CompatUtils.getTintListDrawable(context,R.drawable.ic_chevron_right_black_36dp,R.color.tint_list_grey)
         )
-        txt_image_link.setCompoundDrawablesRelativeWithIntrinsicBounds(
+        txt_image_link.setCompoundDrawablesWithIntrinsicBounds(
                 CompatUtils.getTintListDrawable(context,R.drawable.ic_insert_link_black_24dp,
                         R.color.tint_list_grey
                 ),null,null,null)

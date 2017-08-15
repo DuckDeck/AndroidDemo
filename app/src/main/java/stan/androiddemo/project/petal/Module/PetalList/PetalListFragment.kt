@@ -8,6 +8,7 @@ import android.support.v4.graphics.drawable.DrawableCompat
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.StaggeredGridLayoutManager
 import android.view.View
+import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -22,12 +23,10 @@ import rx.schedulers.Schedulers
 import stan.androiddemo.R
 import stan.androiddemo.UI.BasePetalRecyclerFragment
 import stan.androiddemo.project.petal.API.ListPinsBean
-import stan.androiddemo.project.petal.API.OperateAPI
 import stan.androiddemo.project.petal.API.PetalAPI
 import stan.androiddemo.project.petal.Config.Config
 import stan.androiddemo.project.petal.HttpUtiles.RetrofitClient
 import stan.androiddemo.project.petal.Model.PinsMainInfo
-import stan.androiddemo.project.petal.Module.Login.PetalLoginActivity
 import stan.androiddemo.project.petal.Module.Main.PetalActivity
 import stan.androiddemo.project.petal.Module.Type.PetalTypeActivity
 import stan.androiddemo.tool.CompatUtils
@@ -105,7 +104,7 @@ class PetalListFragment : BasePetalRecyclerFragment<PinsMainInfo>() {
 
         img.aspectRatio = t.imgRatio
 
-        img.setOnClickListener {
+        helper.getView<FrameLayout>(R.id.frame_layout_card_image).setOnClickListener {
             EventBus.getDefault().postSticky(t)
             mListener?.onClickPinsItemImage(t,it)
         }
