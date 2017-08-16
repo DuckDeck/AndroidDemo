@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context="stan.androiddemo.project.petal.Module.UserInfo.PetalUserInfoActivity">
     <android.support.design.widget.AppBarLayout
+        android:id="@+id/appBar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
@@ -20,9 +21,7 @@
 
             app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
 
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/head_height"
                 android:id="@+id/linearlayout_user_info"

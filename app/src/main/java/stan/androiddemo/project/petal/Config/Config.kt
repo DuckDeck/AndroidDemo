@@ -34,6 +34,10 @@ class Config{
         val OPERATELIKE = "like"
         val OPERATEUNLIKE = "unlike"
 
+        //用户对画板的关注操作字段
+        val OPERATEFOLLOW = "follow"
+        val OPERATEUNFOLLOW = "unfollow"
+
 
         var REGEX_EMAIL = "\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*"
 

@@ -6,6 +6,7 @@ import stan.androiddemo.project.petal.Config.Config
 import stan.androiddemo.project.petal.Module.ImageDetail.GatherInfoBean
 import stan.androiddemo.project.petal.Module.ImageDetail.GatherResultBean
 import stan.androiddemo.project.petal.Module.ImageDetail.LikePinsOperateBean
+import stan.androiddemo.project.petal.Module.UserInfo.FollowUserOperateBean
 
 /**
  * Created by stanhu on 14/8/2017.
@@ -24,9 +25,14 @@ interface OperateAPI{
 
     @FormUrlEncoded
     @POST("pins/")
-    abstract fun httpsGatherPins(@Header(Config.Authorization) authorization: String,
+     fun httpsGatherPins(@Header(Config.Authorization) authorization: String,
                                  @Field("board_id") boardId: String,
                                  @Field("text") describe: String,
                                  @Field("via") PinsIda: String): Observable<GatherResultBean>
+
+    //关注某个用户
+    //https://api.huaban.com/users/17037199/follow  或者unfollow POST方法 统一成一个接口
+    @POST("users/{userId}/{operate}")
+    abstract fun httpsFollowUserOperate(@Header(Config.Authorization) authorization: String, @Path("userId") userId: String, @Path("operate") operate: String): Observable<FollowUserOperateBean>
 
 }
