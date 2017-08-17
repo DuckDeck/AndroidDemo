@@ -14,8 +14,7 @@ import com.chad.library.adapter.base.BaseViewHolder
 import kotlinx.android.synthetic.main.fragment_base_recycler.*
 import rx.Subscription
 import stan.androiddemo.R
-import stan.androiddemo.project.petal.Event.OnPinsFragmentInteractionListener
-import stan.androiddemo.project.petal.Module.Search.SearchPetalResultActivity
+import stan.androiddemo.project.petal.Base.BasePetalActivity
 
 
 abstract class BasePetalRecyclerFragment<T> : BasePetalFragment() {
@@ -40,8 +39,6 @@ abstract class BasePetalRecyclerFragment<T> : BasePetalFragment() {
 
     var index = 0
 
-
-    protected var mListener: OnPinsFragmentInteractionListener? = null
 
     lateinit var  mUrlGeneralFormat :String
     lateinit var mUrlSmallFormat: String//小图地址
@@ -142,10 +139,7 @@ abstract class BasePetalRecyclerFragment<T> : BasePetalFragment() {
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
-        if (context is OnPinsFragmentInteractionListener){
-            mListener = context
-        }
-        if (context is SearchPetalResultActivity){
+        if (context is BasePetalActivity){
             mAuthorization = context.mAuthorization
         }
     }

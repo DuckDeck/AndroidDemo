@@ -115,7 +115,9 @@
             android:name=".project.petal.Module.Login.PetalLoginActivity"
             android:theme="@style/AppPetalTheme"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".project.petal.Module.UserInfo.PetalUserInfoActivity"></activity>
+        <activity android:name=".project.petal.Module.UserInfo.PetalUserInfoActivity" />
+        <activity android:name=".project.petal.Module.BoardDetail.BoardDetailActivity" />
+        <activity android:name=".project.petal.Module.Follow.PetalFollowActivity"></activity>
     </application>
 
 </manifest> <!-- issue0:can not hide the title bar --><!-- just use   android:theme="@style/Theme.AppCompat.Light.NoActionBar"> -->

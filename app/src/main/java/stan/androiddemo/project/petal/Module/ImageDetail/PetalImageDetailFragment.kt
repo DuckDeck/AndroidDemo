@@ -3,10 +3,7 @@ package stan.androiddemo.project.petal.Module.ImageDetail
 
 import android.content.Context
 import android.graphics.Color
-import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.support.graphics.drawable.VectorDrawableCompat
-import android.support.v4.graphics.drawable.DrawableCompat
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.StaggeredGridLayoutManager
 import android.view.View
@@ -64,7 +61,7 @@ class PetalImageDetailFragment : BasePetalRecyclerFragment<PinsMainInfo>() {
 
     private var mBoardName: String? = null
     private var mUserName: String? = null
-    lateinit var progressLoading: Drawable
+
 
 
     companion object {
@@ -82,9 +79,6 @@ class PetalImageDetailFragment : BasePetalRecyclerFragment<PinsMainInfo>() {
 
     override fun initView() {
         super.initView()
-        val d0 = VectorDrawableCompat.create(resources,R.drawable.ic_toys_black_24dp,null)
-        progressLoading = DrawableCompat.wrap(d0!!.mutate())
-        DrawableCompat.setTint(progressLoading,resources.getColor(R.color.tint_list_pink))
         mKey = arguments.getString("type")
     }
 

@@ -4,6 +4,7 @@ package stan.androiddemo.project.petal.Module.UserInfo
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.StaggeredGridLayoutManager
 import android.widget.LinearLayout
@@ -163,6 +164,6 @@ class PetalUserBoardFragment : BasePetalRecyclerFragment<UserBoardItemBean>() {
     }
 
     override fun getLayoutManager(): RecyclerView.LayoutManager {
-        return StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL)
+        return GridLayoutManager(context,2)
     }
 }
