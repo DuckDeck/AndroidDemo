@@ -29,7 +29,6 @@ import stan.androiddemo.tool.ImageLoad.ImageLoadBuilder
  * A simple [Fragment] subclass.
  */
 class SearchPetalResultPinsFragment : BasePetalRecyclerFragment<PinsMainInfo>() {
-    lateinit var mKey: String//用于联网查询的关键字
     var mLimit = Config.LIMIT
     override fun getTheTAG(): String {
         return this.toString()
@@ -39,15 +38,10 @@ class SearchPetalResultPinsFragment : BasePetalRecyclerFragment<PinsMainInfo>() 
         fun newInstance(type:String): SearchPetalResultPinsFragment {
             val fragment = SearchPetalResultPinsFragment()
             val bundle = Bundle()
-            bundle.putString("type",type)
+            bundle.putString("key",type)
             fragment.arguments = bundle
             return fragment
         }
-    }
-
-    override fun initView() {
-        super.initView()
-        mKey = arguments.getString("type")
     }
 
     override fun getLayoutManager(): RecyclerView.LayoutManager {

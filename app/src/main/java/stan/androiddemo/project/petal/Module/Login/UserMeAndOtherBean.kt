@@ -22,7 +22,7 @@ class UserMeAndOtherBean{
     //该用户是否已经关注 关注为1 否则没有对应的网络字段 int默认值为0
      var following: Int = 0
 
-    private var profile: ProfileBean? = null
+    var profile: ProfileBean? = null
 
     class ProfileBean {
         var location: String? = null

@@ -4,11 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     tools:context="stan.androiddemo.project.petal.Module.UserInfo.PetalUserInfoActivity">
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appBar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
         <android.support.design.widget.CollapsingToolbarLayout
@@ -18,7 +20,6 @@
             android:fitsSystemWindows="true"
             app:contentScrim="@color/transparent"
             app:statusBarScrim="@color/transparent"
-
             app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
 
             <LinearLayout
@@ -27,7 +28,6 @@
                 android:id="@+id/linearlayout_user_info"
                 tools:background="@drawable/petal_header_bg"
                 android:fitsSystemWindows="true"
-
                 app:layout_scrollFlags="scroll|enterAlwaysCollapsed"
                 android:gravity="center|bottom"
                 android:orientation="vertical">
@@ -72,7 +72,6 @@
                     android:gravity="center"
                     android:maxLines="1"
                     android:paddingLeft="@dimen/text_padding_double"
-
                     android:textColor="@color/white"
                     android:textSize="@dimen/card_context_size_14sp"
                     tools:text="100粉丝 100关注" />
@@ -86,7 +85,7 @@
                 android:fitsSystemWindows="true"
                 android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
                 app:titleTextColor="@android:color/white"
-                app:popupTheme="@style/Theme.AppCompat.Light"></android.support.v7.widget.Toolbar>
+                app:popupTheme="@style/Theme.AppCompat.Light" />
         </android.support.design.widget.CollapsingToolbarLayout>
 
         <android.support.design.widget.TabLayout
@@ -101,7 +100,7 @@
 
     <android.support.v4.view.ViewPager
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:id="@+id/container"
+        android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

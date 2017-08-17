@@ -25,8 +25,6 @@ import stan.androiddemo.project.petal.Config.Config
 import stan.androiddemo.project.petal.Event.OnPinsFragmentInteractionListener
 import stan.androiddemo.project.petal.HttpUtiles.RetrofitClient
 import stan.androiddemo.project.petal.Model.PinsMainInfo
-import stan.androiddemo.project.petal.Module.Main.PetalActivity
-import stan.androiddemo.project.petal.Module.Type.PetalTypeActivity
 import stan.androiddemo.tool.CompatUtils
 import stan.androiddemo.tool.ImageLoad.ImageLoadBuilder
 import stan.androiddemo.tool.Logger
@@ -34,7 +32,6 @@ import stan.androiddemo.tool.Logger
 
 class PetalListFragment : BasePetalRecyclerFragment<PinsMainInfo>() {
 
-    lateinit var mKey: String//用于联网查询的关键字
     var mLimit = Config.LIMIT
     var maxId = 0
     private var mListener: OnPinsFragmentInteractionListener? = null
@@ -46,31 +43,18 @@ class PetalListFragment : BasePetalRecyclerFragment<PinsMainInfo>() {
         fun createListFragment(type:String,title:String):PetalListFragment{
             val fragment = PetalListFragment()
             val bundle = Bundle()
-            bundle.putString("type",type)
+            bundle.putString("key",type)
             bundle.putString("title",title)
             fragment.arguments = bundle
             return fragment
         }
     }
 
-
-    override fun initView() {
-        super.initView()
-
-        mKey = arguments.getString("type")
-
-    }
-
-
     override fun onAttach(context: Context?) {
         super.onAttach(context)
         Logger.d(context.toString())
-        if (context is PetalActivity){
-            mAuthorization = context.mAuthorization
-            //看要不要把事件交给activity来完成
-        }
-        if (context is PetalTypeActivity){
-            mAuthorization = context.mAuthorization
+        if (context is OnPinsFragmentInteractionListener){
+            mListener = context
         }
     }
 

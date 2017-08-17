@@ -1,7 +1,9 @@
 package stan.androiddemo.project.petal.Module.Main
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Bundle
 import android.support.v4.app.FragmentManager
@@ -31,8 +33,7 @@ import stan.androiddemo.tool.SPUtils
 import java.util.concurrent.TimeUnit
 
 
-class PetalActivity : BasePetalActivity(),OnPinsFragmentInteractionListener {
-
+class PetalActivity : BasePetalActivity(),OnPinsFragmentInteractionListener, SharedPreferences.OnSharedPreferenceChangeListener {
 
 
     lateinit var fragmentManage: FragmentManager
@@ -58,6 +59,9 @@ class PetalActivity : BasePetalActivity(),OnPinsFragmentInteractionListener {
         setSupportActionBar(toolbar)
         fragmentManage = supportFragmentManager
         getData()
+
+        getSharedPreferences("share_data", Context.MODE_PRIVATE).registerOnSharedPreferenceChangeListener(this)
+
         initDrawer(toolbar)
 
         initNavHeadView()
@@ -204,6 +208,13 @@ class PetalActivity : BasePetalActivity(),OnPinsFragmentInteractionListener {
         }
 
     }
+
+    override fun onSharedPreferenceChanged(p0: SharedPreferences, p1: String) {
+        if (Config.ISLOGIN == p1){
+            isLogin = p0.getBoolean(Config.ISLOGIN, false)
+        }
+    }
+
 
     override fun onClickPinsItemImage(bean: PinsMainInfo, view: View) {
         PetalImageDetailActivity.launch(this@PetalActivity,PetalImageDetailActivity.ACTION_MAIN)

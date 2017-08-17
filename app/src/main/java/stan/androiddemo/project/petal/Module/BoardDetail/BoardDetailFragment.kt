@@ -33,7 +33,7 @@ import stan.androiddemo.tool.ImageLoad.ImageLoadBuilder
 class BoardDetailFragment : BasePetalRecyclerFragment<PinsMainInfo>() {
 
 
-    lateinit var mKey: String//用于联网查询的关键字
+
     var mLimit = Config.LIMIT
     var maxId = 0
     lateinit var mLLBoardUser: LinearLayout
@@ -42,8 +42,8 @@ class BoardDetailFragment : BasePetalRecyclerFragment<PinsMainInfo>() {
     lateinit var mTVBoardDescribe: TextView
     lateinit var mTVBoardAttention: TextView
     lateinit var mTVBoardGather: TextView
-    internal val mStringGatherNumber = resources.getString(R.string.text_gather_number)
-    internal val mStringAttentionNumber =  resources.getString(R.string.text_attention_number)
+    internal var mStringGatherNumber:String? = null
+    internal var mStringAttentionNumber:String? = null
     private var mStringUserKey   = ""
     private var mStringUserTitle = ""
 
@@ -59,6 +59,12 @@ class BoardDetailFragment : BasePetalRecyclerFragment<PinsMainInfo>() {
             fragment.arguments = bundle
             return fragment
         }
+    }
+
+    override fun initView() {
+        super.initView()
+        mStringGatherNumber = resources.getString(R.string.text_gather_number)
+        mStringAttentionNumber = resources.getString(R.string.text_attention_number)
     }
 
     override fun headView(): View? {
@@ -91,6 +97,10 @@ class BoardDetailFragment : BasePetalRecyclerFragment<PinsMainInfo>() {
         requestOtherData()
     }
 
+    override fun isCanRefresh(): Boolean {
+        return false
+    }
+
     fun setBoardInfo(bean:BoardDetailBean){
         mListener?.onHttpBoardAttentionState(bean.board!!.user_id.toString(),bean.board!!.isFollowing)
         val urlHead = String.format(mUrlSmallFormat,bean.board?.user?.avatar)
@@ -102,8 +112,8 @@ class BoardDetailFragment : BasePetalRecyclerFragment<PinsMainInfo>() {
         else{
             mTVBoardDescribe.text = resources.getString(R.string.text_board_describe_null)
         }
-        mTVBoardGather.text = String.format(mStringGatherNumber,bean.board!!.pin_count)
-        mTVBoardAttention.text = String.format(mStringAttentionNumber,bean.board!!.follow_count)
+        mTVBoardGather.text = String.format(mStringGatherNumber!!,bean.board!!.pin_count)
+        mTVBoardAttention.text = String.format(mStringAttentionNumber!!,bean.board!!.follow_count)
     }
 
     override fun getLayoutManager(): RecyclerView.LayoutManager {
@@ -199,11 +209,14 @@ class BoardDetailFragment : BasePetalRecyclerFragment<PinsMainInfo>() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object:Subscriber<BoardDetailBean>(){
                     override fun onNext(t: BoardDetailBean?) {
-
+                        mLLBoardUser.isEnabled = true
+                        mStringUserKey = t!!.board!!.user!!.user_id.toString()
+                        mStringUserTitle = t!!.board!!.user!!.username!!
+                        setBoardInfo(t)
                     }
 
                     override fun onError(e: Throwable?) {
-                        //// TODO: 2016/3/29 0029 从父activity应该能取出缓存 设值
+
                     }
                     override fun onCompleted() {
 

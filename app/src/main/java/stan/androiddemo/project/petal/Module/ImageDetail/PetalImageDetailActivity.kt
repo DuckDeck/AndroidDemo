@@ -30,6 +30,8 @@ import stan.androiddemo.project.petal.Event.OnDialogInteractionListener
 import stan.androiddemo.project.petal.Event.OnImageDetailFragmentInteractionListener
 import stan.androiddemo.project.petal.HttpUtiles.RetrofitClient
 import stan.androiddemo.project.petal.Model.PinsMainInfo
+import stan.androiddemo.project.petal.Module.BoardDetail.BoardDetailActivity
+import stan.androiddemo.project.petal.Module.UserInfo.PetalUserInfoActivity
 import stan.androiddemo.project.petal.Observable.AnimatorOnSubscribe
 import stan.androiddemo.project.petal.Widget.GatherDialogFragment
 import stan.androiddemo.tool.AnimatorUtils
@@ -199,13 +201,11 @@ class PetalImageDetailActivity : BasePetalActivity(), OnDialogInteractionListene
     }
 
     override fun onClickBoardField(key: String, title: String) {
-        TODO("BoardDetailActivity")
-//        BoardDetailActivity.launch(this, key, title)
+        BoardDetailActivity.launch(this, key, title)
     }
 
     override fun onClickUserField(key: String, title: String) {
-        TODO("UserActivity")
-//        UserActivity.launch(this, key, title)
+        PetalUserInfoActivity.launch(this, key, title)
     }
 
     override fun onClickImageLink(link: String) {

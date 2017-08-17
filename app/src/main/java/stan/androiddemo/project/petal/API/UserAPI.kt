@@ -18,6 +18,12 @@ interface UserAPI{
     @GET("users/me")
      fun httpsUserRx(@Header(Config.Authorization) authorization: String): Observable<UserMeAndOtherBean>
 
+    //https://api.huaban.com/users/15246080
+    //获取个人信息
+    @GET("users/{userId}")
+    fun httpsUserInfoRx(@Header(Config.Authorization) authorization: String, @Path("userId") pinsId: String): Observable<UserMeAndOtherBean>
+
+
     //获取我的画板集合信息 不需要显示需要保存
     //https://api.huaban.com/last_boards/?extra=recommend_tags
     @GET("last_boards/")

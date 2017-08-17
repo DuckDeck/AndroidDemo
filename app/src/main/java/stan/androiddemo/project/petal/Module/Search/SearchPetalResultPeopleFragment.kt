@@ -23,7 +23,6 @@ import stan.androiddemo.tool.ImageLoad.ImageLoadBuilder
 
 
 class SearchPetalResultPeopleFragment : BasePetalRecyclerFragment<SearchPeopleBean.UsersBean>() {
-    lateinit var mKey: String//用于联网查询的关键字
     var mLimit = Config.LIMIT
     lateinit var mFansFormat: String
     lateinit var mHttpRoot: String
@@ -44,7 +43,6 @@ class SearchPetalResultPeopleFragment : BasePetalRecyclerFragment<SearchPeopleBe
 
     override fun initView() {
         super.initView()
-        mKey = arguments.getString("type")
         mFansFormat = context.resources.getString(R.string.text_fans_number)
         mHttpRoot = context.resources.getString(R.string.httpRoot)
     }

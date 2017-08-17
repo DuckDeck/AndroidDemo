@@ -26,7 +26,6 @@ import stan.androiddemo.project.petal.Config.Config
 import stan.androiddemo.project.petal.Event.OnImageDetailFragmentInteractionListener
 import stan.androiddemo.project.petal.HttpUtiles.RetrofitClient
 import stan.androiddemo.project.petal.Model.PinsMainInfo
-import stan.androiddemo.project.petal.Module.Main.PetalActivity
 import stan.androiddemo.tool.CompatUtils
 import stan.androiddemo.tool.ImageLoad.ImageLoadBuilder
 import stan.androiddemo.tool.Logger
@@ -34,7 +33,6 @@ import stan.androiddemo.tool.TimeUtils
 
 
 class PetalImageDetailFragment : BasePetalRecyclerFragment<PinsMainInfo>() {
-    lateinit var mKey: String//用于联网查询的关键字
     var mLimit = Config.LIMIT
     var maxId = 0
     private var mPinsBean: PinsMainInfo? = null
@@ -62,43 +60,40 @@ class PetalImageDetailFragment : BasePetalRecyclerFragment<PinsMainInfo>() {
     private var mBoardName: String? = null
     private var mUserName: String? = null
 
+    private var mListener: OnImageDetailFragmentInteractionListener? = null
 
 
     companion object {
         fun newInstance(key:String):PetalImageDetailFragment{
             val fragment = PetalImageDetailFragment()
             val bundle = Bundle()
-            bundle.putString("type",key)
+            bundle.putString("key",key)
             fragment.arguments = bundle
             return fragment
         }
     }
 
-
     override fun getTheTAG(): String {return this.toString()}
-
-    override fun initView() {
-        super.initView()
-        mKey = arguments.getString("type")
-    }
 
     override fun initListener() {
         super.initListener()
-        val lin = mListener as OnImageDetailFragmentInteractionListener
+
         txt_image_link.setOnClickListener {
-            lin.onClickImageLink(it.tag as String)
+            mListener?.onClickImageLink(it.tag as String)
         }
         txt_image_gather.setOnClickListener {
-
+            TODO("txt_image_gather.setOnClickListener")
         }
-        txt_image_like.setOnClickListener {  }
+        txt_image_like.setOnClickListener {
+            TODO("txt_image_like.setOnClickListener")
+        }
 
         mRLImageUser.setOnClickListener {
-            lin.onClickUserField(mUserId!!,mUserName!!)
+            mListener?.onClickUserField(mUserId!!,mUserName!!)
         }
 
         mRLImageBoard.setOnClickListener {
-            lin.onClickBoardField(mUserId!!,mUserName!!)
+            mListener?.onClickBoardField(mUserId!!,mUserName!!)
         }
 
     }
@@ -115,8 +110,6 @@ class PetalImageDetailFragment : BasePetalRecyclerFragment<PinsMainInfo>() {
     override fun getItemLayoutId(): Int {
         return R.layout.petal_cardview_image_item
     }
-
-
 
     override fun headView(): View? {
         val headView = layoutInflater.inflate(R.layout.petal_image_detail_head_view,null)
@@ -160,6 +153,7 @@ class PetalImageDetailFragment : BasePetalRecyclerFragment<PinsMainInfo>() {
                 ),null,null,null)
         return headView
     }
+
 
 
     fun setImageDetailInfo(pinsDetailBean:PinsDetailBean){
@@ -234,7 +228,6 @@ class PetalImageDetailFragment : BasePetalRecyclerFragment<PinsMainInfo>() {
         ImageLoadBuilder.Start(context,img_image_board_2,url2).setIsRadius(true,5F).build()
         ImageLoadBuilder.Start(context,img_image_board_3,url3).setIsRadius(true,5F).build()
         ImageLoadBuilder.Start(context,img_image_board_4,url4).setIsRadius(true,5F).build()
-
     }
 
     override fun itemLayoutConvert(helper: BaseViewHolder, t: PinsMainInfo) {
@@ -373,14 +366,11 @@ class PetalImageDetailFragment : BasePetalRecyclerFragment<PinsMainInfo>() {
     override fun onAttach(context: Context?) {
         super.onAttach(context)
         Logger.d(context.toString())
-        if (context is PetalActivity){
-            mAuthorization = context.mAuthorization
-            //看要不要把事件交给activity来完成
+        if (context is OnImageDetailFragmentInteractionListener){
+            mListener = context
         }
         if (context is PetalImageDetailActivity){
-            mAuthorization = context.mAuthorization
             mPinsBean = context.mPinsBean
-            mListener = context
         }
 
     }

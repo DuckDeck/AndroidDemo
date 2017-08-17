@@ -22,8 +22,6 @@ import stan.androiddemo.tool.ImageLoad.ImageLoadBuilder
 
 
 class SearchPetalResultBoardFragment : BasePetalRecyclerFragment<BoardPinsInfo>() {
-
-    lateinit var mKey: String//用于联网查询的关键字
     lateinit var  mAttentionFormat :String
     lateinit var  mGatherFormat :String
     lateinit var  mUsernameFormat :String
@@ -38,7 +36,7 @@ class SearchPetalResultBoardFragment : BasePetalRecyclerFragment<BoardPinsInfo>(
         fun newInstance(type:String): SearchPetalResultBoardFragment {
             val fragment = SearchPetalResultBoardFragment()
             val bundle = Bundle()
-            bundle.putString("type",type)
+            bundle.putString("key",type)
             fragment.arguments = bundle
             return fragment
         }
@@ -52,12 +50,9 @@ class SearchPetalResultBoardFragment : BasePetalRecyclerFragment<BoardPinsInfo>(
 
     override fun initView() {
         super.initView()
-        mKey = arguments.getString("type")
         mAttentionFormat = context.resources.getString(R.string.text_attention_number)
         mGatherFormat = context.resources.getString(R.string.text_gather_number)
         mUsernameFormat = context.resources.getString(R.string.text_by_username)
-
-
     }
 
     override fun getItemLayoutId(): Int {

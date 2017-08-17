@@ -6,7 +6,6 @@ import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.StaggeredGridLayoutManager
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.chad.library.adapter.base.BaseViewHolder
@@ -28,7 +27,6 @@ import stan.androiddemo.tool.ImageLoad.ImageLoadBuilder
 class PetalUserBoardFragment : BasePetalRecyclerFragment<UserBoardItemBean>() {
     private var mMaxId: Int = 0
     private var isMe: Boolean = false
-    lateinit var mKey: String//用于联网查询的关键字
     var mLimit = Config.LIMIT
     var maxId = 0
 
@@ -124,6 +122,7 @@ class PetalUserBoardFragment : BasePetalRecyclerFragment<UserBoardItemBean>() {
 
         val url = String.format(mUrlGeneralFormat,userBoardItemBean.pins!![0].file!!.key)
         val img = helper.getView<SimpleDraweeView>(R.id.img_card_image)
+        img.aspectRatio = 1F
         ImageLoadBuilder.Start(context,img,url).setPlaceHolderImage(progressLoading).build()
     }
 

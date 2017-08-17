@@ -6,12 +6,10 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.text.SpannableStringBuilder
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import com.jakewharton.rxbinding.view.RxView
 import com.jakewharton.rxbinding.widget.RxTextView
 import kotlinx.android.synthetic.main.activity_petal_login.*
@@ -21,7 +19,6 @@ import rx.functions.Action1
 import rx.functions.Func1
 import rx.schedulers.Schedulers
 import stan.androiddemo.R
-
 import stan.androiddemo.project.petal.API.TokenAPI
 import stan.androiddemo.project.petal.API.UserAPI
 import stan.androiddemo.project.petal.Base.BasePetalActivity
@@ -99,7 +96,7 @@ class PetalLoginActivity : BasePetalActivity() {
         val emailArray = arrayListOf("qq.com","163.com","126.com")
         emailAdapter = ArrayAdapter<String>(mContext,android.R.layout.simple_spinner_dropdown_item,emailArray)
         auto_text_username.setAdapter(emailAdapter)
-        TODO("下拉菜单")
+        //TODO("下拉菜单")
     }
 
     fun attempLogin(){

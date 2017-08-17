@@ -39,6 +39,7 @@ abstract class BasePetalRecyclerFragment<T> : BasePetalFragment() {
 
     var index = 0
 
+    lateinit var mKey: String//用于联网查询的关键字
 
     lateinit var  mUrlGeneralFormat :String
     lateinit var mUrlSmallFormat: String//小图地址
@@ -46,10 +47,10 @@ abstract class BasePetalRecyclerFragment<T> : BasePetalFragment() {
     lateinit var progressLoading: Drawable
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        mKey = arguments.getString("key")
         initView()
         initListener()
         initData()
-
     }
 
 

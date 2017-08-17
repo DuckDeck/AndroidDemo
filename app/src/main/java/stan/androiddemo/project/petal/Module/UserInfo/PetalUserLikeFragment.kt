@@ -24,6 +24,7 @@ import stan.androiddemo.UI.BasePetalRecyclerFragment
 import stan.androiddemo.project.petal.API.ListPinsBean
 import stan.androiddemo.project.petal.API.UserAPI
 import stan.androiddemo.project.petal.Config.Config
+import stan.androiddemo.project.petal.Event.OnPinsFragmentInteractionListener
 import stan.androiddemo.project.petal.HttpUtiles.RetrofitClient
 import stan.androiddemo.project.petal.Model.PinsMainInfo
 import stan.androiddemo.tool.CompatUtils
@@ -36,9 +37,9 @@ import stan.androiddemo.tool.ImageLoad.ImageLoadBuilder
 class PetalUserLikeFragment : BasePetalRecyclerFragment<PinsMainInfo>() {
 
     private var isMe: Boolean = false
-    lateinit var mKey: String//用于联网查询的关键字
     var mLimit = Config.LIMIT
     var maxId = 0
+    private var mListener: OnPinsFragmentInteractionListener? = null
     override fun getTheTAG(): String { return this.toString() }
 
     companion object {
@@ -53,8 +54,10 @@ class PetalUserLikeFragment : BasePetalRecyclerFragment<PinsMainInfo>() {
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
+        if (context is OnPinsFragmentInteractionListener){
+            mListener = context
+        }
         if (context is PetalUserInfoActivity){
-            mAuthorization = context.mAuthorization
             isMe = context.isMe
         }
     }
