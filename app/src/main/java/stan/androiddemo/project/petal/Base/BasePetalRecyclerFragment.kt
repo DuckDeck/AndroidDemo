@@ -2,7 +2,10 @@ package stan.androiddemo.UI
 
 import android.content.Context
 import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.support.graphics.drawable.VectorDrawableCompat
+import android.support.v4.graphics.drawable.DrawableCompat
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.TextView
@@ -43,7 +46,7 @@ abstract class BasePetalRecyclerFragment<T> : BasePetalFragment() {
     lateinit var  mUrlGeneralFormat :String
     lateinit var mUrlSmallFormat: String//小图地址
     lateinit var mUrlBigFormat: String//大图地址
-
+    lateinit var progressLoading: Drawable
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         initView()
@@ -59,6 +62,10 @@ abstract class BasePetalRecyclerFragment<T> : BasePetalFragment() {
         mUrlSmallFormat = context.resources.getString(R.string.url_image_small)
         mUrlBigFormat = context.resources.getString(R.string.url_image_big)
         index = startPageNumber()
+        val d0 = VectorDrawableCompat.create(resources,R.drawable.ic_toys_black_24dp,null)
+        progressLoading = DrawableCompat.wrap(d0!!.mutate())
+        DrawableCompat.setTint(progressLoading,resources.getColor(R.color.tint_list_pink))
+
         mAdapter = object:BaseQuickAdapter<T,BaseViewHolder>(getItemLayoutId(),arrItem){
             override fun convert(helper: BaseViewHolder, item: T) {
                 itemLayoutConvert(helper,item)

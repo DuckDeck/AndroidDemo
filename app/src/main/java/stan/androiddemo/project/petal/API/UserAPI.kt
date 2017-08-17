@@ -32,4 +32,30 @@ interface UserAPI{
     fun httpsUserBoardMaxRx(@Header(Config.Authorization) authorization: String,
                             @Path("userId") pinsId: String, @Query("max") max: Int, @Query("limit") limit: Int): Observable<UserBoardListBean>
 
+
+    //https://api.huaban.com/users/188174/pins?limit=40
+    //用户的采集
+    @GET("users/{userId}/pins")
+     fun httpsUserPinsRx(@Header(Config.Authorization) authorization: String,
+                         @Path("userId") pinsId: String, @Query("limit") limit: Int): Observable<ListPinsBean>
+
+    //https://api.huaban.com/users/188174/pins?limit=40&max=19532400
+    //后续滑动联网
+    @GET("users/{userId}/pins")
+    fun httpsUserPinsMaxRx(@Header(Config.Authorization) authorization: String,
+                           @Path("userId") pinsId: String, @Query("max") max: Int, @Query("limit") limit: Int): Observable<ListPinsBean>
+
+
+    //https://api.huaban.com/users/188174/likes?limit=40
+    //用户的喜欢
+    @GET("users/{userId}/likes")
+    abstract fun httpsUserLikePinsRx(@Header(Config.Authorization) authorization: String,
+                                     @Path("userId") pinsId: String, @Query("limit") limit: Int): Observable<ListPinsBean>
+
+    //https://api.huaban.com/users/743988/likes?limit=40&max=4338219
+    //用户喜欢的后续联网
+    @GET("users/{userId}/likes")
+    abstract fun httpsUserLikePinsMaxRx(@Header(Config.Authorization) authorization: String,
+                                        @Path("userId") pinsId: String, @Query("max") max: Int, @Query("limit") limit: Int): Observable<ListPinsBean>
+
 }
