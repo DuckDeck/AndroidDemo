@@ -1,7 +1,8 @@
-package stan.androiddemo.project.petal.Module.PetalList
+package stan.androiddemo.project.petal.Module.Follow
+
 
 import android.content.Context
-import android.os.Bundle
+import android.support.v4.app.Fragment
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.StaggeredGridLayoutManager
 import android.view.View
@@ -19,68 +20,51 @@ import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 import stan.androiddemo.R
 import stan.androiddemo.UI.BasePetalRecyclerFragment
-import stan.androiddemo.project.petal.API.ListPinsBean
-import stan.androiddemo.project.petal.API.PetalAPI
+import stan.androiddemo.project.petal.API.FollowAPI
 import stan.androiddemo.project.petal.Config.Config
 import stan.androiddemo.project.petal.Event.OnPinsFragmentInteractionListener
 import stan.androiddemo.project.petal.HttpUtiles.RetrofitClient
 import stan.androiddemo.project.petal.Model.PinsMainInfo
-import stan.androiddemo.project.petal.Module.Main.PetalActivity
-import stan.androiddemo.project.petal.Module.Type.PetalTypeActivity
 import stan.androiddemo.tool.CompatUtils
 import stan.androiddemo.tool.ImageLoad.ImageLoadBuilder
-import stan.androiddemo.tool.Logger
 
 
-class PetalListFragment : BasePetalRecyclerFragment<PinsMainInfo>() {
-
-    lateinit var mKey: String//用于联网查询的关键字
-    var mLimit = Config.LIMIT
-    var maxId = 0
+/**
+ * A simple [Fragment] subclass.
+ */
+class PetalFollowPinsFragment : BasePetalRecyclerFragment<PinsMainInfo>() {
+    protected var mLimit = Config.LIMIT
+    private var maxId: Int = 0//下一次联网的pinsId开始
     private var mListener: OnPinsFragmentInteractionListener? = null
-    override fun getTheTAG(): String {
-        return this.toString()
-    }
+
 
     companion object {
-        fun createListFragment(type:String,title:String):PetalListFragment{
-            val fragment = PetalListFragment()
-            val bundle = Bundle()
-            bundle.putString("type",type)
-            bundle.putString("title",title)
-            fragment.arguments = bundle
-            return fragment
+        fun newInstance():PetalFollowPinsFragment{
+            return PetalFollowPinsFragment()
         }
     }
 
 
-    override fun initView() {
-        super.initView()
-
-        mKey = arguments.getString("type")
-
+    override fun getTheTAG(): String {
+       return this.toString()
     }
-
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
-        Logger.d(context.toString())
-        if (context is PetalActivity){
-            mAuthorization = context.mAuthorization
-            //看要不要把事件交给activity来完成
-        }
-        if (context is PetalTypeActivity){
-            mAuthorization = context.mAuthorization
+        if (context is OnPinsFragmentInteractionListener)
+        {
+            mListener = context
         }
     }
 
     override fun getLayoutManager(): RecyclerView.LayoutManager {
-        return  StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL)
+       return StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL)
     }
 
     override fun getItemLayoutId(): Int {
         return R.layout.petal_cardview_image_item
     }
+
 
     override fun itemLayoutConvert(helper: BaseViewHolder, t: PinsMainInfo) {
         val img = helper.getView<SimpleDraweeView>(R.id.img_card_main)
@@ -151,7 +135,7 @@ class PetalListFragment : BasePetalRecyclerFragment<PinsMainInfo>() {
         var imgType = t.file?.type
         if (!imgType.isNullOrEmpty()){
             if (imgType!!.toLowerCase().contains("gif")  )  {
-               helper.getView<ImageButton>(R.id.imgbtn_card_gif).visibility = View.VISIBLE
+                helper.getView<ImageButton>(R.id.imgbtn_card_gif).visibility = View.VISIBLE
             }
             else{
                 helper.getView<ImageButton>(R.id.imgbtn_card_gif).visibility = View.INVISIBLE
@@ -159,22 +143,20 @@ class PetalListFragment : BasePetalRecyclerFragment<PinsMainInfo>() {
         }
 
         ImageLoadBuilder.Start(context,img,imgUrl).setProgressBarImage(progressLoading).build()
-
-
     }
 
     override fun requestListData(page: Int): Subscription {
-        val request = RetrofitClient.createService(PetalAPI::class.java)
-        var result :  Observable<ListPinsBean>
+        val request = RetrofitClient.createService(FollowAPI::class.java)
+        var result : Observable<FollowPinsBean>
         if (page == 0){
-            result = request.httpsTypeLimitRx(mAuthorization!!,mKey,mLimit)
+            result = request.httpsMyFollowingPinsRx(mAuthorization!!,mLimit)
         }
         else{
-            result = request.httpsTypeMaxLimitRx(mAuthorization!!,mKey,maxId, mLimit)
+            result = request.httpsMyFollowingPinsMaxRx(mAuthorization!!,maxId, mLimit)
         }
         return result.map { it.pins }.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object:Subscriber<List<PinsMainInfo>>(){
+                .subscribe(object: Subscriber<List<PinsMainInfo>>(){
                     override fun onCompleted() {
 
                     }
@@ -198,8 +180,6 @@ class PetalListFragment : BasePetalRecyclerFragment<PinsMainInfo>() {
 
                 })
     }
-
-
 
 
 

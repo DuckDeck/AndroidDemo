@@ -2,10 +2,7 @@ package stan.androiddemo.project.petal.Module.Search
 
 
 import android.graphics.Color
-import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.support.graphics.drawable.VectorDrawableCompat
-import android.support.v4.graphics.drawable.DrawableCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.widget.ImageButton
@@ -15,7 +12,6 @@ import rx.Subscriber
 import rx.Subscription
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
-
 import stan.androiddemo.R
 import stan.androiddemo.UI.BasePetalRecyclerFragment
 import stan.androiddemo.project.petal.API.SearchAPI
@@ -28,7 +24,6 @@ import stan.androiddemo.tool.ImageLoad.ImageLoadBuilder
 
 class SearchPetalResultPeopleFragment : BasePetalRecyclerFragment<SearchPeopleBean.UsersBean>() {
     lateinit var mKey: String//用于联网查询的关键字
-    lateinit var progressLoading: Drawable
     var mLimit = Config.LIMIT
     lateinit var mFansFormat: String
     lateinit var mHttpRoot: String
@@ -49,9 +44,6 @@ class SearchPetalResultPeopleFragment : BasePetalRecyclerFragment<SearchPeopleBe
 
     override fun initView() {
         super.initView()
-        val d0 = VectorDrawableCompat.create(resources,R.drawable.ic_toys_black_24dp,null)
-        progressLoading = DrawableCompat.wrap(d0!!.mutate())
-        DrawableCompat.setTint(progressLoading,resources.getColor(R.color.tint_list_pink))
         mKey = arguments.getString("type")
         mFansFormat = context.resources.getString(R.string.text_fans_number)
         mHttpRoot = context.resources.getString(R.string.httpRoot)

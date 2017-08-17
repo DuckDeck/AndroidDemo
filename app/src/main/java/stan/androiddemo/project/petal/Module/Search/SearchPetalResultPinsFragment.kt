@@ -1,11 +1,8 @@
 package stan.androiddemo.project.petal.Module.Search
 
 
-import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.support.graphics.drawable.VectorDrawableCompat
 import android.support.v4.app.Fragment
-import android.support.v4.graphics.drawable.DrawableCompat
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.StaggeredGridLayoutManager
 import android.view.View
@@ -33,8 +30,6 @@ import stan.androiddemo.tool.ImageLoad.ImageLoadBuilder
  */
 class SearchPetalResultPinsFragment : BasePetalRecyclerFragment<PinsMainInfo>() {
     lateinit var mKey: String//用于联网查询的关键字
-
-    lateinit var progressLoading: Drawable
     var mLimit = Config.LIMIT
     override fun getTheTAG(): String {
         return this.toString()
@@ -52,9 +47,6 @@ class SearchPetalResultPinsFragment : BasePetalRecyclerFragment<PinsMainInfo>() 
 
     override fun initView() {
         super.initView()
-        val d0 = VectorDrawableCompat.create(resources,R.drawable.ic_toys_black_24dp,null)
-        progressLoading = DrawableCompat.wrap(d0!!.mutate())
-        DrawableCompat.setTint(progressLoading,resources.getColor(R.color.tint_list_pink))
         mKey = arguments.getString("type")
     }
 
