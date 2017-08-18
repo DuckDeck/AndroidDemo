@@ -188,7 +188,7 @@ class PetalLoginActivity : BasePetalActivity() {
         for (i in 0 until boardList.size){
             boardTitle.append(boardList[i].title)
             boardId.append(boardList[i].board_id)
-            if (i == boardList.size - 1){
+            if (i != boardList.size - 1){
                 boardTitle.append(",")
                 boardId.append(",")
             }

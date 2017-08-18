@@ -82,7 +82,11 @@ class PetalActivity : BasePetalActivity(),OnPinsFragmentInteractionListener, Sha
     fun getData(){
         types = resources.getStringArray(R.array.type_array)
         titles = resources.getStringArray(R.array.title_array)
-
+        isLogin = SPUtils.get(mContext,Config.ISLOGIN,false) as Boolean
+        if (isLogin){
+            mUserName = SPUtils.get(mContext,Config.USERNAME,mUserName) as String
+            mUserId = SPUtils.get(mContext,Config.USERID,mUserId) as String
+        }
     }
 
     //初始化DrawLayout

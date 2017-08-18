@@ -106,7 +106,6 @@ class PetalUserLikeFragment : BasePetalRecyclerFragment<PinsMainInfo>() {
         }
 
         txtLike.setOnClickListener {
-
             //不做like操作了，
             t.like_count ++
             helper.setText(R.id.txt_card_like,t.like_count.toString())
@@ -173,7 +172,11 @@ class PetalUserLikeFragment : BasePetalRecyclerFragment<PinsMainInfo>() {
                         if( t!!.size > 0 ){
                             maxId = t!!.last()!!.pin_id
                         }
+
                         loadSuccess(t!!)
+                        if (t!!.size < mLimit){
+                            setNoMoreData()
+                        }
                     }
 
                 })

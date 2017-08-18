@@ -209,7 +209,7 @@ abstract class BasePetalRecyclerFragment<T> : BasePetalFragment() {
     }
 
     fun loadSuccess(list:List<T>){
-        swipe_refresh_base_fragment.isRefreshing = false
+        swipe_refresh_base_fragment?.isRefreshing = false
         if (list.size <= 0 && index == startPageNumber()){
             errorText.text = "暂无数据"
             mAdapter.emptyView = errorView
@@ -236,4 +236,7 @@ abstract class BasePetalRecyclerFragment<T> : BasePetalFragment() {
         initData()
     }
 
+    fun setNoMoreData(){
+        mAdapter.loadMoreEnd()
+    }
 }

@@ -29,6 +29,7 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import rx.Observable
 import rx.Subscriber
+import rx.Subscription
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 import stan.androiddemo.R
@@ -128,7 +129,7 @@ class PetalImageDetailActivity : BasePetalActivity(), OnDialogInteractionListene
 
         supportFragmentManager.beginTransaction().replace(R.id.frame_layout_petal_with_refresh,
                 PetalImageDetailFragment.newInstance(mPinsId)).commit()
-
+        addSubscription(getGatherInfo())
     }
 
     override fun onSaveInstanceState(outState: Bundle?) {
@@ -350,6 +351,26 @@ class PetalImageDetailActivity : BasePetalActivity(), OnDialogInteractionListene
     }
 
 
+    fun getGatherInfo(): Subscription {
+        return RetrofitClient.createService(OperateAPI::class.java).httpsGatherInfo(mAuthorization,mPinsId,true)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object:Subscriber<GatherInfoBean>(){
+                    override fun onNext(t: GatherInfoBean?) {
+                        if (t?.exist_pin != null){
+                            setFabDrawableAnimator(R.drawable.ic_done_white_24dp,fab_image_detail)
+                            isGathered = !isGathered
+                        }
+                    }
+
+                    override fun onError(e: Throwable?) {
+                    }
+
+                    override fun onCompleted() {
+                    }
+
+                })
+    }
 
     override fun onDialogClick(option: Boolean, info: HashMap<String, Any>) {
         if (option){

@@ -187,6 +187,9 @@ class PetalUserBoardFragment : BasePetalRecyclerFragment<UserBoardItemBean>(), O
                             maxId = t!!.last()!!.board_id
                         }
                         loadSuccess(t!!)
+                        if (t!!.size < mLimit){
+                            setNoMoreData()
+                        }
                     }
 
                     override fun onCompleted() {

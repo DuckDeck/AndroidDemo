@@ -82,10 +82,10 @@ class PetalImageDetailFragment : BasePetalRecyclerFragment<PinsMainInfo>() {
             mListener?.onClickImageLink(it.tag as String)
         }
         txt_image_gather.setOnClickListener {
-            TODO("txt_image_gather.setOnClickListener")
+           // TODO("txt_image_gather.setOnClickListener")
         }
         txt_image_like.setOnClickListener {
-            TODO("txt_image_like.setOnClickListener")
+          //  TODO("txt_image_like.setOnClickListener")
         }
 
         mRLImageUser.setOnClickListener {

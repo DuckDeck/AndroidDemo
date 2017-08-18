@@ -176,7 +176,11 @@ class PetalListFragment : BasePetalRecyclerFragment<PinsMainInfo>() {
                         if( t!!.size > 0 ){
                             maxId = t!!.last()!!.pin_id
                         }
+
                         loadSuccess(t!!)
+                        if (t!!.size < mLimit){
+                            setNoMoreData()
+                        }
                     }
 
                 })

@@ -193,8 +193,6 @@ class PetalUserInfoActivity : BasePetalActivity(),OnDialogInteractionListener,On
         })
     }
 
-
-
     private fun getMyBoardListInfo(): Subscription {
         return RetrofitClient.createService(UserAPI::class.java)
                 .httpsBoardListInfo(mAuthorization, Config.OPERATEBOARDEXTRA)

@@ -6,12 +6,15 @@ import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.Spinner
 import stan.androiddemo.R
 import stan.androiddemo.project.petal.Base.BaseDialogFragment
 import stan.androiddemo.project.petal.Event.OnDialogInteractionListener
+import stan.androiddemo.tool.Logger
 
 /**
  * Created by stanhu on 16/8/2017.
@@ -85,13 +88,24 @@ class BoardAddDialogFragment:BaseDialogFragment(){
         val adapter = ArrayAdapter<String>(mContext,R.layout.support_simple_spinner_dropdown_item,titleList)
         mSpinnerBoardTitle.adapter = adapter
         mSpinnerBoardTitle.setSelection(selctionPosition)
-        mSpinnerBoardTitle.setOnItemClickListener { adapterView, view, i, l ->
-            val selected = typeList[i]
-            if (selected != mStringBoardType){
-                mStringBoardType = typeList[i]
-                isChange = true
+
+        mSpinnerBoardTitle.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+                Logger.d("position=" + position)
+                //选中监听事件 产生变化 赋值
+                val selected = typeList[position]
+                if (selected != mStringBoardType) {
+                    mStringBoardType = typeList[position]
+                    isChange = true//有选择 就表示数据发生变化
+                }
+
+            }
+            override fun onNothingSelected(parent: AdapterView<*>) {
+
             }
         }
+
+
     }
 
     fun dataChange():Boolean{

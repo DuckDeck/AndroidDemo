@@ -255,6 +255,9 @@ class BoardDetailFragment : BasePetalRecyclerFragment<PinsMainInfo>() {
                             maxId = t!!.last()!!.pin_id
                         }
                         loadSuccess(t!!)
+                        if (t!!.size < mLimit){
+                            setNoMoreData()
+                        }
                     }
 
                 })

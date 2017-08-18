@@ -7,10 +7,7 @@ import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.ArrayAdapter
-import android.widget.EditText
-import android.widget.Spinner
-import android.widget.TextView
+import android.widget.*
 import rx.Subscriber
 import rx.Subscription
 import rx.android.schedulers.AndroidSchedulers
@@ -21,6 +18,7 @@ import stan.androiddemo.project.petal.Base.BaseDialogFragment
 import stan.androiddemo.project.petal.Event.OnDialogInteractionListener
 import stan.androiddemo.project.petal.HttpUtiles.RetrofitClient
 import stan.androiddemo.project.petal.Module.ImageDetail.GatherInfoBean
+import stan.androiddemo.tool.Logger
 
 /**
  * Created by stanhu on 14/8/2017.
@@ -35,7 +33,7 @@ class GatherDialogFragment: BaseDialogFragment() {
     lateinit var mContext: Context
     lateinit var mViaId: String
     lateinit var mDescribeText: String
-    lateinit var mBoardTitleArray: Array<String>
+    lateinit var mBoardTitleArray: ArrayList<String>
     private var mSelectPosition = 0//默认的选中项
 
     var mListener:OnDialogInteractionListener? = null
@@ -78,11 +76,10 @@ class GatherDialogFragment: BaseDialogFragment() {
         mAuthorization = arguments.getString(KEYAUTHORIZATION)
         mViaId = arguments.getString(KEYVIAID)
         mDescribeText = arguments.getString(KEYDESCRIBE)
-        mBoardTitleArray = arguments.getStringArray(KEYBOARDTITLEARRAY)
+        mBoardTitleArray = arguments.getStringArrayList(KEYBOARDTITLEARRAY)
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-
         val builder = AlertDialog.Builder(mContext)
         builder.setTitle(resources.getString(R.string.dialog_title_gather))
         val inflate = LayoutInflater.from(mContext)
@@ -116,8 +113,15 @@ class GatherDialogFragment: BaseDialogFragment() {
             mEditTextDescribe.hint = resources.getString(R.string.text_image_describe_null)
         }
         mSpinnerBoardTitle.adapter = adapter
-        mSpinnerBoardTitle.setOnItemClickListener { adapterView, view, i, l ->
-            mSelectPosition = i
+        mSpinnerBoardTitle.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+                Logger.d("position=" + position)
+                mSelectPosition = position
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+
+            }
         }
     }
 

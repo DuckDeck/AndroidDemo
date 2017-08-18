@@ -3,7 +3,6 @@ package licola.demo.com.huabandemo.Module.Search
 import android.content.Context
 import android.widget.ArrayAdapter
 import android.widget.Filter
-import java.util.*
 
 
 class SearcHHintAdapter(context: Context, resource: Int, private var mObjects: List<String>?) : ArrayAdapter<String>(context, resource, mObjects) {
@@ -25,14 +24,9 @@ class SearcHHintAdapter(context: Context, resource: Int, private var mObjects: L
      * 重写过滤类 自定义一个不会过滤任何数的Filter
      */
     private inner class HintFilter : Filter() {
-        override fun performFiltering(prefix: CharSequence): Filter.FilterResults {
-
-
-            val suggestions = ArrayList<Any>()
-            for (s in mObjects!!) {
-                suggestions.add(s)
-                //                Logger.d(s);
-            }
+        override fun performFiltering(prefix: CharSequence?): Filter.FilterResults {
+            //                Logger.d(s);
+            val suggestions = mObjects!!.toList()
 
             val filterResults = Filter.FilterResults()
             filterResults.values = suggestions
@@ -41,7 +35,7 @@ class SearcHHintAdapter(context: Context, resource: Int, private var mObjects: L
             return filterResults
         }
 
-        override fun publishResults(constraint: CharSequence, results: Filter.FilterResults) {
+        override fun publishResults(constraint: CharSequence?, results: Filter.FilterResults) {
 
             mObjects = results.values as List<String>
             //            Logger.d("results.count=" + results.count);

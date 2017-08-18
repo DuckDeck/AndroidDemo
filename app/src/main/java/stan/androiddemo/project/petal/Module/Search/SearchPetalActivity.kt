@@ -113,7 +113,7 @@ class SearchPetalActivity : BasePetalActivity() {
         val typeList = resources.getStringArray(R.array.type_array_all)
         itemWidth = Utils.getScreenWidth(mContext) / 3 - 2
         for (i in 0 until txtList.size){
-            addReferenceButton(flow_search_reference_petal,txtList[i],typeList[i],R.drawable.ic_loyalty_black_24dp)
+            addReferenceButton(flowHistory,txtList[i],typeList[i],R.drawable.ic_loyalty_black_24dp)
         }
     }
 
@@ -139,7 +139,7 @@ class SearchPetalActivity : BasePetalActivity() {
     fun initHintHttp(){
         RxTextView.textChanges(auto_txt_search_petal).observeOn(Schedulers.io())
                 .filter { it.length > 0 }
-                .debounce(300,TimeUnit.MICROSECONDS)
+                .debounce(300,TimeUnit.MILLISECONDS)
                 .switchMap {
                     RetrofitClient.createService(SearchAPI::class.java).httpsSearHintBean(mAuthorization,it.toString())
                 }
