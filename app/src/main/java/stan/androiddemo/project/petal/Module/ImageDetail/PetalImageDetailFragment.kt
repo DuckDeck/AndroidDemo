@@ -93,7 +93,7 @@ class PetalImageDetailFragment : BasePetalRecyclerFragment<PinsMainInfo>() {
         }
 
         mRLImageBoard.setOnClickListener {
-            mListener?.onClickBoardField(mUserId!!,mUserName!!)
+            mListener?.onClickBoardField(mBoardId!!,mBoardName!!)
         }
 
     }

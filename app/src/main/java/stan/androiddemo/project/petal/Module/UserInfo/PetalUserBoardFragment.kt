@@ -2,10 +2,12 @@ package stan.androiddemo.project.petal.Module.UserInfo
 
 
 import android.content.Context
+import android.content.DialogInterface
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.chad.library.adapter.base.BaseViewHolder
@@ -17,14 +19,22 @@ import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 import stan.androiddemo.R
 import stan.androiddemo.UI.BasePetalRecyclerFragment
+import stan.androiddemo.project.petal.API.OperateAPI
 import stan.androiddemo.project.petal.API.UserAPI
 import stan.androiddemo.project.petal.Config.Config
+import stan.androiddemo.project.petal.Event.OnBoardFragmentInteractionListener
+import stan.androiddemo.project.petal.Event.OnEditDialogInteractionListener
 import stan.androiddemo.project.petal.HttpUtiles.RetrofitClient
+import stan.androiddemo.project.petal.Widget.BoardEditDialogFragment
 import stan.androiddemo.tool.CompatUtils
+import stan.androiddemo.tool.DialogUtils
 import stan.androiddemo.tool.ImageLoad.ImageLoadBuilder
+import stan.androiddemo.tool.Logger
 
 
-class PetalUserBoardFragment : BasePetalRecyclerFragment<UserBoardItemBean>() {
+class PetalUserBoardFragment : BasePetalRecyclerFragment<UserBoardItemBean>(), OnEditDialogInteractionListener {
+
+
     private var mMaxId: Int = 0
     private var isMe: Boolean = false
     var mLimit = Config.LIMIT
@@ -40,7 +50,7 @@ class PetalUserBoardFragment : BasePetalRecyclerFragment<UserBoardItemBean>() {
     lateinit var mDrawableEdit: Drawable
     lateinit var mDrawableFollowing: Drawable
     lateinit var mDrawableFollowed: Drawable
-
+    private var mListener: OnBoardFragmentInteractionListener<UserBoardItemBean>? = null
     companion object {
         fun newInstance(key:String):PetalUserBoardFragment{
             val fragment = PetalUserBoardFragment()
@@ -70,6 +80,9 @@ class PetalUserBoardFragment : BasePetalRecyclerFragment<UserBoardItemBean>() {
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
+        if (context is OnBoardFragmentInteractionListener<*>){
+            mListener = context as OnBoardFragmentInteractionListener<UserBoardItemBean>
+        }
         if (context is PetalUserInfoActivity){
             mAuthorization = context.mAuthorization
             isMe = context.isMe
@@ -119,11 +132,38 @@ class PetalUserBoardFragment : BasePetalRecyclerFragment<UserBoardItemBean>() {
         helper.getView<TextView>(R.id.tv_board_title).text = userBoardItemBean.title
         helper.getView<TextView>(R.id.tv_board_gather).text = String.format(mGatherFormat,userBoardItemBean.pin_count)
         helper.getView<TextView>(R.id.tv_board_attention).text = String.format(mAttentionFormat,userBoardItemBean.follow_count)
-
-        val url = String.format(mUrlGeneralFormat,userBoardItemBean.pins!![0].file!!.key)
         val img = helper.getView<SimpleDraweeView>(R.id.img_card_image)
-        img.aspectRatio = 1F
-        ImageLoadBuilder.Start(context,img,url).setPlaceHolderImage(progressLoading).build()
+
+        img.setOnClickListener {
+            mListener?.onClickBoardItemImage(userBoardItemBean,it)
+        }
+
+        helper.getView<TextView>(R.id.tv_board_operate).setOnClickListener {
+            handleOperate(userBoardItemBean,it)
+        }
+
+        if (userBoardItemBean.pins!!.size > 0){
+            val url = String.format(mUrlGeneralFormat,userBoardItemBean.pins!![0].file!!.key)
+            img.aspectRatio = 1F
+            ImageLoadBuilder.Start(context,img,url).setPlaceHolderImage(progressLoading).build()
+        }
+        else{
+            ImageLoadBuilder.Start(context,img,"").setPlaceHolderImage(progressLoading).build()
+        }
+
+    }
+
+     fun handleOperate(bean: UserBoardItemBean, view: View) {
+
+        if (isMe) {
+            //如果是我的画板 弹出编辑对话框
+            val fragment = BoardEditDialogFragment.create(bean.board_id.toString(), bean.title!!, bean.description!!, bean.category_id.toString())
+            fragment.mListener = this//注入已经实现接口的 自己
+            fragment.show(activity.supportFragmentManager, null)
+        } else {
+            //如果是其他用户的画板 直接操作
+            Logger.d()
+        }
     }
 
     override fun requestListData(page: Int): Subscription {
@@ -164,5 +204,29 @@ class PetalUserBoardFragment : BasePetalRecyclerFragment<UserBoardItemBean>() {
 
     override fun getLayoutManager(): RecyclerView.LayoutManager {
         return GridLayoutManager(context,2)
+    }
+
+
+    override fun onDialogPositiveClick(boardId: String, name: String, describe: String, selectType: String) {
+        Logger.d("name=$name describe=$describe selectPosition=$selectType")
+        RetrofitClient.createService(OperateAPI::class.java).httpsEditBoard(mAuthorization!!,boardId,name,describe,selectType)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe {
+                    setRefresh()
+                }
+    }
+
+    override fun onDialogNeutralClick(boardId: String, boardTitle: String) {
+        DialogUtils.showDeleteDialog(context, boardTitle, DialogInterface.OnClickListener { dialog, which -> startDeleteBoard(boardId) })
+    }
+
+    fun startDeleteBoard(boardId:String){
+        RetrofitClient.createService(OperateAPI::class.java).httpsDeleteBoard(mAuthorization!!,boardId,Config.OPERATEDELETEBOARD)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe {
+                    setRefresh()
+                }
     }
 }

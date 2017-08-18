@@ -22,10 +22,12 @@ import stan.androiddemo.project.petal.Base.BasePetalActivity
 import stan.androiddemo.project.petal.Config.Config
 import stan.androiddemo.project.petal.Event.OnPinsFragmentInteractionListener
 import stan.androiddemo.project.petal.Model.PinsMainInfo
+import stan.androiddemo.project.petal.Module.Follow.PetalFollowActivity
 import stan.androiddemo.project.petal.Module.ImageDetail.PetalImageDetailActivity
 import stan.androiddemo.project.petal.Module.Login.PetalLoginActivity
 import stan.androiddemo.project.petal.Module.PetalList.PetalListFragment
 import stan.androiddemo.project.petal.Module.Search.SearchPetalActivity
+import stan.androiddemo.project.petal.Module.UserInfo.PetalUserInfoActivity
 import stan.androiddemo.tool.CompatUtils
 import stan.androiddemo.tool.ImageLoad.ImageLoadBuilder
 import stan.androiddemo.tool.Logger
@@ -106,7 +108,7 @@ class PetalActivity : BasePetalActivity(),OnPinsFragmentInteractionListener, Sha
         imgNavHead = headView.findViewById(R.id.img_petal_my_header)
         imgNavHead.setOnClickListener {
             if (isLogin){
-                TODO("to userinfipage")
+                PetalUserInfoActivity.launch(this@PetalActivity,mUserId,mUserName)
             }
             else{
                 PetalLoginActivity.launch(this@PetalActivity)
@@ -114,13 +116,21 @@ class PetalActivity : BasePetalActivity(),OnPinsFragmentInteractionListener, Sha
         }
         txtNavUsername = headView.findViewById(R.id.txt_nav_username)
         txtNavUsername.setOnClickListener {
-
+            Logger.e("click txtNavUsername")
         }
         txtNavUserEmail = headView.findViewById(R.id.txt_nav_email)
         val btnAttention = headView.findViewById<Button>(R.id.btn_nav_attention)
         btnAttention.setCompoundDrawablesRelativeWithIntrinsicBounds(null,
                 CompatUtils.getTintDrawable(mContext,R.drawable.ic_loyalty_black_24dp
                         ,resources.getColor(R.color.tint_list_pink)),null,null)
+        btnAttention.setOnClickListener {
+            if (!isLogin){
+                PetalLoginActivity.launch(this@PetalActivity)
+            }
+            else{
+                PetalFollowActivity.launch(this@PetalActivity)
+            }
+        }
         val btnGather = headView.findViewById<Button>(R.id.btn_nav_gather)
         btnGather.setCompoundDrawablesRelativeWithIntrinsicBounds(null,
                 CompatUtils.getTintDrawable(mContext,R.drawable.ic_camera_black_24dp

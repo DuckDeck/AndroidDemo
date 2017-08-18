@@ -88,7 +88,7 @@ class PetalUserInfoActivity : BasePetalActivity(),OnDialogInteractionListener,On
         collapsingtoolbar_user.setExpandedTitleColor(Color.TRANSPARENT)
         mTitle = intent.getStringExtra("title")
         mKey = intent.getStringExtra("key")
-
+        title = ""
         val userId = SPUtils.get(mContext, Config.USERID, "") as String
 
         isMe = mKey == userId
@@ -97,9 +97,8 @@ class PetalUserInfoActivity : BasePetalActivity(),OnDialogInteractionListener,On
             addSubscription(getMyBoardListInfo())
         }
 
-        tv_user_friend.setCompoundDrawablesWithIntrinsicBounds(null,
-                CompatUtils.getTintDrawable(mContext,R.drawable.ic_chevron_right_white_24dp, Color.WHITE)
-        ,null,null)
+        tv_user_friend.setCompoundDrawablesWithIntrinsicBounds(null,null
+        ,CompatUtils.getTintDrawable(mContext,R.drawable.ic_chevron_right_white_24dp, Color.WHITE),null)
 
         val tt = resources.getStringArray(R.array.title_user_info)
         val titles = ArrayList<String>()
@@ -174,7 +173,6 @@ class PetalUserInfoActivity : BasePetalActivity(),OnDialogInteractionListener,On
                     override fun onNext(t: FollowUserOperateBean?) {
                         isFollow = !isFollow
                     }
-
                 })
     }
 
@@ -237,7 +235,7 @@ class PetalUserInfoActivity : BasePetalActivity(),OnDialogInteractionListener,On
     fun setUserHeadAndBackGround(bean:UserMeAndOtherBean){
         var url = bean.avatar
         if (!url.isNullOrEmpty()){
-            if (url!!.contains(mHttpRoot)){
+            if (!url!!.contains(mHttpRoot)){
                 url = String.format(mFormatUrlSmall,url!!)
             }
             ImageLoadBuilder.Start(applicationContext,img_image_user,url!!).setPlaceHolderImage(

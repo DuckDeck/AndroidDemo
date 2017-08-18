@@ -7,6 +7,7 @@ import stan.androiddemo.project.petal.Module.ImageDetail.GatherInfoBean
 import stan.androiddemo.project.petal.Module.ImageDetail.GatherResultBean
 import stan.androiddemo.project.petal.Module.ImageDetail.LikePinsOperateBean
 import stan.androiddemo.project.petal.Module.UserInfo.FollowUserOperateBean
+import stan.androiddemo.project.petal.Module.UserInfo.UserBoardSingleBean
 
 /**
  * Created by stanhu on 14/8/2017.
@@ -33,6 +34,21 @@ interface OperateAPI{
     //关注某个用户
     //https://api.huaban.com/users/17037199/follow  或者unfollow POST方法 统一成一个接口
     @POST("users/{userId}/{operate}")
-    abstract fun httpsFollowUserOperate(@Header(Config.Authorization) authorization: String, @Path("userId") userId: String, @Path("operate") operate: String): Observable<FollowUserOperateBean>
+    abstract fun httpsFollowUserOperate(@Header(Config.Authorization) authorization: String,
+                                        @Path("userId") userId: String, @Path("operate") operate: String): Observable<FollowUserOperateBean>
+
+    //修改某个画板的信息
+    //https://api.huaban.com/boards/29646779 category=photography&description=%E6%B7%BB%E5%8A%A0%E6%8F%8F%E8%BF%B0&title=%E6%B7%BB%E5%8A%A0
+    @FormUrlEncoded
+    @POST("boards/{boardId}")
+    fun httpsEditBoard(@Header(Config.Authorization) authorization: String,@Path("boardId") boardId: String,
+                       @Field("title") title: String, @Field("description") description: String,
+                       @Field("category") category: String): Observable<UserBoardSingleBean>
+
+
+    @FormUrlEncoded
+    @POST("boards/{boardId}")
+    abstract fun httpsDeleteBoard(@Header(Config.Authorization) authorization: String, @Path("boardId") boardId: String,
+                                  @Field("_method") operate: String): Observable<UserBoardSingleBean>
 
 }

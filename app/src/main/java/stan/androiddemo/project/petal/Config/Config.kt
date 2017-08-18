@@ -37,6 +37,8 @@ class Config{
         //用户对画板的关注操作字段
         val OPERATEFOLLOW = "follow"
         val OPERATEUNFOLLOW = "unfollow"
+        //删除画板的操作符
+        val OPERATEDELETEBOARD = "DELETE"
 
 
         var REGEX_EMAIL = "\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*"
