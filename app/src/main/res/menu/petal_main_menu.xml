@@ -8,7 +8,7 @@
         <menu>
             <item android:id="@+id/nav_petal_setting" android:title="设置" android:icon="@drawable/ic_settings_black_24dp" ></item>
             <item android:id="@+id/nav_petal_about" android:title="关于" android:icon="@mipmap/about" ></item>
-
+            <item android:id="@+id/nav_petal_quit" android:title="退出" android:icon="@drawable/ic_cancel_black_24dp" ></item>
         </menu>
     </item>
 </menu>

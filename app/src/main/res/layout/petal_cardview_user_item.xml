@@ -7,6 +7,7 @@
     android:layout_marginRight="@dimen/card_spacing_default_half"
     android:layout_marginTop="@dimen/text_spacing_default"
     app:cardCornerRadius="@dimen/card_radius_default"
+    android:id="@+id/card_view_people"
     app:elevation="@dimen/card_elevation_static"
     xmlns:tools="http://schemas.android.com/tools">
 

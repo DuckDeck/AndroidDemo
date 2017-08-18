@@ -51,7 +51,7 @@ class PetalFollowActivity : BasePetalActivity(),OnBoardFragmentInteractionListen
         super.onCreate(savedInstanceState)
         setSupportActionBar(toolbar)
         toolbar.setNavigationOnClickListener { onBackPressed() }
-
+        title = resources.getString(R.string.text_following)
         val tt =  resources.getStringArray(R.array.title_attention)
         val titles = ArrayList<String>()
         titles.addAll(tt)

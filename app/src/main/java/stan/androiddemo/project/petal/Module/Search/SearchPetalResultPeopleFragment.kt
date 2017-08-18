@@ -1,8 +1,10 @@
 package stan.androiddemo.project.petal.Module.Search
 
 
+import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
+import android.support.v7.widget.CardView
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.widget.ImageButton
@@ -16,6 +18,7 @@ import stan.androiddemo.R
 import stan.androiddemo.UI.BasePetalRecyclerFragment
 import stan.androiddemo.project.petal.API.SearchAPI
 import stan.androiddemo.project.petal.Config.Config
+import stan.androiddemo.project.petal.Event.OnPeopleFragmentInteraction
 import stan.androiddemo.project.petal.HttpUtiles.RetrofitClient
 import stan.androiddemo.project.petal.Observable.ErrorHelper
 import stan.androiddemo.tool.CompatUtils
@@ -26,7 +29,7 @@ class SearchPetalResultPeopleFragment : BasePetalRecyclerFragment<SearchPeopleBe
     var mLimit = Config.LIMIT
     lateinit var mFansFormat: String
     lateinit var mHttpRoot: String
-
+    private var mListener: OnPeopleFragmentInteraction<SearchPeopleBean.UsersBean>? = null
     override fun getTheTAG(): String {
         return  this.toString()
     }
@@ -35,9 +38,16 @@ class SearchPetalResultPeopleFragment : BasePetalRecyclerFragment<SearchPeopleBe
         fun newInstance(type:String): SearchPetalResultPeopleFragment {
             val fragment = SearchPetalResultPeopleFragment()
             val bundle = Bundle()
-            bundle.putString("type",type)
+            bundle.putString("key",type)
             fragment.arguments = bundle
             return fragment
+        }
+    }
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        if (context is OnPeopleFragmentInteraction<*>){
+            mListener = context as OnPeopleFragmentInteraction<SearchPeopleBean.UsersBean>
         }
     }
 
@@ -59,6 +69,9 @@ class SearchPetalResultPeopleFragment : BasePetalRecyclerFragment<SearchPeopleBe
         helper.getView<ImageButton>(R.id.ibtn_image_user_chevron_right).setImageDrawable(
                 CompatUtils.getTintListDrawable(context,R.drawable.ic_chevron_right_black_36dp,R.color.tint_list_grey)
         )
+        helper.getView<CardView>(R.id.card_view_people).setOnClickListener {
+            mListener?.onClickItemUser(t,it)
+        }
         helper.setText(R.id.txt_image_user,t.username)
         helper.setText(R.id.txt_image_about,String.format(mFansFormat,t.follower_count))
         var url = t.avatar

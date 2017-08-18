@@ -96,7 +96,17 @@ class PetalActivity : BasePetalActivity(),OnPinsFragmentInteractionListener, Sha
                 fragment.mKey = types[it.itemId]
                 fragment.setRefresh()
                 title = titles[it.itemId]
-
+            }
+            else{
+                when(it.itemId){
+                    R.id.nav_petal_setting->{
+                        TODO("GOTO seting")
+                    }
+                    R.id.nav_petal_quit->{
+                        SPUtils.clear(mContext)
+                        finish()
+                    }
+                }
             }
             drawer_layout_petal.closeDrawer(GravityCompat.START)
             return@setNavigationItemSelectedListener true
@@ -224,6 +234,7 @@ class PetalActivity : BasePetalActivity(),OnPinsFragmentInteractionListener, Sha
             isLogin = p0.getBoolean(Config.ISLOGIN, false)
         }
     }
+
 
 
     override fun onClickPinsItemImage(bean: PinsMainInfo, view: View) {

@@ -204,7 +204,7 @@ class PetalLoginActivity : BasePetalActivity() {
                 .addData(Config.TOKENTYPE,tokenBean.token_type!!)
                 .addData(Config.TOKENEXPIRESIN,tokenBean.expires_in)
                 .addData(Config.USERNAME,infoResult.username!!)
-                .addData(Config.USERID,infoResult.user_id)
+                .addData(Config.USERID,infoResult.user_id.toString())
                 .addData(Config.USERHEADKEY,infoResult.avatar!!)
                 .addData(Config.USEREMAIL,infoResult.email!!)
                 .addData(Config.BOARDTILTARRAY,boardTitle)

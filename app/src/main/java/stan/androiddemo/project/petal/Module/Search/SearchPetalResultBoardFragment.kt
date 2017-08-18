@@ -1,9 +1,12 @@
 package stan.androiddemo.project.petal.Module.Search
 
 
+import android.content.Context
 import android.os.Bundle
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.widget.FrameLayout
+import android.widget.TextView
 import com.chad.library.adapter.base.BaseViewHolder
 import com.facebook.drawee.view.SimpleDraweeView
 import rx.Subscriber
@@ -14,6 +17,7 @@ import stan.androiddemo.R
 import stan.androiddemo.UI.BasePetalRecyclerFragment
 import stan.androiddemo.project.petal.API.SearchAPI
 import stan.androiddemo.project.petal.Config.Config
+import stan.androiddemo.project.petal.Event.OnBoardFragmentInteractionListener
 import stan.androiddemo.project.petal.HttpUtiles.RetrofitClient
 import stan.androiddemo.project.petal.Model.BoardPinsInfo
 import stan.androiddemo.project.petal.Observable.ErrorHelper
@@ -27,7 +31,7 @@ class SearchPetalResultBoardFragment : BasePetalRecyclerFragment<BoardPinsInfo>(
     lateinit var  mUsernameFormat :String
 
     var mLimit = Config.LIMIT
-
+    private var mListener: OnBoardFragmentInteractionListener<BoardPinsInfo>? = null
     override fun getTheTAG(): String {
         return  this.toString()
     }
@@ -59,7 +63,24 @@ class SearchPetalResultBoardFragment : BasePetalRecyclerFragment<BoardPinsInfo>(
        return R.layout.petal_cardview_board_item
     }
 
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        if (context is OnBoardFragmentInteractionListener<*>)
+        {
+            mListener = context as  OnBoardFragmentInteractionListener<BoardPinsInfo>
+        }
+    }
+
     override fun itemLayoutConvert(helper: BaseViewHolder, t: BoardPinsInfo) {
+
+        helper.getView<FrameLayout>(R.id.frame_layout_board).setOnClickListener {
+            mListener?.onClickBoardItemImage(t,it)
+        }
+
+        helper.getView<TextView>(R.id.txt_board_username).setOnClickListener {
+            mListener?.onClickBoardItemImage(t,it)
+        }
+
         helper.setText(R.id.txt_board_title,t.title)
         helper.setText(R.id.txt_board_gather, String.format(mGatherFormat,t.pin_count))
         helper.setText(R.id.txt_board_attention, String.format(mAttentionFormat,t.follow_count))

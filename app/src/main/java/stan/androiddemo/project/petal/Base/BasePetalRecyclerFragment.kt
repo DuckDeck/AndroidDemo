@@ -47,7 +47,15 @@ abstract class BasePetalRecyclerFragment<T> : BasePetalFragment() {
     lateinit var progressLoading: Drawable
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        mKey = arguments.getString("key")
+        if (arguments != null){
+            if (arguments.containsKey("key")){
+                mKey = arguments.getString("key")
+            }
+        }
+        else{
+            mKey = ""
+        }
+
         initView()
         initListener()
         initData()
@@ -95,6 +103,7 @@ abstract class BasePetalRecyclerFragment<T> : BasePetalFragment() {
         errorText = errorView.findViewById<TextView>(R.id.txt_hint)
 
         if (headView() != null){
+            mAdapter.setHeaderAndEmpty(true)
             mAdapter.setHeaderView(headView()!!)
         }
 

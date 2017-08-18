@@ -1,18 +1,27 @@
 package stan.androiddemo.project.petal.Module.ImageDetail
 
+import android.Manifest
 import android.animation.ObjectAnimator
 import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.Animatable
 import android.graphics.drawable.Drawable
 import android.net.Uri
+import android.os.AsyncTask
 import android.os.Bundle
+import android.os.Environment
 import android.support.design.widget.FloatingActionButton
 import android.support.graphics.drawable.AnimatedVectorDrawableCompat
+import android.support.v4.app.ActivityCompat
+import android.support.v4.content.ContextCompat
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.Target
 import com.facebook.drawee.controller.BaseControllerListener
 import com.facebook.imagepipeline.image.ImageInfo
 import kotlinx.android.synthetic.main.activity_petal_image_detail.*
@@ -39,6 +48,7 @@ import stan.androiddemo.tool.CompatUtils
 import stan.androiddemo.tool.ImageLoad.ImageLoadBuilder
 import stan.androiddemo.tool.Logger
 import stan.androiddemo.tool.SPUtils
+import java.io.File
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -240,7 +250,7 @@ class PetalImageDetailActivity : BasePetalActivity(), OnDialogInteractionListene
                 actionLike(item)
             }
             R.id.action_download->{
-
+                downloadItem()
             }
             R.id.action_gather->{
                 showGatherDialog()
@@ -254,6 +264,43 @@ class PetalImageDetailActivity : BasePetalActivity(), OnDialogInteractionListene
                 ,R.drawable.drawable_animation_petal_favorite_undo) else  AnimatedVectorDrawableCompat.create(mContext
                 ,R.drawable.drawable_animation_petal_favorite_do)
         item?.icon = drawableCompat
+    }
+
+    fun downloadItem(){
+        if (ContextCompat.checkSelfPermission(this@PetalImageDetailActivity, Manifest.permission.WRITE_EXTERNAL_STORAGE) !=
+                PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(this@PetalImageDetailActivity, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),1)
+            return
+        }
+
+        object: AsyncTask<String, Int, File?>(){
+            override fun doInBackground(vararg p0: String?): File? {
+                var file: File? = null
+                try {
+                    val url = String.format(mFormatImageUrlBig,mImageUrl)
+                    val future = Glide.with(this@PetalImageDetailActivity).load(url).downloadOnly(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
+                    file = future.get()
+                    val pictureFolder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).absoluteFile
+                    val fileDir = File(pictureFolder,"Petal")
+                    if (!fileDir.exists()){
+                        fileDir.mkdir()
+                    }
+                    val fileName = System.currentTimeMillis().toString() + ".jpg"
+                    val destFile = File(fileDir,fileName)
+                    file.copyTo(destFile)
+                    sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,Uri.fromFile(File(destFile.path))))
+                }
+                catch (e:Exception){
+                    e.printStackTrace()
+                }
+                return file
+            }
+
+            override fun onPreExecute() {
+                Toast.makeText(this@PetalImageDetailActivity,"保存图片成功", Toast.LENGTH_LONG).show()
+            }
+
+        }.execute()
     }
 
     fun  actionLike(menu: MenuItem){

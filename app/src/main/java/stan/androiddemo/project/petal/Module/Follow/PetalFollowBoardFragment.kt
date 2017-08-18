@@ -23,10 +23,10 @@ import stan.androiddemo.tool.ImageLoad.ImageLoadBuilder
 
 class PetalFollowBoardFragment : BasePetalRecyclerFragment<BoardPinsInfo>() {
 
-     var mLimit = Config.LIMIT
-    private val mAttentionFormat: String = resources.getString(R.string.text_gather_number)
-    private val mGatherFormat: String = resources.getString(R.string.text_attention_number)
-    private val mUsernameFormat: String = resources.getString(R.string.text_by_username)
+    var mLimit = Config.LIMIT
+    lateinit var  mAttentionFormat: String
+    lateinit var mGatherFormat: String
+    lateinit var mUsernameFormat: String
 
     private var mListener: OnBoardFragmentInteractionListener<BoardPinsInfo>? = null
 
@@ -39,6 +39,13 @@ class PetalFollowBoardFragment : BasePetalRecyclerFragment<BoardPinsInfo>() {
 
     override fun getTheTAG(): String {
         return this.toString()
+    }
+
+    override fun initView() {
+        super.initView()
+        mAttentionFormat = resources.getString(R.string.text_gather_number)
+        mGatherFormat = resources.getString(R.string.text_attention_number)
+        mUsernameFormat = resources.getString(R.string.text_by_username)
     }
 
     override fun onAttach(context: Context?) {
@@ -57,10 +64,18 @@ class PetalFollowBoardFragment : BasePetalRecyclerFragment<BoardPinsInfo>() {
     }
 
     override fun itemLayoutConvert(helper: BaseViewHolder, t: BoardPinsInfo) {
+        val img = helper.getView<SimpleDraweeView>(R.id.img_card_board)
         helper.getView<TextView>(R.id.txt_board_title).text = t.title
         helper.getView<TextView>(R.id.txt_board_gather).text = String.format(mGatherFormat,t.pin_count)
         helper.getView<TextView>(R.id.txt_board_attention).text = String.format(mAttentionFormat,t.follow_count)
         helper.getView<TextView>(R.id.txt_board_username).text  = String.format(mUsernameFormat,t.user?.username)
+
+        img.setOnClickListener {
+            mListener?.onClickBoardItemImage(t,it)
+        }
+        helper.getView<TextView>(R.id.txt_board_username).setOnClickListener {
+            mListener?.onClickBoardItemImage(t,it)
+        }
         var url = ""
         if (t.pins!= null && t.pins!!.size > 0){
             if (t.pins!!.first().file?.key != null){
@@ -68,7 +83,7 @@ class PetalFollowBoardFragment : BasePetalRecyclerFragment<BoardPinsInfo>() {
             }
         }
         url =  String.format(mUrlGeneralFormat,url)
-        val img = helper.getView<SimpleDraweeView>(R.id.img_card_board)
+
         img.aspectRatio = 1F
         ImageLoadBuilder.Start(context,img,url).setProgressBarImage(progressLoading).build()
     }

@@ -144,7 +144,6 @@ class PetalListFragment : BasePetalRecyclerFragment<PinsMainInfo>() {
 
         ImageLoadBuilder.Start(context,img,imgUrl).setProgressBarImage(progressLoading).build()
 
-
     }
 
     override fun requestListData(page: Int): Subscription {
