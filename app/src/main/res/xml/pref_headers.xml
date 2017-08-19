@@ -3,17 +3,17 @@
     <!-- These settings headers are only used on tablets. -->
 
     <header
-        android:fragment="licola.demo.com.huabandemo.Module.Setting.SettingsActivity$GeneralPreferenceFragment"
+        android:fragment="stan.androiddemo.project.petal.Module.Setting.PetalSettingActivity$GeneralPreferenceFragment"
         android:icon="@drawable/ic_info_black_24dp"
         android:title="@string/pref_header_general" />
 
     <header
-        android:fragment="licola.demo.com.huabandemo.Module.Setting.SettingsActivity$NotificationPreferenceFragment"
+        android:fragment="stan.androiddemo.project.petal.Module.Setting.PetalSettingActivity$NotificationPreferenceFragment"
         android:icon="@drawable/ic_notifications_black_24dp"
         android:title="@string/pref_header_notifications" />
 
     <header
-        android:fragment="licola.demo.com.huabandemo.Module.Setting.SettingsActivity$DataSyncPreferenceFragment"
+        android:fragment="stan.androiddemo.project.petal.Module.Setting.PetalSettingActivity$DataSyncPreferenceFragment"
         android:icon="@drawable/ic_sync_black_24dp"
         android:title="@string/pref_header_data_sync" />
 

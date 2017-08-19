@@ -27,6 +27,7 @@ import stan.androiddemo.project.petal.Module.ImageDetail.PetalImageDetailActivit
 import stan.androiddemo.project.petal.Module.Login.PetalLoginActivity
 import stan.androiddemo.project.petal.Module.PetalList.PetalListFragment
 import stan.androiddemo.project.petal.Module.Search.SearchPetalActivity
+import stan.androiddemo.project.petal.Module.Setting.PetalSettingActivity
 import stan.androiddemo.project.petal.Module.UserInfo.PetalUserInfoActivity
 import stan.androiddemo.tool.CompatUtils
 import stan.androiddemo.tool.ImageLoad.ImageLoadBuilder
@@ -104,7 +105,7 @@ class PetalActivity : BasePetalActivity(),OnPinsFragmentInteractionListener, Sha
             else{
                 when(it.itemId){
                     R.id.nav_petal_setting->{
-                        TODO("GOTO seting")
+                        PetalSettingActivity.launch(this@PetalActivity)
                     }
                     R.id.nav_petal_quit->{
                         SPUtils.clear(mContext)

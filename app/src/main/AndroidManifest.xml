@@ -124,7 +124,8 @@
         <activity
             android:name=".project.petal.Module.Follow.PetalFollowActivity"
             android:theme="@style/AppPetalTheme" />
-        <activity android:name=".project.petal.Module.Setting.PetalSettingActivity"></activity>
+        <activity android:name=".project.petal.Module.Setting.PetalSettingActivity"
+            android:theme="@style/AppPetalTheme" ></activity>
     </application>
 
 </manifest> <!-- issue0:can not hide the title bar --><!-- just use   android:theme="@style/Theme.AppCompat.Light.NoActionBar"> -->
