@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter
 import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_project.*
 import stan.androiddemo.project.FiveStroke.FiveStrokeActivity
+import stan.androiddemo.project.Game2048.GameActivity
 import stan.androiddemo.project.Mito.MitoActivity
 import stan.androiddemo.project.novel.NovelSearchActivity
 import stan.androiddemo.project.petal.Module.Guide.GuideActivity
@@ -26,7 +27,7 @@ class ProjectActivity : AppCompatActivity() {
             onBackPressed()
         }
         val adapter = ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,
-                arrayListOf("Weather","Novel","美图","五笔查询","花瓣"))
+                arrayListOf("Weather","Novel","美图","五笔查询","花瓣","Game2048"))
         list_view_project.adapter = adapter
 
         list_view_project.onItemClickListener = AdapterView.OnItemClickListener { adapterView, view, i, l ->
@@ -55,6 +56,11 @@ class ProjectActivity : AppCompatActivity() {
                 "花瓣"->
                 {
                     val intent = Intent(this, GuideActivity::class.java)
+                    startActivity(intent)
+                }
+                "Game2048"->
+                {
+                    val intent = Intent(this, GameActivity::class.java)
                     startActivity(intent)
                 }
             }
