@@ -190,4 +190,46 @@
     <string name="title_activity_search_petal">SearchPetalActivity</string>
     <string name="title_activity_search_petal_result">SearchPetalResultActivity</string>
     <string name="title_activity_petal_type">PetalTypeActivity</string>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <string name="header">2048</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="new_game">New Game</string>
+    <string name="high_score">HIGH SCORE</string>
+    <string name="score">SCORE</string>
+    <string name="instructions">&#160;&#160;Join the numbers and get to the 2048 title.</string>
+    <string name="you_win">You Win!</string>
+    <string name="game_over">Game Over!</string>
+    <string name="go_on">Tap to Continue</string>
+    <string name="for_now">For now&#8230;</string>
+    <string name="endless">"Endless" Mode</string>
 </resources>

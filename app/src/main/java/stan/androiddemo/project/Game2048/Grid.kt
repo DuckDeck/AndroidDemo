@@ -55,17 +55,13 @@ class Grid{
         return getAvailableCells().size >= 1
     }
 
-    fun isCellsAvailable(cell:Cell):Boolean{
+    fun isCellAvailable(cell:Cell):Boolean{
         return getAvailableCells().size >= 1
     }
 
 
-
-    fun isCellOccupied(cell:Cell):Tile?{
-        if (cell != null && isCellWithinBounds(cell)){
-            return field[cell.x][cell.y]
-        }
-        return null
+    fun isCellOccupied(cell:Cell):Boolean{
+       return getCellContent(cell) != null
     }
 
 
@@ -95,7 +91,7 @@ class Grid{
         field[tile.x][tile.y] = tile
     }
 
-    fun removeTitle(tile:Tile){
+    fun removeTile(tile:Tile){
         field[tile.x][tile.y] = null
     }
 
@@ -107,6 +103,32 @@ class Grid{
                 }
                 else{
                     undoField[i][j] = Tile(i,j,bufferField[i][j]!!.value)
+                }
+            }
+        }
+    }
+
+    fun prepareSaveTiles() {
+        for (xx in field.indices) {
+            for (yy in 0..field[0].size - 1) {
+                if (field[xx][yy] == null) {
+                    bufferField[xx][yy] = null
+                } else {
+                    bufferField[xx][yy] = Tile(xx, yy,
+                            field[xx][yy]!!.value)
+                }
+            }
+        }
+    }
+
+    fun revertTiles() {
+        for (xx in undoField.indices) {
+            for (yy in 0..undoField[0].size - 1) {
+                if (undoField[xx][yy] == null) {
+                    field[xx][yy] = null
+                } else {
+                    field[xx][yy] = Tile(xx, yy,
+                            undoField[xx][yy]!!.value)
                 }
             }
         }

@@ -45,4 +45,10 @@
     <color name="primary_light">#F8BBD0</color>
     <color name="accent">#FF5252</color>
 
+
+    <color name="text_white">#f9f6f2</color>
+    <color name="text_black">#776e65</color>
+    <color name="text_brown">#d6cdc4</color>
+    <color name="background">#faf8ef</color>
+
 </resources>
