@@ -68,7 +68,7 @@ class MainGame{
     constructor(context: Context,view:MainView){
         mContext = context
         mView = view
-
+        initSoundPool()
     }
 
     fun newGame() {
@@ -414,6 +414,6 @@ class MainGame{
         val audioMaxVolumn = am.getStreamMaxVolume(AudioManager.STREAM_MUSIC).toFloat()
         val audioCurrentVolumn = am.getStreamVolume(AudioManager.STREAM_MUSIC).toFloat()
         val volumnRatio = audioCurrentVolumn / audioMaxVolumn
-        soudPool.play(spMap.get(sound)!!,volumnRatio,volumnRatio,1,number,1F)
+        soudPool.play(spMap[sound]!!,volumnRatio,volumnRatio,1,number,1F)
     }
 }
