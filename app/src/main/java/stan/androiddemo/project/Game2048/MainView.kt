@@ -25,7 +25,7 @@ class MainView: View {
 
     // Internal variables
     internal var paint = Paint()
-    lateinit var game: MainGame
+    var game: MainGame
     var hasSaveState = false
     private val numCellTypes = 16
     var continueButtonEnabled = false
