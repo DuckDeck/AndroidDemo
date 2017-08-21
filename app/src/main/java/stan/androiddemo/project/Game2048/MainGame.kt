@@ -1,5 +1,6 @@
 package stan.androiddemo.project.Game2048
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.media.AudioManager
 import android.media.SoundPool
@@ -10,7 +11,7 @@ import java.util.*
 /**
  * Created by hugfo on 2017/8/19.
  */
-class MainGame{
+class MainGame(context: Context, view: MainView) {
 
     companion object {
         val SPAWN_ANIMATION = -1
@@ -61,15 +62,9 @@ class MainGame{
     lateinit var soudPool: SoundPool
     lateinit var spMap: HashMap<Int, Int>
 
-    private val mContext: Context
+    private val mContext: Context = context
 
-    private val mView: MainView
-
-    constructor(context: Context,view:MainView){
-        mContext = context
-        mView = view
-        initSoundPool()
-    }
+    private val mView: MainView = view
 
     fun newGame() {
         playSound(3, 1)
@@ -116,6 +111,7 @@ class MainGame{
         // EXPANDING
     }
 
+    @SuppressLint("ApplySharedPref")
     private fun recordHighScore() {
         val settings = PreferenceManager
                 .getDefaultSharedPreferences(mContext)
@@ -415,5 +411,9 @@ class MainGame{
         val audioCurrentVolumn = am.getStreamVolume(AudioManager.STREAM_MUSIC).toFloat()
         val volumnRatio = audioCurrentVolumn / audioMaxVolumn
         soudPool.play(spMap[sound]!!,volumnRatio,volumnRatio,1,number,1F)
+    }
+
+    init {
+        initSoundPool()
     }
 }

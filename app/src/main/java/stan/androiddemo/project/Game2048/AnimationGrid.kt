@@ -16,7 +16,7 @@ class AnimationGrid{
         field = Array(x) { arrayOfNulls<ArrayList<AnimationCell>>(y) }
         for (i in 0 until x){
             for (j in 0 until y){
-                field[x][j] = ArrayList<AnimationCell>()
+                field[i][j] = ArrayList<AnimationCell>()
             }
         }
     }

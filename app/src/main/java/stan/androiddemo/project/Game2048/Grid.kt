@@ -3,18 +3,10 @@ package stan.androiddemo.project.Game2048
 /**
  * Created by hugfo on 2017/8/19.
  */
-class Grid{
-    var field: Array<Array<Tile?>>
-    var undoField: Array<Array<Tile?>>
-    private var bufferField: Array<Array<Tile?>>
-
-    constructor(sizeX:Int,sizeY:Int){
-        field = Array<Array<Tile?>>(sizeX) { arrayOfNulls<Tile>(sizeY) }
-        undoField = Array<Array<Tile?>>(sizeX) { arrayOfNulls<Tile>(sizeY) }
-        bufferField = Array<Array<Tile?>>(sizeX) { arrayOfNulls<Tile>(sizeY) }
-        clearGrid()
-        clearUndoGrid()
-    }
+class Grid(sizeX: Int, sizeY: Int) {
+    var field: Array<Array<Tile?>> = Array(sizeX) { arrayOfNulls<Tile>(sizeY) }
+    var undoField: Array<Array<Tile?>> = Array(sizeX) { arrayOfNulls<Tile>(sizeY) }
+    private var bufferField: Array<Array<Tile?>> = Array(sizeX) { arrayOfNulls<Tile>(sizeY) }
 
     //从为空的格子随机中获取一个
     fun randomAvailableCell():Cell?{
@@ -28,25 +20,21 @@ class Grid{
 
     //获取为空的格子
     fun getAvailableCells():ArrayList<Cell>{
-        var availableCells = ArrayList<Cell>()
+        val availableCells = ArrayList<Cell>()
         for (i in 0 until field.size){
-            for (j in 0 until field[i].size){
-               if (field[i][j] == null){
-                   availableCells.add(Cell(i,j))
-               }
-            }
+            (0 until field[i].size)
+                    .filter { field[i][it] == null }
+                    .mapTo(availableCells) { Cell(i, it) }
         }
         return availableCells
     }
 
     fun getNotAvailableCells():ArrayList<Cell>{
-        var notAvailableCells = ArrayList<Cell>()
+        val notAvailableCells = ArrayList<Cell>()
         for (i in 0 until field.size){
-            for (j in 0 until field[i].size){
-                if (field[i][j] != null){
-                    notAvailableCells.add(Cell(i,j))
-                }
-            }
+            (0 until field[i].size)
+                    .filter { field[i][it] != null }
+                    .mapTo(notAvailableCells) { Cell(i, it) }
         }
         return notAvailableCells
     }
@@ -56,7 +44,7 @@ class Grid{
     }
 
     fun isCellAvailable(cell:Cell):Boolean{
-        return getAvailableCells().size >= 1
+        return !isCellOccupied(cell)
     }
 
 
@@ -67,7 +55,7 @@ class Grid{
 
     fun getCellContent(cell: Cell?):Tile?{
         if (cell != null && isCellWithinBounds(cell)){
-            return field[cell!!.x][cell!!.y]
+            return field[cell.x][cell.y]
         }
         return  null
     }
@@ -148,5 +136,10 @@ class Grid{
                 undoField[i][j] = null
             }
         }
+    }
+
+    init {
+        clearGrid()
+        clearUndoGrid()
     }
 }

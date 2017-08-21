@@ -402,11 +402,9 @@ class MainView: View {
     private fun drawEndGameState(canvas: Canvas) {
         var alphaChange = 1.0
         continueButtonEnabled = false
-        for (animation in game.aGrid!!.globalAnimation) {
-            if (animation.animationType === MainGame.FADE_GLOBAL_ANIMATION) {
-                alphaChange = animation.getPercentageDone()
-            }
-        }
+        game.aGrid!!.globalAnimation
+                .filter { it.animationType === MainGame.FADE_GLOBAL_ANIMATION }
+                .forEach { alphaChange = it.getPercentageDone() }
         var displayOverlay: BitmapDrawable? = null
         if (game.gameWon()) {
             if (game.canContinue()) {

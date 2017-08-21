@@ -3,19 +3,10 @@ package stan.androiddemo.project.Game2048
 /**
  * Created by hugfo on 2017/8/20.
  */
-class AnimationCell:Cell{
-    var animationType: Int = 0
+class AnimationCell(x: Int, y: Int, var animationType: Int, length: Long, delay: Long, var extras: Array<Int>?) : Cell(x, y) {
     private var timeElapsed: Long = 0
-    private var animationTime: Long = 0
-    private var delayTime: Long = 0
-     var extras: Array<Int>?
-
-    constructor(x:Int,y:Int,animationType:Int,length:Long,delay:Long,extras:Array<Int>?):super(x,y){
-        this.animationType = animationType
-        this.animationTime = animationTime
-        this.delayTime = delay
-        this.extras = extras
-    }
+    private var animationTime: Long = length
+    private var delayTime: Long = delay
 
     fun tick(timeElapsed: Long) {
         this.timeElapsed = this.timeElapsed + timeElapsed

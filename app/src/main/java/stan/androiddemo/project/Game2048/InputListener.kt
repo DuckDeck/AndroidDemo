@@ -1,12 +1,13 @@
 package stan.androiddemo.project.Game2048
 
+import android.annotation.SuppressLint
 import android.view.MotionEvent
 import android.view.View
 
 /**
  * Created by hugfo on 2017/8/19.
  */
-class InputListener: View.OnTouchListener{
+class InputListener(view: MainView) : View.OnTouchListener{
 
     private val SWIPE_MIN_DISTANCE = 0
     private val SWIPE_THRESHOLD_VELOCITY = 25
@@ -24,17 +25,15 @@ class InputListener: View.OnTouchListener{
     private var previousDirection = 1
     private var veryLastDirection = 1
     private var hasMoved = false
-    internal var mView: MainView
-    constructor(view:MainView):super(){
-        this.mView = view
-    }
+    internal var mView: MainView = view
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onTouch(v: View, event: MotionEvent): Boolean {
-        when (event.getAction()) {
+        when (event.action) {
 
             MotionEvent.ACTION_DOWN -> {
-                x = event.getX()
-                y = event.getY()
+                x = event.x
+                y = event.y
                 startingX = x
                 startingY = y
                 previousX = x
@@ -45,8 +44,8 @@ class InputListener: View.OnTouchListener{
                 return true
             }
             MotionEvent.ACTION_MOVE -> {
-                x = event.getX()
-                y = event.getY()
+                x = event.x
+                y = event.y
                 if (mView.game.isActive()) {
                     val dx = x - previousX
                     if (Math.abs(lastdx + dx) < Math.abs(lastdx) + Math.abs(dx)
@@ -76,22 +75,22 @@ class InputListener: View.OnTouchListener{
                         var moved = false
                         if ((dy >= SWIPE_THRESHOLD_VELOCITY && previousDirection == 1 || y - startingY >= MOVE_THRESHOLD) && previousDirection % 2 != 0) {
                             moved = true
-                            previousDirection = previousDirection * 2
+                            previousDirection *= 2
                             veryLastDirection = 2
                             mView.game.move(2)
                         } else if ((dy <= -SWIPE_THRESHOLD_VELOCITY && previousDirection == 1 || y - startingY <= -MOVE_THRESHOLD) && previousDirection % 3 != 0) {
                             moved = true
-                            previousDirection = previousDirection * 3
+                            previousDirection *= 3
                             veryLastDirection = 3
                             mView.game.move(0)
                         } else if ((dx >= SWIPE_THRESHOLD_VELOCITY && previousDirection == 1 || x - startingX >= MOVE_THRESHOLD) && previousDirection % 5 != 0) {
                             moved = true
-                            previousDirection = previousDirection * 5
+                            previousDirection *= 5
                             veryLastDirection = 5
                             mView.game.move(1)
                         } else if ((dx <= -SWIPE_THRESHOLD_VELOCITY && previousDirection == 1 || x - startingX <= -MOVE_THRESHOLD) && previousDirection % 7 != 0) {
                             moved = true
-                            previousDirection = previousDirection * 7
+                            previousDirection *= 7
                             veryLastDirection = 7
                             mView.game.move(3)
                         }
@@ -107,8 +106,8 @@ class InputListener: View.OnTouchListener{
                 return true
             }
             MotionEvent.ACTION_UP -> {
-                x = event.getX()
-                y = event.getY()
+                x = event.x
+                y = event.y
                 previousDirection = 1
                 veryLastDirection = 1
                 // "Menu" inputs
@@ -141,7 +140,7 @@ class InputListener: View.OnTouchListener{
     }
 
     private fun inRange(starting: Float, check: Float, ending: Float): Boolean {
-        return starting <= check && check <= ending
+        return check in starting..ending
     }
 
     private fun isTap(factor: Int): Boolean {
