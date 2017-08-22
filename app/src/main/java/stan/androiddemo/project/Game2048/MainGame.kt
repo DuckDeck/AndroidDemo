@@ -201,6 +201,19 @@ class MainGame(context: Context, view: MainView) {
         return !(gameWon() || gameLost())
     }
 
+    fun isWin():Boolean{
+        for (i in 0 until grid!!.field.size){
+            for (j in 0 until grid!!.field[i].size){
+                if (grid!!.isCellOccupied(grid!!.field[i][j])){ //如果这个格子不是空的
+                   if (grid!!.field[i][j]!!.value >= 2048){
+                       return  true
+                   }
+                }
+            }
+        }
+        return false
+    }
+
     fun move(direction: Int):Boolean {
         playSound(1, 1) // move sound
         aGrid?.cancelAnimations()
