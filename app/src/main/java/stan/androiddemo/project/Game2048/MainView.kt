@@ -14,15 +14,12 @@ import stan.androiddemo.R
  * Created by hugfo on 2017/8/19.
  */
 class MainView: View {
-
     companion object {
         internal val BASE_ANIMATION_TIME:Long = 100000000
 
         internal val MERGING_ACCELERATION = (-0.5).toFloat()
         internal val INITIAL_VELOCITY = (1 - MERGING_ACCELERATION) / 4
     }
-
-
     // Internal variables
     internal var paint = Paint()
     var game: MainGame

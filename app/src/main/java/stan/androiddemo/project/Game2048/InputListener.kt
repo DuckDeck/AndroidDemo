@@ -30,7 +30,6 @@ class InputListener(view: MainView) : View.OnTouchListener{
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouch(v: View, event: MotionEvent): Boolean {
         when (event.action) {
-
             MotionEvent.ACTION_DOWN -> {
                 x = event.x
                 y = event.y

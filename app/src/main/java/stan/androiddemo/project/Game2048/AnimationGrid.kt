@@ -1,28 +1,16 @@
 package stan.androiddemo.project.Game2048
 
 
-import kotlin.collections.ArrayList
-
 /**
  * Created by hugfo on 2017/8/19.
  */
-class AnimationGrid{
-    var field: Array<Array<ArrayList<AnimationCell>?>>
+class AnimationGrid(x: Int, y: Int) {
+    var field: Array<Array<ArrayList<AnimationCell>?>> = Array(x) { arrayOfNulls<ArrayList<AnimationCell>>(y) }
     internal var activeAnimations = 0
     internal var oneMoreFrame = false
     var globalAnimation = ArrayList<AnimationCell>()
 
-    constructor(x:Int,y:Int){
-        field = Array(x) { arrayOfNulls<ArrayList<AnimationCell>>(y) }
-        for (i in 0 until x){
-            for (j in 0 until y){
-                field[i][j] = ArrayList<AnimationCell>()
-            }
-        }
-    }
-
-    fun startAnimation(x: Int, y: Int, animationType: Int, length: Long,
-                       delay: Long, extras: Array<Int>?) {
+    fun startAnimation(x: Int, y: Int, animationType: Int, length: Long,delay: Long, extras: Array<Int>?) {
         val animationToAdd = AnimationCell(x, y, animationType,
                 length, delay, extras)
         if (x == -1 && y == -1) {
@@ -91,6 +79,14 @@ class AnimationGrid{
             globalAnimation.remove(animation)
         } else {
             field[animation.x][animation.y]?.remove(animation)
+        }
+    }
+
+    init {
+        for (i in 0 until x){
+            for (j in 0 until y){
+                field[i][j] = ArrayList<AnimationCell>()
+            }
         }
     }
 }

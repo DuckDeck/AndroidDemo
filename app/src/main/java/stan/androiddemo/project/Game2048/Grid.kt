@@ -48,7 +48,7 @@ class Grid(sizeX: Int, sizeY: Int) {
     }
 
 
-    fun isCellOccupied(cell:Cell):Boolean{
+    fun isCellOccupied(cell:Cell?):Boolean{
        return getCellContent(cell) != null
     }
 
@@ -142,4 +142,5 @@ class Grid(sizeX: Int, sizeY: Int) {
         clearGrid()
         clearUndoGrid()
     }
+
 }

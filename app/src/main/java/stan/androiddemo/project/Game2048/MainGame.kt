@@ -47,6 +47,8 @@ class MainGame(context: Context, view: MainView) {
     internal val numSquaresY = 4
     internal val startTiles = 2
 
+    var isAutoRun = false
+
     var gameState = 0
     var canUndo: Boolean = false
 
@@ -89,17 +91,19 @@ class MainGame(context: Context, view: MainView) {
         mView.invalidate()
     }
 
+    //添加开始游戏的Tile
     private fun addStartTiles() {
         for (xx in 0..startTiles - 1) {
             this.addRandomTile()
         }
     }
 
+    //随机添加Tile
     private fun addRandomTile() {
-        if (grid!!.isCellsAvailable()) {
-            val value = if (Math.random() < 0.9) 2 else 4
-            val tile = Tile(grid!!.randomAvailableCell()!!, value)
-            spawnTile(tile)
+        if (grid!!.isCellsAvailable()) { //如果可以添加
+            val value = if (Math.random() < 0.9) 2 else 4 //添加2或者4的Tile   2 出现的可能性为9成
+            val tile = Tile(grid!!.randomAvailableCell()!!, value) //从随机可以出现Tile的地方实例化Tile
+            spawnTile(tile)  //添加Tile
         }
     }
 
@@ -128,7 +132,7 @@ class MainGame(context: Context, view: MainView) {
 
     private fun prepareTiles() {
         for (array in grid!!.field) {
-            array.filter { grid!!.isCellOccupied(it as Cell) }
+            array.filter { grid!!.isCellOccupied(it as Cell?) }
                     .forEach { it?.mergedFrom = null }
         }
     }
@@ -415,5 +419,91 @@ class MainGame(context: Context, view: MainView) {
 
     init {
         initSoundPool()
+    }
+
+    //获取平滑度
+    fun smoothness():Double{
+        var smoothness = 0.0
+        for (i in 0 until grid!!.field.size){
+            for (j in 0 until grid!!.field[i].size){
+                if (grid!!.isCellOccupied(grid!!.field[i][j])){ //如果这个格子不是空的
+                    val value = Math.log(grid!!.field[i][j]!!.value.toDouble()) / Math.log(2.toDouble())
+                    (1 until 3)
+                            .map { getVector(it) }
+                            .map { findFarthestPosition(grid!!.field[i][j]!!, it)[1] }
+                            .filter { grid!!.isCellOccupied(it) }
+                            .map { grid!!.getCellContent(it) }
+                            .map { Math.log(it!!.value.toDouble()) / Math.log(2.toDouble()) }
+                            .forEach { smoothness -= Math.abs(value - it) }
+                }
+            }
+        }
+        return smoothness
+    }
+
+    fun monotonly():Double{
+        var totals = arrayListOf(0.0,0.0,0.0,0.0)
+        //上下方向
+        (0 until numSquaresX).map {
+            var current = 0
+            var next = current + 1
+            while (next < numSquaresX){
+                while (next < numSquaresX && !grid!!.isCellOccupied(grid!!.field[it][next])){
+                    next ++
+                }
+                if (next >=4){ next--   }
+                val currentValue:Double = if (grid!!.isCellOccupied(grid!!.field[it][current]))
+                    Math.log(grid!!.getCellContent(grid!!.field[it][current])!!.value.toDouble()) / Math.log(2.0) else 0.0
+                val nextValue:Double = if (grid!!.isCellOccupied(grid!!.field[it][next]))
+                    Math.log(grid!!.getCellContent(grid!!.field[it][next])!!.value.toDouble()) / Math.log(2.0) else 0.0
+                if (currentValue > nextValue){
+                    totals[0] += nextValue - currentValue
+                }
+                else if(nextValue > currentValue){
+                    totals[1] += currentValue - nextValue
+                }
+                current = next
+                next ++
+            }
+        }
+        //左右方向
+        (0 until numSquaresY).map {
+            var current = 0
+            var next = current + 1
+            while (next < numSquaresX){
+                while (next < numSquaresX && !grid!!.isCellOccupied(grid!!.field[next][it])){
+                    next ++
+                }
+                if (next >=4){ next--   }
+                val currentValue:Double = if (grid!!.isCellOccupied(grid!!.field[current][it]))
+                    Math.log(grid!!.getCellContent(grid!!.field[current][it])!!.value.toDouble()) / Math.log(2.0) else 0.0
+                val nextValue:Double = if (grid!!.isCellOccupied(grid!!.field[next][it]))
+                    Math.log(grid!!.getCellContent(grid!!.field[next][it])!!.value.toDouble()) / Math.log(2.0) else 0.0
+                if (currentValue > nextValue){
+                    totals[2] += nextValue - currentValue
+                }
+                else if(nextValue > currentValue){
+                    totals[3] += currentValue - nextValue
+                }
+                current = next
+                next ++
+            }
+        }
+        return Math.max(totals[0],totals[1]) + Math.max(totals[2],totals[3])
+    }
+
+    fun maxTileValue():Int{
+        var max = 0
+        for (i in 0 until grid!!.field.size){
+            for (j in 0 until grid!!.field[i].size){
+                if (grid!!.isCellOccupied(grid!!.field[i][j])){ //如果这个格子不是空的
+                    val value = grid!!.field[i][j]!!.value
+                   if (value > max){
+                       max = value
+                   }
+                }
+            }
+        }
+        return max
     }
 }
