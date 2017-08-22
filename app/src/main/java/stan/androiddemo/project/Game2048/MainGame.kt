@@ -46,9 +46,7 @@ class MainGame(context: Context, view: MainView) {
     internal val numSquaresX = 4
     internal val numSquaresY = 4
     internal val startTiles = 2
-
-    var isAutoRun = false
-
+    var playerTurn = true
     var gameState = 0
     var canUndo: Boolean = false
 
@@ -203,12 +201,12 @@ class MainGame(context: Context, view: MainView) {
         return !(gameWon() || gameLost())
     }
 
-    fun move(direction: Int) {
+    fun move(direction: Int):Boolean {
         playSound(1, 1) // move sound
         aGrid?.cancelAnimations()
         // 0: up, 1: right, 2: down, 3: left
         if (!isActive()) {
-            return
+            return false
         }
         prepareUndoState()
         val vector = getVector(direction)
@@ -275,6 +273,7 @@ class MainGame(context: Context, view: MainView) {
 
                     if (!positionsEqual(cell, tile)) {
                         moved = true
+                        playerTurn = false
                     }
                 }
             }
@@ -284,9 +283,11 @@ class MainGame(context: Context, view: MainView) {
             saveUndoState()
             addRandomTile()
             checkLose()
+            playerTurn = true
         }
         mView.resyncTime()
         mView.invalidate()
+        return moved
     }
 
     private fun checkLose() {

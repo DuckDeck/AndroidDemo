@@ -23,6 +23,7 @@ class MainView: View {
     // Internal variables
     internal var paint = Paint()
     var game: MainGame
+    lateinit var AI:AI2048
     var hasSaveState = false
     private val numCellTypes = 16
     var continueButtonEnabled = false
@@ -54,7 +55,7 @@ class MainView: View {
     private var loseGameOverlay: BitmapDrawable? = null
     private var winGameContinueOverlay: BitmapDrawable? = null
     private var winGameFinalOverlay: BitmapDrawable? = null
-
+    private var autoIcon:Drawable? = null
     // Text variables
     private var sYAll: Int = 0
     private var titleStartYAll: Int = 0
@@ -68,6 +69,7 @@ class MainView: View {
     var sXNewGame: Int = 0
     var sXUndo: Int = 0
     var sXCheat: Int = 0
+    var sXAuto = 0
     var iconSize: Int = 0
 
     // Text values
@@ -96,6 +98,7 @@ class MainView: View {
         val resources = context.resources
         // Loading resources
         game = MainGame(context, this)
+        AI = AI2048(game)
         try {
             // Getting text values
             headerText = resources.getString(R.string.header)
@@ -133,6 +136,8 @@ class MainView: View {
             lightUpRectangle = resources
                     .getDrawable(R.drawable.light_up_rectangle)
             fadeRectangle = resources.getDrawable(R.drawable.fade_rectangle)
+            autoIcon = resources.getDrawable(R.drawable.ic_launcher)
+
             TEXT_WHITE = resources.getColor(R.color.text_white)
             TEXT_BLACK = resources.getColor(R.color.text_black)
             TEXT_BROWN = resources.getColor(R.color.text_brown)
@@ -265,6 +270,12 @@ class MainView: View {
     fun drawCheatButton(canvas: Canvas) {
         drawDrawable(canvas, backgroundRectangle!!, sXCheat, sYIcons, sXCheat + iconSize, sYIcons + iconSize)
         drawDrawable(canvas, cheatIcon!!, sXCheat + iconPaddingSize, sYIcons + iconPaddingSize, sXCheat + iconSize - iconPaddingSize,
+                sYIcons + iconSize - iconPaddingSize)
+    }
+
+    fun drawAutoButton(canvas: Canvas){
+        drawDrawable(canvas, backgroundRectangle!!, sXAuto, sYIcons, sXAuto + iconSize, sYIcons + iconSize)
+        drawDrawable(canvas, autoIcon!!, sXAuto + iconPaddingSize, sYIcons + iconPaddingSize, sXAuto + iconSize - iconPaddingSize,
                 sYIcons + iconSize - iconPaddingSize)
     }
 
@@ -467,6 +478,7 @@ class MainView: View {
         val canvas = Canvas(background)
         drawHeader(canvas)
         drawCheatButton(canvas)
+        drawAutoButton(canvas)
         drawNewGameButton(canvas, false)
         drawUndoButton(canvas)
         drawBackground(canvas)
@@ -572,6 +584,7 @@ class MainView: View {
         sXNewGame = endingX - iconSize
         sXUndo = sXNewGame - iconSize * 3 / 2 - iconPaddingSize
         sXCheat = sXUndo - iconSize * 3 / 2 - iconPaddingSize
+        sXAuto = sXCheat - iconSize * 3 / 2 - iconPaddingSize
         resyncTime()
     }
 

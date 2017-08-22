@@ -25,6 +25,7 @@ class InputListener(view: MainView) : View.OnTouchListener{
     private var previousDirection = 1
     private var veryLastDirection = 1
     private var hasMoved = false
+    private var isAutoRun = false
     internal var mView: MainView = view
 
     @SuppressLint("ClickableViewAccessibility")
@@ -45,6 +46,10 @@ class InputListener(view: MainView) : View.OnTouchListener{
             MotionEvent.ACTION_MOVE -> {
                 x = event.x
                 y = event.y
+                if (isAutoRun){
+                    //TODO("auto run")
+                    return true
+                }
                 if (mView.game.isActive()) {
                     val dx = x - previousX
                     if (Math.abs(lastdx + dx) < Math.abs(lastdx) + Math.abs(dx)
@@ -117,7 +122,13 @@ class InputListener(view: MainView) : View.OnTouchListener{
                         mView.game.revertUndoState()
                     } else if (iconPressed(mView.sXCheat, mView.sYIcons)) {
                         mView.game.cheat()
-                    } else if (isTap(2)
+                    } else if (iconPressed(mView.sXAuto, mView.sYIcons)) {
+                        isAutoRun = !isAutoRun
+                        if (isAutoRun){
+                            //TODO("start ai action")
+                        }
+                    }
+                    else if (isTap(2)
                             && inRange(mView.startingX.toFloat(), x, mView.endingX.toFloat())
                             && inRange(mView.startingY.toFloat(), x, mView.endingY.toFloat())
                             && mView.continueButtonEnabled) {
