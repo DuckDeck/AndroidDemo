@@ -354,6 +354,7 @@ open class Grid(sizeX: Int, sizeY: Int) {
 
     fun isLands():Double {
         //这玩意真麻烦
+
         return 0.0
     }
 }

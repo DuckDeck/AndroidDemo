@@ -81,6 +81,10 @@ class ImageSetActivity : AppCompatActivity() {
             }
         }
 
+        float_button_search.setOnClickListener {
+            Toast.makeText(this,"需要批量保存图片",Toast.LENGTH_SHORT).show()
+        }
+
         mAdapter.setOnItemClickListener { adapter, view, position ->
             MNImageBrowser.showImageBrowser(this,view,position,arrImageUrl)
         }
