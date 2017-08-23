@@ -5,6 +5,7 @@ import java.util.*
 /**
  * Created by stanhu on 22/8/2017.
  */
+//Grid 要 copy 一份才行
 class VirtualGame(var grid: Grid) {
 
     internal val numSquaresX = 4
@@ -111,19 +112,102 @@ class VirtualGame(var grid: Grid) {
                         grid?.removeTile(tile)
 
                         tile.updatePosition(positions[1])
-
-
                     } else {
                         moveTile(tile, positions[0])
                     }
 
                     if (!positionsEqual(cell, tile)) {
                         moved = true
-
                     }
                 }
             }
         }
         return moved
+    }
+    //获取平滑度
+    fun smoothness():Double{
+        var smoothness = 0.0
+        for (i in 0 until grid!!.field.size){
+            for (j in 0 until grid!!.field[i].size){
+                if (grid!!.isCellOccupied(grid!!.field[i][j])){ //如果这个格子不是空的
+                    val value = Math.log(grid!!.field[i][j]!!.value.toDouble()) / Math.log(2.toDouble())
+                    (1 until 3)
+                            .map { getVector(it) }
+                            .map { findFarthestPosition(grid!!.field[i][j]!!, it)[1] }
+                            .filter { grid!!.isCellOccupied(it) }
+                            .map { grid!!.getCellContent(it) }
+                            .map { Math.log(it!!.value.toDouble()) / Math.log(2.toDouble()) }
+                            .forEach { smoothness -= Math.abs(value - it) }
+                }
+            }
+        }
+        return smoothness
+    }
+
+    fun monotonly():Double{
+        var totals = arrayListOf(0.0,0.0,0.0,0.0)
+        //上下方向
+        (0 until numSquaresX).map {
+            var current = 0
+            var next = current + 1
+            while (next < numSquaresX){
+                while (next < numSquaresX && !grid!!.isCellOccupied(grid!!.field[it][next])){
+                    next ++
+                }
+                if (next >=4){ next--   }
+                val currentValue:Double = if (grid!!.isCellOccupied(grid!!.field[it][current]))
+                    Math.log(grid!!.getCellContent(grid!!.field[it][current])!!.value.toDouble()) / Math.log(2.0) else 0.0
+                val nextValue:Double = if (grid!!.isCellOccupied(grid!!.field[it][next]))
+                    Math.log(grid!!.getCellContent(grid!!.field[it][next])!!.value.toDouble()) / Math.log(2.0) else 0.0
+                if (currentValue > nextValue){
+                    totals[0] += nextValue - currentValue
+                }
+                else if(nextValue > currentValue){
+                    totals[1] += currentValue - nextValue
+                }
+                current = next
+                next ++
+            }
+        }
+        //左右方向
+        (0 until numSquaresY).map {
+            var current = 0
+            var next = current + 1
+            while (next < numSquaresX){
+                while (next < numSquaresX && !grid!!.isCellOccupied(grid!!.field[next][it])){
+                    next ++
+                }
+                if (next >=4){ next--   }
+                val currentValue:Double = if (grid!!.isCellOccupied(grid!!.field[current][it]))
+                    Math.log(grid!!.getCellContent(grid!!.field[current][it])!!.value.toDouble()) / Math.log(2.0) else 0.0
+                val nextValue:Double = if (grid!!.isCellOccupied(grid!!.field[next][it]))
+                    Math.log(grid!!.getCellContent(grid!!.field[next][it])!!.value.toDouble()) / Math.log(2.0) else 0.0
+                if (currentValue > nextValue){
+                    totals[2] += nextValue - currentValue
+                }
+                else if(nextValue > currentValue){
+                    totals[3] += currentValue - nextValue
+                }
+                current = next
+                next ++
+            }
+        }
+        return Math.max(totals[0],totals[1]) + Math.max(totals[2],totals[3])
+    }
+
+
+    fun maxTileValue():Int{
+        var max = 0
+        for (i in 0 until grid!!.field.size){
+            for (j in 0 until grid!!.field[i].size){
+                if (grid!!.isCellOccupied(grid!!.field[i][j])){ //如果这个格子不是空的
+                    val value = grid!!.field[i][j]!!.value
+                    if (value > max){
+                        max = value
+                    }
+                }
+            }
+        }
+        return max
     }
 }

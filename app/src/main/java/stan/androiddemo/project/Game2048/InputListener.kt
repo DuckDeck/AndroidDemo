@@ -28,6 +28,7 @@ class InputListener(view: MainView) : View.OnTouchListener{
     private var isAutoRun = false
     internal var mView: MainView = view
 
+
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouch(v: View, event: MotionEvent): Boolean {
         when (event.action) {
@@ -123,9 +124,18 @@ class InputListener(view: MainView) : View.OnTouchListener{
                     } else if (iconPressed(mView.sXCheat, mView.sYIcons)) {
                         mView.game.cheat()
                     } else if (iconPressed(mView.sXAuto, mView.sYIcons)) {
+                        if (!mView.game.isActive()){
+                            return true
+                        }
                         isAutoRun = !isAutoRun
                         if (isAutoRun){
                             //TODO("start ai action")
+                            mView.game.ai?.getupGrid(mView.game.grid!!)
+                            val best = mView.game.ai?.getBest()
+                            if (best != null){
+                                mView.game.move(best!!.move!!)
+                            }
+
                         }
                     }
                     else if (isTap(2)

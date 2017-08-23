@@ -20,4 +20,9 @@ class Tile:Cell{
         this.y = cell.y
     }
 
+    fun clone():Tile{
+        val tile = Tile(this.x,this.y,this.value)
+        return tile
+
+    }
 }

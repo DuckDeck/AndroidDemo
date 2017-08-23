@@ -143,4 +143,15 @@ class Grid(sizeX: Int, sizeY: Int) {
         clearUndoGrid()
     }
 
+    fun clone():Grid{
+        val grid = Grid(this.field.size,this.field[0].size)
+        for (i in 0 until grid.field.size){
+            for (j in 0 until grid.field[i].size){
+                grid.field[i][j] = this.field[i][j]?.clone()
+            }
+        }
+
+        return grid
+    }
+
 }

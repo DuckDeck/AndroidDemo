@@ -23,7 +23,6 @@ class MainView: View {
     // Internal variables
     internal var paint = Paint()
     var game: MainGame
-    lateinit var AI:AI2048
     var hasSaveState = false
     private val numCellTypes = 16
     var continueButtonEnabled = false
@@ -98,7 +97,6 @@ class MainView: View {
         val resources = context.resources
         // Loading resources
         game = MainGame(context, this)
-        AI = AI2048(game)
         try {
             // Getting text values
             headerText = resources.getString(R.string.header)
