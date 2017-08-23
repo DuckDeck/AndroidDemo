@@ -1,9 +1,11 @@
 package stan.androiddemo.project.Game2048
 
+import java.util.*
+
 /**
  * Created by hugfo on 2017/8/19.
  */
-class Grid(sizeX: Int, sizeY: Int) {
+open class Grid(sizeX: Int, sizeY: Int) {
     var field: Array<Array<Tile?>> = Array(sizeX) { arrayOfNulls<Tile>(sizeY) }
     var undoField: Array<Array<Tile?>> = Array(sizeX) { arrayOfNulls<Tile>(sizeY) }
     private var bufferField: Array<Array<Tile?>> = Array(sizeX) { arrayOfNulls<Tile>(sizeY) }
@@ -150,8 +152,208 @@ class Grid(sizeX: Int, sizeY: Int) {
                 grid.field[i][j] = this.field[i][j]?.clone()
             }
         }
-
         return grid
     }
 
+
+
+
+
+    var sizeWidth = sizeX
+    var sizeHeight = sizeY
+    var playerTurn = true
+    private fun getVector(direction: Int): Cell {
+        val map = arrayOf(Cell(0, -1), // up
+                Cell(1, 0), // right
+                Cell(0, 1), // down
+                Cell(-1, 0) // left
+        )
+        return map[direction]
+    }
+
+    private fun buildTraversalsX(vector: Cell): List<Int> {
+        val traversals = (0..sizeWidth - 1).toList()
+
+        if (vector.x === 1) {
+            Collections.reverse(traversals)
+        }
+
+        return traversals
+    }
+
+    private fun buildTraversalsY(vector: Cell): List<Int> {
+        val traversals = (0..sizeHeight - 1).toList()
+
+        if (vector.y === 1) {
+            Collections.reverse(traversals)
+        }
+
+        return traversals
+    }
+
+    private fun prepareTiles() {
+        for (array in field) {
+            array.filter { isCellOccupied(it as Cell?) }
+                    .forEach { it?.mergedFrom = null }
+        }
+    }
+
+    private fun findFarthestPosition(cell: Cell, vector: Cell): Array<Cell> {
+        var previous: Cell
+        var nextCell = Cell(cell.x, cell.y)
+        do {
+            previous = nextCell
+            nextCell = Cell(previous.x + vector.x,previous.y + vector.y)
+        } while (isCellWithinBounds(nextCell) && isCellAvailable(nextCell))
+
+        val answer = arrayOf(previous, nextCell)
+        return answer
+    }
+
+    fun positionsEqual(first:Cell,second:Cell):Boolean{
+        return first.x == second.x && first.y == second.y
+    }
+
+    private fun moveTile(tile: Tile, cell: Cell) {
+        field[tile.x][tile.y] = null
+        field[cell.x][cell.y] = tile
+        tile.updatePosition(cell)
+    }
+
+    fun isWin():Boolean{
+        for (i in 0 until field.size){
+            for (j in 0 until field[i].size){
+                if (isCellOccupied(field[i][j])){ //如果这个格子不是空的
+                    if (field[i][j]!!.value >= 2048){
+                        return  true
+                    }
+                }
+            }
+        }
+        return false
+    }
+
+    fun move(direction: Int):Boolean {
+        val vector = getVector(direction)
+        val traversalsX = buildTraversalsX(vector)
+        val traversalsY = buildTraversalsY(vector)
+        var moved = false
+        prepareTiles()
+        for (xx in traversalsX) {
+            for (yy in traversalsY) {
+                val cell = Cell(xx, yy)
+                val tile = getCellContent(cell)
+                if (tile != null) {
+                    val positions = findFarthestPosition(cell, vector)
+                    val next = getCellContent(positions[1])
+                    if (next != null && next.value === tile!!.value && next.mergedFrom == null) {
+                        val merged = Tile(positions[1],tile.value * 2)
+                        val temp = arrayOf(tile, next)
+                        merged.mergedFrom = temp
+                        insertTile(merged)
+                        removeTile(tile)
+                        tile.updatePosition(positions[1])
+                    } else {
+                        moveTile(tile, positions[0])
+                    }
+                    if (!positionsEqual(cell, tile)) {
+                        moved = true
+                        playerTurn = false
+                    }
+                }
+            }
+        }
+        return moved
+    }
+    //获取平滑度
+    fun smoothness():Double{
+        var smoothness = 0.0
+        for (i in 0 until field.size){
+            for (j in 0 until field[i].size){
+                if (isCellOccupied(field[i][j])){ //如果这个格子不是空的
+                    val value = Math.log(field[i][j]!!.value.toDouble()) / Math.log(2.toDouble())
+                    (1 until 3)
+                            .map { getVector(it) }
+                            .map { findFarthestPosition(field[i][j]!!, it)[1] }
+                            .filter {isCellOccupied(it) }
+                            .map { getCellContent(it) }
+                            .map { Math.log(it!!.value.toDouble()) / Math.log(2.toDouble()) }
+                            .forEach { smoothness -= Math.abs(value - it) }
+                }
+            }
+        }
+        return smoothness
+    }
+
+    fun monotonly():Double{
+        var totals = arrayListOf(0.0,0.0,0.0,0.0)
+        //上下方向
+        (0 until sizeWidth).map {
+            var current = 0
+            var next = current + 1
+            while (next < sizeWidth){
+                while (next < sizeWidth && !isCellOccupied(field[it][next])){
+                    next ++
+                }
+                if (next >=4){ next--   }
+                val currentValue:Double = if (isCellOccupied(field[it][current]))
+                    Math.log(getCellContent(field[it][current])!!.value.toDouble()) / Math.log(2.0) else 0.0
+                val nextValue:Double = if (isCellOccupied(field[it][next]))
+                    Math.log(getCellContent(field[it][next])!!.value.toDouble()) / Math.log(2.0) else 0.0
+                if (currentValue > nextValue){
+                    totals[0] += nextValue - currentValue
+                }
+                else if(nextValue > currentValue){
+                    totals[1] += currentValue - nextValue
+                }
+                current = next
+                next ++
+            }
+        }
+        //左右方向
+        (0 until sizeHeight).map {
+            var current = 0
+            var next = current + 1
+            while (next < sizeWidth){
+                while (next < sizeWidth && !isCellOccupied(field[next][it])){
+                    next ++
+                }
+                if (next >=4){ next--   }
+                val currentValue:Double = if (isCellOccupied(field[current][it]))
+                    Math.log(getCellContent(field[current][it])!!.value.toDouble()) / Math.log(2.0) else 0.0
+                val nextValue:Double = if (isCellOccupied(field[next][it]))
+                    Math.log(getCellContent(field[next][it])!!.value.toDouble()) / Math.log(2.0) else 0.0
+                if (currentValue > nextValue){
+                    totals[2] += nextValue - currentValue
+                }
+                else if(nextValue > currentValue){
+                    totals[3] += currentValue - nextValue
+                }
+                current = next
+                next ++
+            }
+        }
+        return Math.max(totals[0],totals[1]) + Math.max(totals[2],totals[3])
+    }
+
+
+    fun maxTileValue():Int{
+        var max = 0
+        for (i in 0 until field.size){
+            for (j in 0 until field[i].size){
+                if (isCellOccupied(field[i][j])){ //如果这个格子不是空的
+                    val value = getCellContent(i,j)!!.value
+                    if (value > max){
+                        max = value
+                    }
+                }
+            }
+        }
+        return max
+    }
+
+    fun isLands():Double {
+        //这玩意真麻烦
+        return 0.0
+    }
 }

@@ -130,12 +130,10 @@ class InputListener(view: MainView) : View.OnTouchListener{
                         isAutoRun = !isAutoRun
                         if (isAutoRun){
                             //TODO("start ai action")
-                            mView.game.ai?.getupGrid(mView.game.grid!!)
                             val best = mView.game.ai?.getBest()
                             if (best != null){
                                 mView.game.move(best!!.move!!)
                             }
-
                         }
                     }
                     else if (isTap(2)

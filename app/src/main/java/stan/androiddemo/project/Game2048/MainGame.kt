@@ -90,9 +90,8 @@ class MainGame(context: Context, view: MainView) {
         mView.resyncTime()
         mView.invalidate()
 
-        if (ai == null)
-        {
-            ai = AI2048(VirtualGame(grid!!.clone()))
+        if (ai == null){
+            ai = AI2048(grid!!)
         }
     }
 
@@ -245,8 +244,7 @@ class MainGame(context: Context, view: MainView) {
                     val positions = findFarthestPosition(cell, vector)
                     val next = grid?.getCellContent(positions[1])
 
-                    if (next != null && next.value === tile!!.value
-                            && next.mergedFrom == null) {
+                    if (next != null && next.value === tile!!.value && next.mergedFrom == null) {
                         playSound(2, 1) // get ponit sound
 
                         val merged = Tile(positions[1],
