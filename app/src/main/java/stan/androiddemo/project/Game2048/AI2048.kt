@@ -72,12 +72,43 @@ class AI2048(var grid: Grid) {
             for (v in scores){
                 for (c in 0 until cells.size){
                     v.value.add(null)
-                    val tile = Tile(cells[c],10)
+                    val tile = Tile(cells[c],v.key)
                     grid.insertTile(tile)
-//                    v.value[c] = grid.s
+                    v.value[c] = grid.isLands() - grid.smoothness()
+                    grid.removeTile(tile)
+                }
+            }
+            val maxScore = Math.max(scores[2]!!.maxBy { it!! }!!,scores[4]!!.maxBy { it!! }!!)
+            for (v in scores){
+                for (i in 0 until scores[v.key]!!.size ){
+                    if (scores[v.key]!![i] == maxScore){
+                        candidates.add(Pair(cells[i],v.key))
+                    }
                 }
             }
 
+
+
+            for (i in 0 until candidates.size){
+                val pos =  candidates[i].first
+                val value = candidates[i].second
+                val newGrid = grid.clone()
+                val tile = Tile(pos,value)
+                newGrid.insertTile(tile)
+                newGrid.playerTurn = true
+                position ++
+                val newAI = AI2048(newGrid)
+                result = newAI.search(depth,alpha,bestScore,position,cutoffs)
+                position = result!!.positions
+                cutoff = result!!.cutoffs
+                if (result!!.score < bestScore){
+                    bestScore = result!!.score
+                }
+                if (bestScore < alpha){
+                    cutoff++
+                    return MoveResult(null, beta, position, cutoff)
+                }
+            }
         }
         return MoveResult(bestMove,bestScore,position,cutoff)
     }
@@ -106,7 +137,7 @@ class AI2048(var grid: Grid) {
 }
 
 class MoveResult{
-    constructor(move:Int,score:Double,positions:Int,cutoffs: Int){
+    constructor(move:Int?,score:Double,positions:Int,cutoffs: Int){
         this.move = move
         this.score = score
         this.positions = positions

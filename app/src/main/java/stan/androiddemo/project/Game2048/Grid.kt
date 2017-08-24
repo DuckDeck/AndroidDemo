@@ -354,7 +354,35 @@ open class Grid(sizeX: Int, sizeY: Int) {
 
     fun isLands():Double {
         //这玩意真麻烦
+        var isLands = 0.0
+        for (i in 0 until field.size){
+            for (j in 0 until field[i].size){
+                 field[i][j]?.isMarked = false
 
-        return 0.0
+            }
+        }
+
+        for (i in 0 until field.size){
+            for (j in 0 until field[i].size){
+                if (field[i][j] != null &&  !field[i][j]!!.isMarked){
+                    isLands ++
+                    mark(i,j,field[i][j]!!.value)
+                }
+            }
+        }
+
+        return isLands
     }
+
+    fun mark(x:Int,y:Int,value:Int){
+        if (x >= 0 && x < field.size && y >= 0 && y < field[0].size && field[x][y] != null && field[x][y]!!.value == value && !field[x][y]!!.isMarked ){
+            field[x][y]?.isMarked = true
+            (0 until 4).map {
+                val v = getVector(it)
+                mark(x + v.x,y+v.y,value)
+            }
+        }
+    }
+
+
 }

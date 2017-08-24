@@ -7,6 +7,8 @@ class Tile:Cell{
      var value: Int = 0
      var mergedFrom: Array<Tile>? = null
 
+     var isMarked = false
+
     constructor(x:Int,y:Int,value:Int):super(x,y){
         this.value = value
     }
