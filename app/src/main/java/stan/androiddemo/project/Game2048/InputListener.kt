@@ -3,6 +3,7 @@ package stan.androiddemo.project.Game2048
 import android.annotation.SuppressLint
 import android.view.MotionEvent
 import android.view.View
+import java.util.*
 
 /**
  * Created by hugfo on 2017/8/19.
@@ -13,7 +14,7 @@ class InputListener(view: MainView) : View.OnTouchListener{
     private val SWIPE_THRESHOLD_VELOCITY = 25
     private val MOVE_THRESHOLD = 250
     private val RESET_STARTING = 10
-
+    private var timer: Timer? = null
     private var x: Float = 0F
     private var y: Float = 0F
     private var lastdx: Float = 0F
@@ -128,12 +129,15 @@ class InputListener(view: MainView) : View.OnTouchListener{
                             return true
                         }
                         isAutoRun = !isAutoRun
-                        if (isAutoRun){
-                            //TODO("start ai action")
-                            val best = mView.game.ai?.getBest()
-                            if (best != null){
-                                mView.game.move(best!!.move!!)
+                        if (isAutoRun&&mView.game.isActive()){
+                            if (timer == null){
+                                timer = Timer()
+                                setTimeTask()
                             }
+                        }
+                        else{
+                            timer?.cancel()
+                            timer = null
                         }
                     }
                     else if (isTap(2)
@@ -146,6 +150,28 @@ class InputListener(view: MainView) : View.OnTouchListener{
             }
         }
         return true
+    }
+
+    private fun setTimeTask(){
+        timer?.schedule(object:TimerTask(){
+            override fun run() {
+
+                if (!mView.game.isActive()){
+                    timer?.cancel()
+                    timer = null
+                    isAutoRun = false
+                }
+                //TODO("start ai action")
+                val best = mView.game.ai?.getBest()
+                if (best != null){
+                    mView.post {
+                        mView.game.move(best!!.move!!)
+                    }
+
+                }
+            }
+
+        },300,MOVE_THRESHOLD.toLong())
     }
 
     private fun pathMoved(): Float {

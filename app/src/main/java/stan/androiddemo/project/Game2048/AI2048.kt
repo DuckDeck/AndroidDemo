@@ -9,7 +9,7 @@ import kotlin.collections.ArrayList
  */
 class AI2048(var grid: Grid) {
 
-    val minSearchTime = 100
+    val minSearchTime = 150
 
     fun eval():Double{
         val emptyCellsNum = grid.getAvailableCells().size
@@ -113,11 +113,11 @@ class AI2048(var grid: Grid) {
         return MoveResult(bestMove,bestScore,position,cutoff)
     }
 
-    fun getBest():MoveResult{
+    fun getBest():MoveResult?{
         return iterativeDeep()
     }
 
-    fun iterativeDeep():MoveResult{
+    fun iterativeDeep():MoveResult?{
         val start = Date()
         var depth = 0
         var best:MoveResult? = null
@@ -132,7 +132,7 @@ class AI2048(var grid: Grid) {
             depth++
         }while (Date().time - start.time < minSearchTime)
         Logger.e("结果是"+best.toString())
-        return best!!
+        return best
     }
 }
 

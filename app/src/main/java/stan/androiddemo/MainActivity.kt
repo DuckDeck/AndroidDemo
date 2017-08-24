@@ -7,6 +7,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import com.facebook.drawee.backends.pipeline.Fresco
+import com.tencent.bugly.crashreport.CrashReport
 import kotlinx.android.synthetic.main.activity_main.*
 import org.json.JSONObject
 import java.lang.reflect.Field
@@ -17,6 +18,10 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Fresco.initialize(this)
+
+
+        CrashReport.initCrashReport(applicationContext,"06c540ec45",true)
+
         setContentView(R.layout.activity_main)
 
         title = "" // it works

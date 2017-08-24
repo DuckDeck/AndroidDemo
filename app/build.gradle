@@ -84,4 +84,7 @@ dependencies {
 
     //事件解耦
     compile 'org.greenrobot:eventbus:3.0.0'
+
+    //bug report
+    compile 'com.tencent.bugly:crashreport:latest.release'
 }
