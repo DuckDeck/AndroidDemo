@@ -16,7 +16,7 @@ class DownloadTask: AsyncTask<String, Int, Int> {
     val TYPE_SUCCESS = 0
     val TYPE_FAILED = 1
     val TYPE_PAUSED = 2
-    val TYPE_CANCLED = 3
+    val TYPE_CANCELED = 3
     var listener: DownloadListener
     var isCanceled = false
     var isPaused = false
@@ -61,7 +61,7 @@ class DownloadTask: AsyncTask<String, Int, Int> {
 
                 while (length != -1){
                     if (isCanceled){
-                        return TYPE_CANCLED
+                        return TYPE_CANCELED
                     }
                     else if (isPaused){
                         return TYPE_PAUSED
@@ -119,7 +119,7 @@ class DownloadTask: AsyncTask<String, Int, Int> {
            TYPE_SUCCESS->listener.onSuccess()
             TYPE_FAILED->listener.onFailed()
             TYPE_PAUSED->listener.onPaused()
-            TYPE_CANCLED->listener.onCanceled()
+            TYPE_CANCELED ->listener.onCanceled()
         }
     }
 

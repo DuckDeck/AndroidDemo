@@ -17,6 +17,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
+import com.afollestad.materialdialogs.MaterialDialog
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.Target
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -82,7 +83,25 @@ class ImageSetActivity : AppCompatActivity() {
         }
 
         float_button_search.setOnClickListener {
-            Toast.makeText(this,"需要批量保存图片",Toast.LENGTH_SHORT).show()
+
+            if (ContextCompat.checkSelfPermission(this@ImageSetActivity, Manifest.permission.WRITE_EXTERNAL_STORAGE) !=
+                    PackageManager.PERMISSION_GRANTED){
+                ActivityCompat.requestPermissions(this@ImageSetActivity, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),1)
+                return@setOnClickListener
+            }
+
+            MaterialDialog.Builder(this).title("批量下载").content("你确定要批量下载这批图片吗？").positiveText("确定")
+                    .negativeText("取消").onPositive { dialog, which ->
+                for (i in 0 until  arrImageUrl.size){
+                    if (i < arrImageUrl.size -1){
+                        downloadImg(arrImageUrl[i],false)
+                    }
+                    else{
+                        downloadImg(arrImageUrl[i],true)
+                    }
+                }
+            }.show()
+
         }
 
         mAdapter.setOnItemClickListener { adapter, view, position ->
@@ -120,7 +139,7 @@ class ImageSetActivity : AppCompatActivity() {
         })
     }
 
-    fun downloadImg(url:String){
+    fun downloadImg(url:String,showSuccess:Boolean = true){
         object:AsyncTask<String,Int,File?>(){
             override fun doInBackground(vararg p0: String?): File? {
                 var file:File? = null
@@ -143,8 +162,10 @@ class ImageSetActivity : AppCompatActivity() {
                 return file
             }
 
-            override fun onPreExecute() {
-                Toast.makeText(this@ImageSetActivity,"保存图片成功",Toast.LENGTH_LONG).show()
+            override fun onPostExecute(result: File?) {
+                if (showSuccess){
+                    Toast.makeText(this@ImageSetActivity,"保存图片成功",Toast.LENGTH_LONG).show()
+                }
             }
 
         }.execute()

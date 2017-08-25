@@ -40,6 +40,7 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         android:tint="@color/white"
+        android:src="@drawable/ic_file_download_black_24dp"
         app:rippleColor="@color/primary_dark"
         app:layout_behavior="stan.androiddemo.project.petal.Widget.ScrollAwareFABBehavior"/>
 
