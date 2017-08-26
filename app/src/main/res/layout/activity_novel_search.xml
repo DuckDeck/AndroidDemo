@@ -18,14 +18,16 @@
            android:layout_width="match_parent"
            android:layout_height="wrap_content">
            <EditText
-               android:text="完美世界"
+               android:text="星辰变"
                android:hint="输入名称搜索"
                android:id="@+id/txt_search_input"
                android:layout_weight="6"
                android:layout_width="0dp"
-               android:layout_height="40dp" />
+               android:layout_height="40dp"
+               android:imeOptions="actionSearch"
+               android:lines="1"
+               android:inputType="text"/>
            <TextView
-
                android:layout_weight="1"
                android:text="搜索"
                android:gravity="center"

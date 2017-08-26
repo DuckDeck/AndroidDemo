@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.widget.ImageView
 import android.widget.Toast
 import com.bumptech.glide.Glide
@@ -17,6 +18,7 @@ import stan.androiddemo.R
 import stan.androiddemo.UI.Separate
 import stan.androiddemo.project.novel.model.NovelInfo
 import stan.androiddemo.project.novel.model.SectionInfo
+import stan.androiddemo.tool.KeyboardTool
 
 class NovelSearchActivity : AppCompatActivity() {
 
@@ -58,7 +60,7 @@ class NovelSearchActivity : AppCompatActivity() {
         }
 
         txt_search_start.setOnClickListener {
-
+            KeyboardTool.hideKeyboard(this@NovelSearchActivity)
             val key = txt_search_input.text.toString().trim()
             if (key.isEmpty()){
                 Toast.makeText(this,"搜索条件不能为空",Toast.LENGTH_LONG).show()
@@ -67,6 +69,21 @@ class NovelSearchActivity : AppCompatActivity() {
             index = 0
             this.key = key
             searchNovel(key)
+        }
+        txt_search_input.setOnEditorActionListener { textView, i, keyEvent ->
+            if (i == EditorInfo.IME_ACTION_SEARCH){
+                KeyboardTool.hideKeyboard(this)
+                val key = txt_search_input.text.toString().trim()
+                if (key.isEmpty()){
+                    Toast.makeText(this,"搜索条件不能为空",Toast.LENGTH_LONG).show()
+                    return@setOnEditorActionListener true
+                }
+                index = 0
+                this.key = key
+                searchNovel(key)
+                return@setOnEditorActionListener true
+            }
+            return@setOnEditorActionListener false
         }
         mAdapter.setOnItemClickListener { _, _, position ->
             val novel = arrNovels[position]

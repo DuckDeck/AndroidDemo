@@ -69,7 +69,6 @@ class PetalLoginActivity : BasePetalActivity() {
         }
         addUsernameAutoComplete()
         auto_text_username.text = SpannableStringBuilder("3421902@qq.com")
-        edit_password.text = SpannableStringBuilder("stanhu520")
     }
 
     override fun initResAndListener() {
