@@ -285,6 +285,7 @@ open class Grid(sizeX: Int, sizeY: Int) {
         return smoothness
     }
 
+    //获取单调性
     fun monotonly():Double{
         var totals = arrayListOf(0.0,0.0,0.0,0.0)
         //上下方向
@@ -337,6 +338,7 @@ open class Grid(sizeX: Int, sizeY: Int) {
     }
 
 
+    //获取最大的tile的值
     fun maxTileValue():Int{
         var max = 0
         for (i in 0 until field.size){
@@ -352,6 +354,7 @@ open class Grid(sizeX: Int, sizeY: Int) {
         return max
     }
 
+    //获取是不上
     fun isLands():Double {
         //这玩意真麻烦
         var isLands = 0.0
