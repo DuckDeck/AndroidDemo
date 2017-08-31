@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar_main)
 
         val adapter = ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,
-                arrayListOf("项目Demo","布局Layout","绘制View","线程Thread","通信IPC","存储Store"))
+                arrayListOf("项目Demo","布局Layout","绘制View","线程Thread","通信IPC","存储Store","网络通信Network"))
         list_view_menu.adapter = adapter
 
         list_view_menu.onItemClickListener = AdapterView.OnItemClickListener { _, view, _, _ ->
@@ -62,6 +62,10 @@ class MainActivity : AppCompatActivity() {
                 "存储Store"->
                 {
                     val intent = Intent(this, StoreActivity::class.java)
+                    startActivity(intent)
+                }
+                "网络通信Network"->{
+                    val intent = Intent(this, NetworkActivity::class.java)
                     startActivity(intent)
                 }
             }

@@ -15,7 +15,7 @@ class HttpTool{
            client.newCall(request).enqueue(callback)
        }
 
-       fun post(address: String,map: HashMap<String,String>,callback: Callback){
+       fun post(address: String, map: HashMap<String, String>, callback: Callback){
            Log.e("Post, 请求地址",address)
            val client = OkHttpClient()
            val b = FormBody.Builder()
