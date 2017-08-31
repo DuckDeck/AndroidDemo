@@ -198,7 +198,7 @@ abstract class BasePetalRecyclerFragment<T> : BasePetalFragment() {
 
     fun loadError(msg:String="加载失败，请重新再试"){
         if (index == startPageNumber()){
-            swipe_refresh_base_fragment.isRefreshing = false
+            swipe_refresh_base_fragment?.isRefreshing = false
             errorText.text = msg
             mAdapter.emptyView = errorView
         }
@@ -231,7 +231,7 @@ abstract class BasePetalRecyclerFragment<T> : BasePetalFragment() {
     }
 
     fun setRefresh() {
-        swipe_refresh_base_fragment.isRefreshing = true
+        swipe_refresh_base_fragment?.isRefreshing = true
         index = startPageNumber()
         initData()
     }

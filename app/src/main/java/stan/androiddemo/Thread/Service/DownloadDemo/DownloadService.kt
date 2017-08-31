@@ -7,12 +7,13 @@ import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
+import android.os.AsyncTask
 import android.os.Binder
 import android.os.Environment
 import android.os.IBinder
 import android.widget.Toast
-import stan.androiddemo.Thread.Service.ServiceActivity
 import stan.androiddemo.R
+import stan.androiddemo.Thread.Service.ServiceActivity
 import java.io.File
 
 
@@ -61,8 +62,13 @@ class DownloadService : Service(), DownloadListener {
     // mark ad inner class can usr outer class property
     inner class DownloadBinder:Binder(){
         fun startDownload(url:String){
+
             if (downloadTask == null){
                 downloadTask = DownloadTask(this@DownloadService)
+            }
+            if (downloadTask!!.status == AsyncTask.Status.RUNNING){
+                Toast.makeText(this@DownloadService,"Downloading...",Toast.LENGTH_LONG).show()
+                return
             }
             downloadUrl = url
             downloadTask!!.execute(downloadUrl)

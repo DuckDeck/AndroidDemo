@@ -1,11 +1,10 @@
 package stan.androiddemo.project.novel
 
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
-import android.widget.TextView
 import android.widget.Toast
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
@@ -25,8 +24,14 @@ class SectionListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_section_list)
-
-        novelInfo = intent.getParcelableExtra("novel")
+        try {
+            novelInfo = intent.getParcelableExtra("novel")
+        }
+        catch (e:Exception){
+            e.printStackTrace()
+            novelInfo = NovelInfo()
+            Toast.makeText(this,"小说信息错误，请返回上一层",Toast.LENGTH_LONG).show()
+        }
 
         mAdapter = object: BaseQuickAdapter<SectionInfo,BaseViewHolder>(android.R.layout.simple_list_item_1,arrSections){
             override fun convert(helper: BaseViewHolder, item: SectionInfo) {
@@ -55,6 +60,10 @@ class SectionListActivity : AppCompatActivity() {
     }
 
     fun getSections(){
+        if (novelInfo.url.length <= 0){
+            Toast.makeText(this,"小说信息错误，请返回上一层",Toast.LENGTH_LONG).show()
+            return
+        }
         NovelInfo.getSections(novelInfo.url,{ v: ResultInfo ->
             runOnUiThread {
                 if (v.code != 0) {

@@ -4,6 +4,6 @@
     android:layout_height="match_parent"
     android:id="@+id/img_app_guide"
     android:scaleType="centerCrop"
-    android:src="@drawable/guide">
+    android:src="@mipmap/guide">
 
 </ImageView>

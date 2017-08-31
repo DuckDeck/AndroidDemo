@@ -1,6 +1,7 @@
 package stan.androiddemo.project.petal.Module.Guide
 
 import android.animation.AnimatorInflater
+import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_guide.*
 import rx.Observable
 import rx.Subscriber
@@ -24,8 +25,15 @@ class GuideActivity : BasePetalActivity() {
         return this.toString()
     }
 
+
+
     override fun getLayoutId(): Int {
         return R.layout.activity_guide
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        //img_app_guide.setImageBitmap(BitmapFactory.decodeResource(resources,R.drawable.guide))
     }
 
     override fun onResume() {
