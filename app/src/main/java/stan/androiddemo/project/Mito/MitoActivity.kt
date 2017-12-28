@@ -76,7 +76,8 @@ class MitoActivity : AppCompatActivity() {
 
 
         float_button_filter.setOnClickListener {
-
+                val frag = FilterMitoDialogFragment()
+                frag.show(supportFragmentManager,"filterFragment")
         }
 
     }
