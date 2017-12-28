@@ -36,7 +36,7 @@
        android:layout_height="match_parent">
        <TextView
            android:textSize="22sp"
-           android:text="还差精选一图和各种筛选"
+           android:text="还差各种筛选"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content" />
    </LinearLayout>

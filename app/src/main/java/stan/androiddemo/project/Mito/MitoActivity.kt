@@ -73,6 +73,12 @@ class MitoActivity : AppCompatActivity() {
         }
 
         navigation_view.menu.getItem(0).isChecked = true//默认选中第一项
+
+
+        float_button_filter.setOnClickListener {
+
+        }
+
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {

@@ -39,6 +39,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"></android.support.v4.view.ViewPager>
 
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/float_button_filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/fab_margin"
+            android:tint="@color/white"
+            android:src="@drawable/ic_filter_list_white_24dp"
+            app:rippleColor="@color/primary_dark"
+            app:layout_behavior="stan.androiddemo.project.petal.Widget.ScrollAwareFABBehavior"/>
+
     </android.support.design.widget.CoordinatorLayout>
 
     <android.support.design.widget.NavigationView
