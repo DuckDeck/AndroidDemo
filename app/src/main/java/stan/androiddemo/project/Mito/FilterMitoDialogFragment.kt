@@ -64,7 +64,11 @@ class FilterMitoDialogFragment: AppCompatDialogFragment(){
         cyResolution = view.findViewById(R.id.recyclerViewResolution)
         mAdapter = object:BaseQuickAdapter<Resolution, BaseViewHolder>(R.layout.md_listitem,imgCatInfo.resulotions){
             override fun convert(helper: BaseViewHolder?, item: Resolution?) {
-                helper!!.setText(R.id.md_title,item.toString())
+                var str = item.toString()
+                if (!item!!.device.isNullOrEmpty()){
+                    str = str + "(" + item!!.device + ")"
+                }
+                helper!!.setText(R.id.md_title,str)
             }
         }
         cyResolution.layoutManager = LinearLayoutManager(mContext)

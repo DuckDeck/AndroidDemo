@@ -6,4 +6,4 @@ package stan.androiddemo
 
 val errcode_netword_error = -10
 val errcode_html_resolve_error = -15
-
+val errcode_result_not_found = 11

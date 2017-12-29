@@ -38,7 +38,7 @@ class ImageFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     lateinit var mAdapter:BaseQuickAdapter<ImageSetInfo,BaseViewHolder>
     lateinit var failView: View
     lateinit var loadingView: View
-    var currentResolution = Resolution()
+    var currentResolution = Resolution(-1,-1)
     var index = 0
 
     var imageCat = 0

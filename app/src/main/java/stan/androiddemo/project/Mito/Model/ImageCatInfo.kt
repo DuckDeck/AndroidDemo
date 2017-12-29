@@ -5,6 +5,8 @@ import android.os.Parcelable
 import okhttp3.Call
 import okhttp3.Response
 import org.jsoup.Jsoup
+import org.jsoup.nodes.Document
+import org.jsoup.select.Elements
 import stan.androiddemo.Model.ResultInfo
 import stan.androiddemo.errcode_html_resolve_error
 import stan.androiddemo.errcode_netword_error
@@ -67,13 +69,34 @@ class ImageCatInfo() : Parcelable {
                     try {
                         val responseText = response.body()!!.string()
                         val js = Jsoup.parse(responseText)
-                        val imageSets = js.select("dl.filter_item")[1].children().last().children()
-                        imageSets.removeAt(0)
+                        val imageSets = ImageCatInfo.elementsFromHtml(type,js)
                         val imageCat  = ImageCatInfo()
+                        imageCat.resulotions.add(Resolution.wholeResolution)
                         for (item in imageSets){
-                            var res = Resolution(item.text())
+                            val resStr = item.text()
+                            var res = Resolution()
+                            if (resStr.contains('(')){
+                                val index = resStr.indexOf('(')
+                                res.setResolution(resStr.substring(0,index))
+                                res.device =  resStr.substring(index + 1,resStr.length - 1)
+                            }
+                            else{
+                                res.setResolution(resStr)
+                            }
+
                             val href =  item.attr("href")
-                            res.resolutionCode = href.substring(href.length - 13,href.length - 9)
+                            when(type){
+                                0,3->{
+                                    res.resolutionCode = href.substring(href.length - 13,href.length - 9)
+                                }
+                                1->{
+                                    res.resolutionCode = href.substring(href.length - 14,href.length - 10)
+                                }
+                                2->{
+                                    res.resolutionCode = href.substring(href.length - 11,href.length - 7)
+                                }
+                            }
+
                             imageCat.resulotions.add(res)
                         }
 
@@ -91,6 +114,39 @@ class ImageCatInfo() : Parcelable {
             })
         }
 
+        fun elementsFromHtml(type: Int,html:Document):Elements{
+            when(type){
+                0,1->{
+                    val imageSets = html.select("dl.filter_item")[1].children().last().children()
+                    imageSets.removeAt(0)
+                    return imageSets
+                }
+                2->{
+                    val verSets = html.select("dl.filter_item")[1].children()[2].children()
+                    verSets.removeAt(0)
+                    val horSets = html.select("dl.filter_item")[1].children().last().children()
+                    horSets.removeAt(0)
+                    verSets.addAll(horSets)
+                    return verSets
+                }
+                3->{
+                    val comSets = html.select("dl.filter_item")[1].children()[1].children()
+                    comSets.removeAt(0)
 
+                    val padSets = html.select("dl.filter_item")[1].children()[2].children()
+                    padSets.removeAt(0)
+                    val phoneSets = html.select("dl.filter_item")[1].children()[3].children()
+                    phoneSets.removeAt(0)
+                    comSets.addAll(padSets)
+                    comSets.addAll(phoneSets)
+                    return comSets
+                }
+                else->{
+                    return Elements()
+                }
+            }
+        }
     }
+
+
 }

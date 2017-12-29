@@ -75,6 +75,7 @@ class MitoActivity : AppCompatActivity() {
                     startActivityForResult(intent,0x00001)
                 }
             }
+            mAdapter.mFragments.map { (it as ImageFragment).currentResolution = Resolution.wholeResolution }
             getImageSet()
             drawer_layout_fixed.closeDrawers()
             return@setNavigationItemSelectedListener true
@@ -88,9 +89,11 @@ class MitoActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
             val frag =FilterMitoDialogFragment.create(imageCat!!)
+            frag.isCancelable = true
             frag.show(supportFragmentManager,"filterFragment")
             frag.resolutionBLock = {resolution:Resolution ->
                 mAdapter.mFragments.map { (it as ImageFragment).refreshWithResolution(resolution) }
+                frag.dismiss()
             }
         }
 
@@ -100,8 +103,7 @@ class MitoActivity : AppCompatActivity() {
     }
 
     fun  getImageSet(){
-        val cat = viewPager.currentItem
-        ImageCatInfo.imageCats(0,"全部","全部",{v : ResultInfo ->
+        ImageCatInfo.imageCats(currentSelectCat,"全部","全部",{v : ResultInfo ->
             runOnUiThread {
 
                 if (v.code != 0) {

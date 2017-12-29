@@ -9,6 +9,7 @@ import org.litepal.crud.DataSupport
 import stan.androiddemo.Model.ResultInfo
 import stan.androiddemo.errcode_html_resolve_error
 import stan.androiddemo.errcode_netword_error
+import stan.androiddemo.errcode_result_not_found
 import stan.androiddemo.tool.HttpTool
 import stan.androiddemo.tool.ToFixedInt
 import java.io.IOException
@@ -68,7 +69,16 @@ class ImageSetInfo() :DataSupport(),Parcelable{
             else if (type == 3){
                 baseUrl = EssentialImage
             }
-            val url = baseUrl + "-" + ImageSetInfo.themeToUrlPara(theme) + "-" + ImageSetInfo.catToUrlPara(cat) + "-0-" + resolution.toUrlPara() + "-0-"+fixedIndex+".html"
+            var url = baseUrl + "-" + ImageSetInfo.themeToUrlPara(theme) + "-" + ImageSetInfo.catToUrlPara(cat) + "-0-" + resolution.resolutionCode + "-0-"+fixedIndex+".html"
+            when(type){
+                1->{
+                     url = baseUrl + "-" + ImageSetInfo.themeToUrlPara(theme) + "-" + ImageSetInfo.catToUrlPara(cat) + "-" + resolution.resolutionCode + "-0-0-"+fixedIndex+".html"
+                }
+                2->{
+                    url = baseUrl + "-" + ImageSetInfo.themeToUrlPara(theme) + "-" + ImageSetInfo.catToUrlPara(cat) + "-0-0-"+  resolution.resolutionCode + "-" +fixedIndex+".html"
+                }
+            }
+            print(url)
             HttpTool.get(url,object  :okhttp3.Callback{
                 var result = ResultInfo()
                 override fun onFailure(call: Call?, e: IOException?) {
@@ -83,6 +93,12 @@ class ImageSetInfo() :DataSupport(),Parcelable{
                         val responseText = response.body()!!.string()
                         val js = Jsoup.parse(responseText)
                         val imageSets = js.select("ul.clearfix").first().children()
+                        if (imageSets.count() == 1 && imageSets.first().children().count() == 0){
+                            result.code = errcode_result_not_found
+                            result.message = "无有找到图片"
+                            cb(result)
+                            return
+                        }
                         val reg = Regex("\\D+")
                         for (set in imageSets){
                             val imageSet = ImageSetInfo()
@@ -100,8 +116,6 @@ class ImageSetInfo() :DataSupport(),Parcelable{
                             if (res.contains("(")){
                                 res = res.split("(")[0]
                             }
-
-
 
                             imageSet.resolution = Resolution(res)
                             if (imageSet.resolution.pixelX == 0){
@@ -242,115 +256,7 @@ class ImageSetInfo() :DataSupport(),Parcelable{
 }
 
 
-class Resolution():DataSupport(), Parcelable{
-    override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeInt(pixelX)
-        parcel.writeInt(pixelY)
-    }
 
-   
-
-    override fun describeContents(): Int {
-        return 0
-    }
-
-
-    constructor(resolution: String):this(){
-        val res = resolution.split("x")
-        if (res.size == 1)
-        {
-            val s = res[0].toIntOrNull()
-            if (s != null) pixelX = s else pixelX = 0
-
-        }
-        else if (res.size == 2) {
-            val s = res[0].toIntOrNull()
-            if (s != null) pixelX = s else pixelX = 0
-            val y = res[1].toIntOrNull()
-            if (y != null) pixelY = y else pixelY = 0
-
-
-        }
-    }
-
-    var pixelX = 0
-    var pixelY = 0
-    var device = ""
-    var resolutionCode = ""
-    constructor(parcel: Parcel) : this() {
-        pixelX = parcel.readInt()
-        pixelY = parcel.readInt()
-    }
-
-    override fun toString(): String {
-        return pixelX.toString() + "x" + pixelY.toString()
-    }
-
-    fun toUrlPara():String{
-        if (pixelX == 0 && pixelY == 0){
-            return "0"
-        }
-        else if(pixelX == 3840 && pixelY == 1200){
-            return  "3440"
-        }
-        else if(pixelX == 3200 && pixelY == 2400){
-            return  "3441"
-        }
-        else if(pixelX == 2880 && pixelY == 1800){
-            return  "3442"
-        }
-        else if(pixelX == 2560 && pixelY == 1600){
-            return  "3394"
-        }
-        else if(pixelX == 1920 && pixelY == 1200){
-            return  "3395"
-        }
-        else if(pixelX == 1920 && pixelY == 1080){
-            return  "3440"
-        }
-        else if(pixelX == 3840 && pixelY == 1200){
-            return  "3440"
-        }
-        else if(pixelX == 3840 && pixelY == 1200){
-            return  "3440"
-        }
-        else if(pixelX == 3840 && pixelY == 1200){
-            return  "3440"
-        }
-        else if(pixelX == 3840 && pixelY == 1200){
-            return  "3440"
-        }
-        else if(pixelX == 3840 && pixelY == 1200){
-            return  "3440"
-        }
-        else if(pixelX == 3840 && pixelY == 1200){
-            return  "3440"
-        }
-        else if(pixelX == 3840 && pixelY == 1200){
-            return  "3440"
-        }
-        else if(pixelX == 3840 && pixelY == 1200){
-            return  "3440"
-        }
-        return "0"
-
-    }
-
-    companion object CREATOR : Parcelable.Creator<Resolution> {
-        override fun createFromParcel(parcel: Parcel): Resolution {
-            return Resolution(parcel)
-        }
-
-        override fun newArray(size: Int): Array<Resolution?> {
-            return arrayOfNulls(size)
-        }
-
-        val standardComputerResolution = Resolution("1920x1080")
-        val standardPhoneResolution = Resolution("640x940")
-        val standardPadResolution = Resolution("1024x768")
-        val standardEssentialResolution = Resolution("1920x1080")
-    }
-}
 
 
 
