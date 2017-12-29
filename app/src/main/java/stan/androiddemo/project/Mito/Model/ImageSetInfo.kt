@@ -276,6 +276,7 @@ class Resolution():DataSupport(), Parcelable{
     var pixelX = 0
     var pixelY = 0
     var device = ""
+    var resolutionCode = ""
     constructor(parcel: Parcel) : this() {
         pixelX = parcel.readInt()
         pixelY = parcel.readInt()
@@ -288,6 +289,45 @@ class Resolution():DataSupport(), Parcelable{
     fun toUrlPara():String{
         if (pixelX == 0 && pixelY == 0){
             return "0"
+        }
+        else if(pixelX == 3840 && pixelY == 1200){
+            return  "3440"
+        }
+        else if(pixelX == 3200 && pixelY == 2400){
+            return  "3441"
+        }
+        else if(pixelX == 2880 && pixelY == 1800){
+            return  "3442"
+        }
+        else if(pixelX == 2560 && pixelY == 1600){
+            return  "3394"
+        }
+        else if(pixelX == 1920 && pixelY == 1200){
+            return  "3395"
+        }
+        else if(pixelX == 1920 && pixelY == 1080){
+            return  "3440"
+        }
+        else if(pixelX == 3840 && pixelY == 1200){
+            return  "3440"
+        }
+        else if(pixelX == 3840 && pixelY == 1200){
+            return  "3440"
+        }
+        else if(pixelX == 3840 && pixelY == 1200){
+            return  "3440"
+        }
+        else if(pixelX == 3840 && pixelY == 1200){
+            return  "3440"
+        }
+        else if(pixelX == 3840 && pixelY == 1200){
+            return  "3440"
+        }
+        else if(pixelX == 3840 && pixelY == 1200){
+            return  "3440"
+        }
+        else if(pixelX == 3840 && pixelY == 1200){
+            return  "3440"
         }
         else if(pixelX == 3840 && pixelY == 1200){
             return  "3440"

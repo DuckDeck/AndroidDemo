@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.print.PrintAttributes
 import android.support.graphics.drawable.VectorDrawableCompat
 import android.support.v4.app.Fragment
 import android.support.v4.graphics.drawable.DrawableCompat
@@ -37,6 +38,7 @@ class ImageFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     lateinit var mAdapter:BaseQuickAdapter<ImageSetInfo,BaseViewHolder>
     lateinit var failView: View
     lateinit var loadingView: View
+    var currentResolution = Resolution()
     var index = 0
 
     var imageCat = 0
@@ -122,7 +124,7 @@ class ImageFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
             loadData()
         },recycler_images)
 
-        mAdapter.setOnItemClickListener { adapter, view, position ->
+        mAdapter.setOnItemClickListener { _, _, position ->
             val set = arrImageSet[position]
             val intent = Intent(this@ImageFragment.context,ImageSetActivity::class.java)
             intent.putExtra("set",set)
@@ -174,11 +176,19 @@ class ImageFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
             swipe_refresh_mito.isRefreshing = true
             onRefresh()
         }
-
     }
 
-    fun loadData(){
-        ImageSetInfo.imageSets(imageCat, cat,Resolution(),"全部",index,{ v: ResultInfo ->
+    fun refreshWithResolution(resolution:Resolution){
+        currentResolution = resolution
+        if (swipe_refresh_mito != null){
+            swipe_refresh_mito.isRefreshing = true
+            onRefresh()
+        }
+    }
+
+
+    private fun loadData(){
+        ImageSetInfo.imageSets(imageCat, cat,currentResolution,"全部",index,{ v: ResultInfo ->
             activity.runOnUiThread {
                 if (swipe_refresh_mito != null){
                     swipe_refresh_mito.isRefreshing = false

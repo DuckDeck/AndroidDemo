@@ -5,14 +5,21 @@ import android.os.Bundle
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
+import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_mito.*
+import stan.androiddemo.Model.ResultInfo
 import stan.androiddemo.PageAdapter
 import stan.androiddemo.R
+import stan.androiddemo.project.Mito.Model.ImageCatInfo
+import stan.androiddemo.project.Mito.Model.ImageSetInfo
+import stan.androiddemo.project.Mito.Model.Resolution
 
 class MitoActivity : AppCompatActivity() {
 
     lateinit var mAdapter:PageAdapter
     var currentSelectCat = 0
+    var imageCat:ImageCatInfo? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mito)
@@ -68,6 +75,7 @@ class MitoActivity : AppCompatActivity() {
                     startActivityForResult(intent,0x00001)
                 }
             }
+            getImageSet()
             drawer_layout_fixed.closeDrawers()
             return@setNavigationItemSelectedListener true
         }
@@ -76,10 +84,33 @@ class MitoActivity : AppCompatActivity() {
 
 
         float_button_filter.setOnClickListener {
-                val frag = FilterMitoDialogFragment()
-                frag.show(supportFragmentManager,"filterFragment")
+            if (imageCat == null){
+                return@setOnClickListener
+            }
+            val frag =FilterMitoDialogFragment.create(imageCat!!)
+            frag.show(supportFragmentManager,"filterFragment")
+            frag.resolutionBLock = {resolution:Resolution ->
+                mAdapter.mFragments.map { (it as ImageFragment).refreshWithResolution(resolution) }
+            }
         }
 
+        getImageSet()
+
+
+    }
+
+    fun  getImageSet(){
+        val cat = viewPager.currentItem
+        ImageCatInfo.imageCats(0,"全部","全部",{v : ResultInfo ->
+            runOnUiThread {
+
+                if (v.code != 0) {
+                    Toast.makeText(this,v.message, Toast.LENGTH_LONG).show()
+                    return@runOnUiThread
+                }
+                imageCat = v.data as ImageCatInfo?
+            }
+        })
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
