@@ -27,9 +27,8 @@ class ImageSubjectActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshLi
     lateinit var failView: View
     lateinit var loadingView: View
     var index = 0
-    var imageCat = 0
     lateinit var progressLoading: Drawable
-
+    var count = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_image_subject)
@@ -69,10 +68,10 @@ class ImageSubjectActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshLi
         },recycler_view_subject_images)
 
         mAdapter.setOnItemClickListener { _, _, position ->
-//            val set = arrImageSet[position]
-//            val intent = Intent(this@ImageSubjectActivity,ImageSetActivity::class.java)
-//            intent.putExtra("set",set)
-//            startActivity(intent)
+            val set = arrImageSubs[position]
+            val intent = Intent(this@ImageSubjectActivity,ImageSubjectInfoActivity::class.java)
+            intent.putExtra("subject",set)
+            startActivity(intent)
 
         }
         loadData()
@@ -84,8 +83,26 @@ class ImageSubjectActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshLi
     }
 
     fun loadData(){
-        ImageSubjectInfo.getSubjects { result:ResultInfo ->
+        var url = "http://www.5857.com/zhuanti.html"
+
+
+        if (index >= 1){
+            if (count <= 0){
+                mAdapter.loadMoreEnd()
+                return
+            }
+            if (arrImageSubs.count() >= count){
+                mAdapter.loadMoreEnd()
+                return
+            }
+            else{
+                url = "http://www.5857.com/zhuanti_"+(index + 1)+".html"
+            }
+        }
+
+        ImageSubjectInfo.getSubjects(url,{result:ResultInfo ->
             runOnUiThread {
+                count = result.count
                 if (swipe_refresh_subject_mito != null){
                     swipe_refresh_subject_mito.isRefreshing = false
                 }
@@ -115,6 +132,8 @@ class ImageSubjectActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshLi
                 arrImageSubs.addAll(imageSubs)
                 mAdapter.notifyDataSetChanged()
             }
-        }
+        })
+
+
     }
 }

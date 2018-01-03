@@ -134,7 +134,8 @@
         <activity android:name=".NetworkActivity" />
         <activity android:name=".network.networktest.NetworkTestActivity" />
         <activity android:name=".project.Mito.ImageSearchActivity" />
-        <activity android:name=".project.Mito.ImageSubjectActivity"></activity>
+        <activity android:name=".project.Mito.ImageSubjectActivity" />
+        <activity android:name=".project.Mito.ImageSubjectInfoActivity"></activity>
     </application>
 
 </manifest> <!-- issue0:can not hide the title bar --><!-- just use   android:theme="@style/Theme.AppCompat.Light.NoActionBar"> -->
