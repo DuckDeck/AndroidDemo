@@ -132,7 +132,8 @@
             android:theme="@style/AppPetalTheme" />
         <activity android:name=".project.Game2048.GameActivity" />
         <activity android:name=".NetworkActivity" />
-        <activity android:name=".network.networktest.NetworkTestActivity"></activity>
+        <activity android:name=".network.networktest.NetworkTestActivity" />
+        <activity android:name=".project.Mito.ImageSearchActivity"></activity>
     </application>
 
 </manifest> <!-- issue0:can not hide the title bar --><!-- just use   android:theme="@style/Theme.AppCompat.Light.NoActionBar"> -->

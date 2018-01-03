@@ -14,6 +14,8 @@ import stan.androiddemo.tool.HttpTool
 import stan.androiddemo.tool.ToFixedInt
 import java.io.IOException
 import java.lang.Exception
+import java.net.URLEncoder
+import java.util.regex.Pattern
 
 /**
  * Created by stanhu on 4/8/2017.
@@ -136,7 +138,62 @@ class ImageSetInfo() :DataSupport(),Parcelable{
                     }
                     catch (e:Exception){
                         result.code = errcode_html_resolve_error
-                        result.message = "HTML解析错误"
+                        result.message = "HTML解析错误或者没有图片"
+                        cb(result)
+                        e.printStackTrace()
+                    }
+                }
+
+            })
+        }
+
+        fun searchImages(keyword:String,index:Int,cb:(imageSets: ResultInfo) -> Unit){
+            val url = "http://www.5857.com/index.php?m=search&c=index&a=init&typeid=3&q=" + URLEncoder.encode(keyword,"UTF-8") + "&page=" + index
+            HttpTool.get(url,object :okhttp3.Callback{
+                var result = ResultInfo()
+                override fun onFailure(call: Call?, e: IOException?) {
+                    result.code = errcode_netword_error
+                    result.message = "网络错误，请重新再试"
+                    cb(result)
+                    e?.printStackTrace()
+                }
+                override fun onResponse(call: Call?, response: Response?) {
+                    try {
+                        val responseText = response!!.body()!!.string()
+                        val js = Jsoup.parse(responseText)
+                        val tags = js.select("ul.clearfix").first().children()
+                        //    val count = js.select("div.position").text()
+                        //    val s = Pattern.compile("[^0-9]").matcher(count)
+                        // do not need all image count now
+                        val reg = Regex("\\D+")
+                        val arrImageSets = ArrayList<ImageSetInfo>()
+                        for (l in tags){
+                            val imageSet = ImageSetInfo()
+                            val img = l.select("div.listbox").first() ?: continue
+                            imageSet.mainImage = img.select("a>img").first().attr("src")
+                            imageSet.title = img.select("a>span").first().text()
+                            imageSet.url = img.select("a").first().attr("href")
+                            val c =  img.select("em.page_num").first().text().replace(reg,"").toIntOrNull()
+                            if (c != null){
+                                imageSet.count = c!!
+                            }
+                            val imageInfo = l.select("div.listbott").first() ?: continue
+                            imageSet.category = imageInfo.select("em>a").first().text()
+                            var res = imageInfo.select("span.fbl>a").first().text()
+                            if (res.contains("(")){
+                                res = res.split("(")[0]
+                            }
+                            imageSet.resolution = Resolution(res)
+                            imageSet.resolutionStr = imageSet.resolution.toString()
+                            imageSet.theme = imageInfo.select("span.color>a").first().text()
+                            arrImageSets.add(imageSet)
+                        }
+                        result.data = arrImageSets
+                        cb(result)
+                    }
+                    catch (e:Exception){
+                        result.code = errcode_html_resolve_error
+                        result.message = "HTML解析错误或者结果不存在"
                         cb(result)
                         e.printStackTrace()
                     }

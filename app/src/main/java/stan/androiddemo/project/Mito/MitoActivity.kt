@@ -74,6 +74,10 @@ class MitoActivity : AppCompatActivity() {
                     val intent = Intent(this,AboutMitoActivity::class.java)
                     startActivityForResult(intent,0x00001)
                 }
+                R.id.nav_search_mito->{
+                    val intent = Intent(this,ImageSearchActivity::class.java)
+                    startActivity(intent)
+                }
             }
             mAdapter.mFragments.map { (it as ImageFragment).currentResolution = Resolution.wholeResolution }
             getImageSet()

@@ -130,12 +130,11 @@ class ImageCatInfo() : Parcelable {
                     return verSets
                 }
                 3->{
-                    val comSets = html.select("dl.filter_item")[1].children()[1].children()
+                    val comSets = html.select("dl.filter_item")[1].children()[2].children()
                     comSets.removeAt(0)
-
-                    val padSets = html.select("dl.filter_item")[1].children()[2].children()
+                    val padSets = html.select("dl.filter_item")[1].children()[3].children()
                     padSets.removeAt(0)
-                    val phoneSets = html.select("dl.filter_item")[1].children()[3].children()
+                    val phoneSets = html.select("dl.filter_item")[1].children()[4].children()
                     phoneSets.removeAt(0)
                     comSets.addAll(padSets)
                     comSets.addAll(phoneSets)
