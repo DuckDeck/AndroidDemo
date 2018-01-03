@@ -101,7 +101,6 @@ class ImageFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
                             Toast.makeText(this@ImageFragment.context,"收藏失败",Toast.LENGTH_LONG).show()
                         }
                     }
-
                 }
 
             }

@@ -17,11 +17,13 @@ import com.chad.library.adapter.base.BaseViewHolder
 import com.facebook.drawee.view.SimpleDraweeView
 import com.jakewharton.rxbinding.widget.RxTextView
 import kotlinx.android.synthetic.main.activity_image_search.*
+import org.litepal.crud.DataSupport
 import rx.functions.Func1
 import stan.androiddemo.Model.ResultInfo
 import stan.androiddemo.R
 import stan.androiddemo.project.Mito.Model.ImageSetInfo
 import stan.androiddemo.tool.ImageLoad.ImageLoadBuilder
+import stan.androiddemo.tool.KeyboardTool
 import java.util.concurrent.TimeUnit
 
 class ImageSearchActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
@@ -33,6 +35,7 @@ class ImageSearchActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshLis
     lateinit var failView: View
     lateinit var loadingView: View
     var index = 0
+    var imageCat = 0
     lateinit var progressLoading: Drawable
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,7 +46,8 @@ class ImageSearchActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshLis
             it == EditorInfo.IME_ACTION_SEARCH
         }).throttleFirst(500, TimeUnit.MILLISECONDS)
                 .subscribe {
-                   searchImage()
+                    swipe_refresh_search_mito.isRefreshing = true
+                    onRefresh()
                 }
 
 
@@ -60,8 +64,6 @@ class ImageSearchActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshLis
                 helper.setText(R.id.txt_image_resolution,item.resolutionStr)
                 helper.setText(R.id.txt_image_theme,item.theme)
 
-
-
                 val imgCollect = helper.getView<ImageView>(R.id.img_mito_collect)
 
                 if (item.isCollected){
@@ -70,9 +72,24 @@ class ImageSearchActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshLis
                 else{
                     imgCollect.setImageDrawable(resources.getDrawable(R.drawable.ic_star_border_black_24dp))
                 }
-
-
-
+                imgCollect.setOnClickListener {
+                    if (item.isCollected){
+                        imgCollect.setImageDrawable(resources.getDrawable(R.drawable.ic_star_border_black_24dp))
+                        DataSupport.deleteAll(ImageSetInfo::class.java,"url = " + item.url)
+                        item.isCollected = !item.isCollected
+                    }
+                    else{
+                        imgCollect.setImageDrawable(resources.getDrawable(R.drawable.ic_star_black_24dp))
+                        item.isCollected = !item.isCollected
+                        val result =  item.save()
+                        if (result){
+                            Toast.makeText(this@ImageSearchActivity,"收藏成功",Toast.LENGTH_LONG).show()
+                        }
+                        else{
+                            Toast.makeText(this@ImageSearchActivity,"收藏失败",Toast.LENGTH_LONG).show()
+                        }
+                    }
+                }
             }
         }
         swipe_refresh_search_mito.setColorSchemeResources(R.color.colorPrimary)
@@ -87,7 +104,7 @@ class ImageSearchActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshLis
             index = 0
             searchImage()
         }
-        mAdapter.emptyView = loadingView
+        //mAdapter.emptyView = loadingView
         mAdapter.setEnableLoadMore(true)
         mAdapter.setOnLoadMoreListener({
             searchImage()
@@ -102,6 +119,8 @@ class ImageSearchActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshLis
     }
 
     fun searchImage(){
+        mAdapter.emptyView = loadingView
+        KeyboardTool.hideKeyboard(this@ImageSearchActivity)
         ImageSetInfo.searchImages(auto_txt_search_mito.text.toString(),index,{result:ResultInfo ->
             runOnUiThread {
                 if (swipe_refresh_search_mito != null){
@@ -117,11 +136,11 @@ class ImageSearchActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshLis
                 if (imageSets.size <= 0){
                     if (index == 0){
                         mAdapter.emptyView = failView
-                        return@runOnUiThread
                     }
                     else{
                         mAdapter.loadMoreEnd()
                     }
+                    return@runOnUiThread
                 }
                 if (index == 0){
                     arrImageSet.clear()
@@ -130,7 +149,15 @@ class ImageSearchActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshLis
                     mAdapter.loadMoreComplete()
                 }
                 index ++
-
+                val collectedImages = DataSupport.findAll(ImageSetInfo::class.java)
+                arrImageSet.addAll(imageSets.map {
+                    it.imgBelongCat = imageCat
+                    val img = it
+                    if (collectedImages.find { it.url == img.url } != null){
+                        it.isCollected = true
+                    }
+                    it
+                })
                 mAdapter.notifyDataSetChanged()
             }
         })
@@ -138,6 +165,6 @@ class ImageSearchActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshLis
 
     override fun onRefresh() {
        index = 0
-        searchImage()
+       searchImage()
     }
 }
