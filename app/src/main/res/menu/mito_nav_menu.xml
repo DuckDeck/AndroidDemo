@@ -17,6 +17,9 @@
         <item android:title="我的收藏"
             android:id="@+id/nav_my_collect"
             android:icon="@drawable/ic_star_black_24dp"></item>
+        <item android:title="专题合集"
+            android:id="@+id/nav_subject_mito"
+            android:icon="@drawable/ic_flag_black_24dp"></item>
         <item android:title="搜索壁纸"
             android:id="@+id/nav_search_mito"
             android:icon="@drawable/ic_search_black_24dp"></item>
