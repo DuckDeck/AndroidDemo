@@ -89,11 +89,15 @@ class ImageSubjectInfo() : Parcelable {
                     val responseText = response!!.body()!!.string()
                     val js = Jsoup.parse(responseText)
                     val tags = js.select("ul.clearfix").first().children()
-                    var count = js.select("a.a1").first().text()
-                    if (!count.isNullOrEmpty()){
-                        count = count.replace("条","")
-                        result.count = count.toInt()
+                    var countHTML = js.select("a.a1")
+                    if (countHTML.count() > 0){
+                        var count = countHTML.first().text()
+                        if (!count.isNullOrEmpty()){
+                            count = count.replace("条","")
+                            result.count = count.toInt()
+                        }
                     }
+
                     val arrImageSets = ArrayList<ImageSetInfo>()
                     val reg = Regex("\\D+")
                     for (set in tags){

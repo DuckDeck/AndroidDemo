@@ -39,6 +39,7 @@ class ImageSetInfo() :DataSupport(),Parcelable{
     var count = 0
     var imgBelongCat = 0
     var isCollected = false
+    var hashId = 0
     constructor(parcel: Parcel) : this() {
         url = parcel.readString()
         category = parcel.readString()
@@ -128,7 +129,7 @@ class ImageSetInfo() :DataSupport(),Parcelable{
                                     3-> imageSet.resolution = Resolution.standardEssentialResolution
                                 }
                             }
-
+                            imageSet.hashId = imageSet.url.hashCode()
                             imageSet.resolutionStr = imageSet.resolution.toString()
                             imageSet.theme = imageInfo.select("span.color").first().text()
                             arrImageSets.add(imageSet)

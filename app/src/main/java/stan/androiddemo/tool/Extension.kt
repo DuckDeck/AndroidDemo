@@ -15,3 +15,7 @@ fun Int.ToFixedInt(num:Int):String{
         return str
     }
 }
+
+fun  String.ConvertUrl():String{
+    return this.replace(".","_").replace(":","=").replace("/","-")
+}

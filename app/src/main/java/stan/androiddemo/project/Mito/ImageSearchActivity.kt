@@ -22,6 +22,7 @@ import rx.functions.Func1
 import stan.androiddemo.Model.ResultInfo
 import stan.androiddemo.R
 import stan.androiddemo.project.Mito.Model.ImageSetInfo
+import stan.androiddemo.tool.ConvertUrl
 import stan.androiddemo.tool.ImageLoad.ImageLoadBuilder
 import stan.androiddemo.tool.KeyboardTool
 import java.util.concurrent.TimeUnit
@@ -75,7 +76,7 @@ class ImageSearchActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshLis
                 imgCollect.setOnClickListener {
                     if (item.isCollected){
                         imgCollect.setImageDrawable(resources.getDrawable(R.drawable.ic_star_border_black_24dp))
-                        DataSupport.deleteAll(ImageSetInfo::class.java,"url = " + item.url)
+                        DataSupport.deleteAll(ImageSetInfo::class.java,"hashId = " + item.hashId )
                         item.isCollected = !item.isCollected
                     }
                     else{
@@ -153,7 +154,7 @@ class ImageSearchActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshLis
                 arrImageSet.addAll(imageSets.map {
                     it.imgBelongCat = imageCat
                     val img = it
-                    if (collectedImages.find { it.url == img.url } != null){
+                    if (collectedImages.find { it.hashId == img.hashId } != null){
                         it.isCollected = true
                     }
                     it

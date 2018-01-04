@@ -19,6 +19,7 @@ import org.litepal.crud.DataSupport
 import stan.androiddemo.R
 import stan.androiddemo.project.Mito.Model.ImageSetInfo
 import stan.androiddemo.project.Mito.Model.Resolution
+import stan.androiddemo.tool.ConvertUrl
 import stan.androiddemo.tool.ImageLoad.ImageLoadBuilder
 
 class CollectActivity : AppCompatActivity() {
@@ -66,7 +67,7 @@ class CollectActivity : AppCompatActivity() {
                 imgCollect.setOnClickListener {
                     if (item.isCollected){
                         imgCollect.setImageDrawable(resources.getDrawable(R.drawable.ic_star_border_black_24dp))
-                        val result = DataSupport.deleteAll(ImageSetInfo::class.java,"title = '" + item.title + "' ")
+                        DataSupport.deleteAll(ImageSetInfo::class.java,"hashId = " + item.hashId )
                         item.isCollected = !item.isCollected
                     }
                     else{
