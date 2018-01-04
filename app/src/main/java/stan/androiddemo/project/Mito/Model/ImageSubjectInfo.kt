@@ -123,6 +123,7 @@ class ImageSubjectInfo() : Parcelable {
                             res = "1000x1000"
                         }
                         imageSet.resolution = Resolution(res)
+                        imageSet.hashId = imageSet.url.hashCode()
                         imageSet.resolutionStr = imageSet.resolution.toString()
                         imageSet.theme = imageInfo.select("span.color").first().text()
                         arrImageSets.add(imageSet)

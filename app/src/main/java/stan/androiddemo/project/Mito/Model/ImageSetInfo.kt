@@ -187,6 +187,7 @@ class ImageSetInfo() :DataSupport(),Parcelable{
                             if (res.contains("其他")){
                                 res = "1920x1080"
                             }
+                            imageSet.hashId = imageSet.url.hashCode()
                             imageSet.resolution = Resolution(res)
                             imageSet.resolutionStr = imageSet.resolution.toString()
                             imageSet.theme = imageInfo.select("span.color>a").first().text()
