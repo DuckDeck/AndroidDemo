@@ -30,12 +30,12 @@ class ContentProviderActivity : AppCompatActivity() {
 
     fun readContacts(){
         var cursor: Cursor? = null
-        var  phoneCursor:Cursor? = null
+        var  phoneCursor:Cursor?
         try {
             cursor = contentResolver.query(ContactsContract.Contacts.CONTENT_URI,null,null,null,null)
             if (cursor != null){
                 while (cursor.moveToNext()){
-                    var sb = StringBuilder()
+                    val sb = StringBuilder()
                     val contactId = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID))
                     val name = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME))
 //                    val number = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
@@ -68,7 +68,7 @@ class ContentProviderActivity : AppCompatActivity() {
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         when(requestCode){
             1->
-                if (grantResults.size > 0&&grantResults[0]== PackageManager.PERMISSION_GRANTED){
+                if (grantResults.isNotEmpty() &&grantResults[0]== PackageManager.PERMISSION_GRANTED){
                     readContacts()
                 }
                 else {
