@@ -6,4 +6,12 @@
     android:layout_height="match_parent"
     tools:context=".layout.MVVM.MVVMDemoActivity">
 
+    <data>
+
+        <variable name = "vm"
+            />
+
+
+    </data>
+
 </android.support.constraint.ConstraintLayout>
