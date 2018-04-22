@@ -49,10 +49,7 @@ class LayoutActivity : AppCompatActivity() {
                     val intent = Intent(this, RecyclerViewActivity::class.java)
                     startActivity(intent)
                 }
-                "MVVM Demo"->{
-                    val intent = Intent(this,MVVMDemoActivity::class.java)
-                    startActivity(intent)
-                }
+
             }
         }
     }
