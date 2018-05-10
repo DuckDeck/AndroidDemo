@@ -7,7 +7,6 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_layout.*
-import stan.androiddemo.layout.MVVM.MVVMDemoActivity
 import stan.androiddemo.layout.RecyclerView.RecyclerViewActivity
 
 import stan.androiddemo.layout.constraintLayout.ConstraintLayoutDemoActivity

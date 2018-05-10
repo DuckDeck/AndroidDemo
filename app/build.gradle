@@ -55,15 +55,15 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     implementation 'com.android.support.constraint:constraint-layout:1.1.0'
     compile 'org.litepal.android:core:1.3.2'
-    compile 'com.google.code.gson:gson:2.7'
-    compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile 'com.google.code.gson:gson:2.8.2'
+    compile 'com.github.bumptech.glide:glide:4.0.0'
     compile('me.drakeet.multitype:multitype:3.1.0', {
         exclude group: 'com.android.support'
     })
     compile 'com.android.support:recyclerview-v7:26.1.0'
     compile 'org.jsoup:jsoup:1.10.3'
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.34'
-    compile 'com.android.support:design:25.1.0'
+    compile 'com.android.support:design:26.1.0'
     compile 'com.gavin.com.library:stickyDecoration:1.1.1'
     compile('com.afollestad.material-dialogs:core:0.9.4.5', {
         exclude group: 'com.android.support'
@@ -78,7 +78,7 @@ dependencies {
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
     compile 'io.reactivex.rxjava2:rxjava:2.1.5'
     //data binding
-    kapt "com.android.databinding:compiler:3.1.1"
+    kapt "com.android.databinding:compiler:3.1.2"
     //响应式控件
     compile 'com.jakewharton.rxbinding:rxbinding:0.4.0'
     compile 'com.jakewharton.rxbinding:rxbinding-appcompat-v7:0.4.0'
