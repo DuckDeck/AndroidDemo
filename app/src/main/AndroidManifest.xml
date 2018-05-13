@@ -136,7 +136,12 @@
         <activity android:name=".project.Mito.ImageSearchActivity" />
         <activity android:name=".project.Mito.ImageSubjectActivity" />
         <activity android:name=".project.Mito.ImageSubjectInfoActivity" />
-        <activity android:name=".layout.MVVM.MVVMDemoActivity"></activity>
+        <activity android:name=".layout.MVVM.MVVMDemoActivity" />
+        <activity
+            android:name=".MediaActivity"
+            android:label="@string/title_activity_media"
+            android:theme="@style/AppTheme" />
+        <activity android:name=".Media.TakePhoto.TakePhotoActivity"></activity>
     </application>
 
 </manifest> <!-- issue0:can not hide the title bar --><!-- just use   android:theme="@style/Theme.AppCompat.Light.NoActionBar"> -->

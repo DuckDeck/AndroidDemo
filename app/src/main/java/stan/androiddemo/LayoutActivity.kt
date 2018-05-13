@@ -22,7 +22,7 @@ class LayoutActivity : AppCompatActivity() {
         title = ""
         setSupportActionBar(toolbar)
         val adapter = ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,
-                arrayListOf("键盘事件","ConstraintLayout布局","MaterialDesign","Recycler Demo","MVVM Demo"))
+                arrayListOf("键盘事件","ConstraintLayout布局","MaterialDesign","Recycler Demo"))
         list_view_layout.adapter = adapter
 
         list_view_layout.onItemClickListener = AdapterView.OnItemClickListener { adapterView, view, i, l ->

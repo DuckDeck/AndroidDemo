@@ -6,34 +6,33 @@ import android.support.v7.app.AppCompatActivity
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.TextView
-import kotlinx.android.synthetic.main.activity_network.*
-import stan.androiddemo.network.networktest.NetworkTestActivity
+import kotlinx.android.synthetic.main.activity_media.*
+import stan.androiddemo.layout.keyboard.KeyboardActivity
 
-class NetworkActivity : AppCompatActivity() {
+class MediaActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_network)
+        setContentView(R.layout.activity_media)
+        toolbar.setNavigationOnClickListener { onBackPressed() }
         title = ""
         setSupportActionBar(toolbar)
-
-        toolbar.setNavigationOnClickListener {
-            onBackPressed()
-        }
         val adapter = ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,
-                arrayListOf("网络测试"))
-        list_view.adapter = adapter
+                arrayListOf("拍照"))
+        list_view_layout.adapter = adapter
 
-        list_view.onItemClickListener = AdapterView.OnItemClickListener { adapterView, view, i, l ->
+        list_view_layout.onItemClickListener = AdapterView.OnItemClickListener { adapterView, view, i, l ->
             val title = (view as TextView).text
             when(title){
-                "网络测试"->
+
+                "拍照"->
                 {
-                    val intent = Intent(this, NetworkTestActivity::class.java)
+                    val intent = Intent(this, KeyboardActivity::class.java)
                     startActivity(intent)
                 }
 
             }
         }
     }
+
 }

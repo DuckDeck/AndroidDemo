@@ -203,4 +203,5 @@
     <string name="go_on">Tap to Continue</string>
     <string name="for_now">For now&#8230;</string>
     <string name="endless">"Endless" Mode</string>
+    <string name="title_activity_media">MediaActivity</string>
 </resources>
