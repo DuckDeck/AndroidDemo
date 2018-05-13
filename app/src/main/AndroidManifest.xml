@@ -10,6 +10,10 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.READ_LOGS" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera2" android:required="false"/>
 
     <application
         android:name="org.litepal.LitePalApplication"
@@ -131,12 +135,9 @@
             android:name=".project.petal.Module.Setting.PetalSettingActivity"
             android:theme="@style/AppPetalTheme" />
         <activity android:name=".project.Game2048.GameActivity" />
-        <activity android:name=".NetworkActivity" />
-        <activity android:name=".network.networktest.NetworkTestActivity" />
         <activity android:name=".project.Mito.ImageSearchActivity" />
         <activity android:name=".project.Mito.ImageSubjectActivity" />
         <activity android:name=".project.Mito.ImageSubjectInfoActivity" />
-        <activity android:name=".layout.MVVM.MVVMDemoActivity" />
         <activity
             android:name=".MediaActivity"
             android:label="@string/title_activity_media"

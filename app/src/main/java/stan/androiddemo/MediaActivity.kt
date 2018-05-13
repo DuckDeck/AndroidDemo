@@ -7,7 +7,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_media.*
-import stan.androiddemo.layout.keyboard.KeyboardActivity
+import stan.androiddemo.Media.TakePhoto.TakePhotoActivity
 
 class MediaActivity : AppCompatActivity() {
 
@@ -27,7 +27,7 @@ class MediaActivity : AppCompatActivity() {
 
                 "拍照"->
                 {
-                    val intent = Intent(this, KeyboardActivity::class.java)
+                    val intent = Intent(this, TakePhotoActivity::class.java)
                     startActivity(intent)
                 }
 
