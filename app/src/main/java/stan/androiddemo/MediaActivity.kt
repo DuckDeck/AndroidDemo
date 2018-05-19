@@ -14,9 +14,10 @@ class MediaActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_media)
+        setSupportActionBar(toolbar)
         toolbar.setNavigationOnClickListener { onBackPressed() }
         title = ""
-        setSupportActionBar(toolbar)
+
         val adapter = ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,
                 arrayListOf("拍照"))
         list_view_layout.adapter = adapter

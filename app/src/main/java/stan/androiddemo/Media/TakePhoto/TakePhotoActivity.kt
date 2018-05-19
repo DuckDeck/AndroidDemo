@@ -21,8 +21,10 @@ import kotlin.Comparator
 import android.support.v4.app.ActivityCompat
 import kotlin.collections.ArrayList
 import android.hardware.camera2.CameraDevice
+import android.opengl.Visibility
 import android.os.Environment
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import java.io.File
 import java.io.FileNotFoundException
@@ -42,6 +44,8 @@ class TakePhotoActivity : AppCompatActivity() {
     private lateinit var imageReader: ImageReader
     var height = 0
     var width = 0
+    var isShowImage = false
+    var cameraList = ArrayList<String>()
     private lateinit var previewSize:Size
 
     private val ORIENTATIONS = SparseIntArray()
@@ -59,37 +63,55 @@ class TakePhotoActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_take_photo)
 
-        btn.setOnClickListener {
+        btn_Take.setOnClickListener {
             takePhoto()
+        }
+
+        btn_Switch.setOnClickListener {
+            switchCamera()
         }
 
         tv.surfaceTextureListener = surfaceTextureListener
     }
 
     private fun takePhoto(){
-        try {
-            if(cameraDevice == null){
-                return
+        if (isShowImage){
+            startCamera()
+            iv.visibility = View.GONE
+            isShowImage = false
+            btn_Take.text = "拍照"
+        }
+        else{
+            try {
+                if(cameraDevice == null){
+                    return
+                }
+                // 创建拍照请求
+                captureRequestBuilder = cameraDevice!!.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE)
+                // 设置自动对焦模式
+                captureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE,CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE)
+                // 将imageReader的surface设为目标
+                captureRequestBuilder.addTarget(imageReader.surface)
+                // 获取设备方向
+                val rotation = windowManager.defaultDisplay.rotation
+                // 根据设备方向计算设置照片的方向
+                captureRequestBuilder.set(CaptureRequest.JPEG_ORIENTATION,ORIENTATIONS.get(rotation))
+                // 停止连续取景
+                previewSession.stopRepeating()
+                //拍照
+                val captureRequest = captureRequestBuilder.build()
+                previewSession.capture(captureRequest,captureCallback,null)
             }
-            // 创建拍照请求
-            captureRequestBuilder = cameraDevice!!.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE)
-            // 设置自动对焦模式
-            captureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE,CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE)
-            // 将imageReader的surface设为目标
-            captureRequestBuilder.addTarget(imageReader.surface)
-            // 获取设备方向
-            val rotation = windowManager.defaultDisplay.rotation
-            // 根据设备方向计算设置照片的方向
-            captureRequestBuilder.set(CaptureRequest.JPEG_ORIENTATION,ORIENTATIONS.get(rotation))
-            // 停止连续取景
-            previewSession.stopRepeating()
-            //拍照
-            val captureRequest = captureRequestBuilder.build()
-            previewSession.capture(captureRequest,captureCallback,null)
+            catch (e:CameraAccessException){
+                e.printStackTrace()
+            }
         }
-        catch (e:CameraAccessException){
-            e.printStackTrace()
-        }
+
+    }
+
+
+    fun switchCamera(){
+
     }
 
     override fun onPause(){
@@ -174,31 +196,14 @@ class TakePhotoActivity : AppCompatActivity() {
             val buffer = image.planes[0].buffer
             val data = ByteArray(buffer.remaining())
             buffer.get(data)
-            //手机拍照都是存到这个路径
-            val filePath = Environment.getExternalStorageDirectory().path + "/DCIM/Camera"
-            val photoPath = System.currentTimeMillis().toString() + ".jpeg"
-            val file = File(filePath,photoPath)
-            try {
-                //存到本地相册
-                val fileOutputStream = FileOutputStream(file)
-                fileOutputStream.write(data)
-                fileOutputStream.close()
-                //显示图片
-                val options = BitmapFactory.Options()
-                options.inSampleSize = 2
-                val bitmap = BitmapFactory.decodeByteArray(data,0,data.count(),options)
-                iv.setImageBitmap(bitmap)
-            }
-            catch (e:FileNotFoundException){
-                e.printStackTrace()
-            }
-            catch (e:IOException){
-                e.printStackTrace()
-            }
-            finally {
-                image.close()
-            }
-
+            val options = BitmapFactory.Options()
+            options.inSampleSize = 2
+            val bitmap = BitmapFactory.decodeByteArray(data,0,data.count(),options)
+            iv.setImageBitmap(bitmap)
+            iv.visibility = View.VISIBLE
+            stopCamera()
+            isShowImage = true
+            btn_Take.text = "再拍"
         }
 
     }
@@ -213,6 +218,7 @@ class TakePhotoActivity : AppCompatActivity() {
         }
     }
 
+
     fun openCamera()
     {
         val manager = getSystemService(Context.CAMERA_SERVICE) as CameraManager
@@ -222,7 +228,8 @@ class TakePhotoActivity : AppCompatActivity() {
                 ActivityCompat.requestPermissions(this, arrayOf("android.permission.CAMERA"),RESULT_CODE_CAMERA)
             }
             else{
-                for (id in manager.cameraIdList){
+                manager.cameraIdList.toCollection(cameraList)
+                for (id in cameraList){
                     Log.d(id,"cameraId")
                     cameraId = id
                     break
@@ -293,6 +300,7 @@ class TakePhotoActivity : AppCompatActivity() {
             e.printStackTrace()
         }
     }
+
     fun stopCamera(){
         if (cameraDevice != null){
             cameraDevice?.close()

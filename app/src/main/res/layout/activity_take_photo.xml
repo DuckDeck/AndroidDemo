@@ -10,26 +10,60 @@
     android:layout_above="@+id/ll_bottom"
     android:layout_width="match_parent"
     android:layout_height="match_parent" />
-    <RelativeLayout
+    <ImageView
+
+        android:id="@+id/iv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+    <LinearLayout
         android:id="@+id/ll_bottom"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="50dp"
+        android:background="#22ffffff"
         app:layout_constraintBottom_toBottomOf="parent">
 
-        <ImageView
-            android:id="@+id/iv"
-            android:layout_width="wrap_content"
-            android:layout_height="70dp"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            android:src="@mipmap/ic_launcher"/>
+
         <Button
-            android:id="@+id/btn"
+            android:id="@+id/btn_Take"
+            android:background="@color/transparent"
+            android:textColor="@color/white"
+            android:textSize="14sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
+            android:textAllCaps="false"
             android:layout_marginRight="10dp"
             android:text="拍照"/>
-    </RelativeLayout>
+
+
+        <Button
+            android:id="@+id/btn_Switch"
+            android:background="@color/transparent"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:layout_marginRight="10dp"
+            android:text="切换前置"/>
+        <Button
+            android:id="@+id/btn_Flash"
+            android:background="@color/transparent"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:layout_marginRight="10dp"
+            android:text="开闪光灯"/>
+        <Button
+            android:id="@+id/btn_Save"
+            android:background="@color/transparent"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:text="保存"/>
+    </LinearLayout>
 </android.support.constraint.ConstraintLayout>
