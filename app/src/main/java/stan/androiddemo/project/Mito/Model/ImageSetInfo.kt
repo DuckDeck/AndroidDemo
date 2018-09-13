@@ -220,10 +220,10 @@ class ImageSetInfo() :DataSupport(),Parcelable{
                     try {
                         val responseText = response.body()!!.string()
                         val js = Jsoup.parse(responseText)
-                        val tags = js.select("div.con-tags").first().select("a")
-                        for (tag in tags){
-                            imgSet.tags.add(tag.text())
-                        }
+//                        val tags = js.select("div.con-tags").first().select("a")
+//                        for (tag in tags){
+//                            imgSet.tags.add(tag.text())
+//                        }
                         val img = js.select("a.photo-a").first().child(0).attr("src")
                         val lastIndex = img.indexOfLast { it == '/' }
                         val u = img.substring(0,lastIndex)

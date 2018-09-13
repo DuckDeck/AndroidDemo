@@ -34,7 +34,7 @@ class ImageFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     }
 
 
-    var cat = "全部"
+    private var cat = "全部"
     var arrImageSet = ArrayList<ImageSetInfo>()
     lateinit var mAdapter:BaseQuickAdapter<ImageSetInfo,BaseViewHolder>
     lateinit var failView: View
@@ -137,28 +137,28 @@ class ImageFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
-        println("onAttach" + cat)
+        println("onAttach$cat")
     }
 
     override fun onAttachFragment(childFragment: Fragment?) {
         super.onAttachFragment(childFragment)
-        println("onAttachFragment" + cat)
+        println("onAttachFragment$cat")
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        println("onCreate" + cat)
+        println("onCreate$cat")
     }
 
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        println("onActivityCreated" + cat)
+        println("onActivityCreated$cat")
     }
 
     override fun onStart() {
         super.onStart()
-        println("onStart" + cat)
+        println("onStart$cat")
         if (arrImageSet.size > 0){
             if (arrImageSet.first().imgBelongCat != imageCat){
                 swipe_refresh_mito.isRefreshing = true
@@ -188,7 +188,7 @@ class ImageFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
 
     private fun loadData(){
-        ImageSetInfo.imageSets(imageCat, cat,currentResolution,"全部",index,{ v: ResultInfo ->
+        ImageSetInfo.imageSets(imageCat, cat,currentResolution,"全部",index) { v: ResultInfo ->
             activity.runOnUiThread {
                 if (swipe_refresh_mito != null){
                     swipe_refresh_mito.isRefreshing = false
@@ -227,7 +227,7 @@ class ImageFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
                 })
                 mAdapter.notifyDataSetChanged()
             }
-        })
+        }
     }
 
 

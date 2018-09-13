@@ -45,7 +45,7 @@ class ImageSetActivity : AppCompatActivity() {
         setContentView(R.layout.activity_image_set)
         title = ""
         toolbar.setNavigationOnClickListener { onBackPressed() }
-        imageSet = intent.getParcelableExtra<ImageSetInfo>("set")
+        imageSet = intent.getParcelableExtra("set")
         ratio = imageSet.resolution.pixelX.toFloat() / imageSet.resolution.pixelY.toFloat()
         val d0 = VectorDrawableCompat.create(resources,R.drawable.ic_toys_black_24dp,null)
         progressLoading = DrawableCompat.wrap(d0!!.mutate())
@@ -121,7 +121,7 @@ class ImageSetActivity : AppCompatActivity() {
     }
 
     fun getImages(){
-        ImageSetInfo.imageSet(imageSet,{ v: ResultInfo ->
+        ImageSetInfo.imageSet(imageSet) { v: ResultInfo ->
             runOnUiThread {
                 if (v.code != 0) {
                     Toast.makeText(this,v.message, Toast.LENGTH_LONG).show()
@@ -136,7 +136,7 @@ class ImageSetActivity : AppCompatActivity() {
                 arrImageUrl.addAll(imageSets.images)
                 mAdapter.notifyDataSetChanged()
             }
-        })
+        }
     }
 
     fun downloadImg(url:String,showSuccess:Boolean = true){
@@ -175,7 +175,7 @@ class ImageSetActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when(requestCode){
             1->{
-                if (grantResults.size> 0&&grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                if (grantResults.isNotEmpty() &&grantResults[0] == PackageManager.PERMISSION_GRANTED){
                     downloadImg(currentUrl)
                 }
                 else{

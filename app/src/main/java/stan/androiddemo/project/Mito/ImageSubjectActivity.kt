@@ -100,7 +100,7 @@ class ImageSubjectActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshLi
             }
         }
 
-        ImageSubjectInfo.getSubjects(url,{result:ResultInfo ->
+        ImageSubjectInfo.getSubjects(url) { result:ResultInfo ->
             runOnUiThread {
                 count = result.count
                 if (swipe_refresh_subject_mito != null){
@@ -132,7 +132,7 @@ class ImageSubjectActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshLi
                 arrImageSubs.addAll(imageSubs)
                 mAdapter.notifyDataSetChanged()
             }
-        })
+        }
 
 
     }
