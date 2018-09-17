@@ -56,10 +56,10 @@ class TakePhotoActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        ORIENTATIONS.append(Surface.ROTATION_0, 90);
-        ORIENTATIONS.append(Surface.ROTATION_90, 0);
-        ORIENTATIONS.append(Surface.ROTATION_180, 270);
-        ORIENTATIONS.append(Surface.ROTATION_270, 180);
+        ORIENTATIONS.append(Surface.ROTATION_0, 90)
+        ORIENTATIONS.append(Surface.ROTATION_90, 0)
+        ORIENTATIONS.append(Surface.ROTATION_180, 270)
+        ORIENTATIONS.append(Surface.ROTATION_270, 180)
 
         setContentView(R.layout.activity_take_photo)
 
@@ -110,7 +110,7 @@ class TakePhotoActivity : AppCompatActivity() {
     }
 
 
-    fun switchCamera(){
+    private fun switchCamera(){
 
     }
 
@@ -169,7 +169,7 @@ class TakePhotoActivity : AppCompatActivity() {
     }
 
 
-    val captureCallback = object:CameraCaptureSession.CaptureCallback(){
+    private val captureCallback = object:CameraCaptureSession.CaptureCallback(){
         override fun onCaptureCompleted(session: CameraCaptureSession?, request: CaptureRequest?, result: TotalCaptureResult?) {
             captureRequestBuilder.set(CaptureRequest.CONTROL_AF_TRIGGER,CameraMetadata.CONTROL_AF_TRIGGER_CANCEL)
             captureRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE,CaptureRequest.CONTROL_AE_MODE_ON_AUTO_FLASH)
@@ -181,31 +181,27 @@ class TakePhotoActivity : AppCompatActivity() {
             }
         }
     }
-    private var imageAvailableListener = object:ImageReader.OnImageAvailableListener{
+    private var imageAvailableListener = ImageReader.OnImageAvailableListener { reader ->
         // 当照片数据可用时激发该方法
-        override fun onImageAvailable(reader: ImageReader) {
-
-            //先验证手机是否有sdcard
-            val status = Environment.getExternalStorageState()
-            if (status != Environment.MEDIA_MOUNTED){
-                Toast.makeText(applicationContext,"你的SD卡不可用",Toast.LENGTH_SHORT).show()
-                return
-            }
-            // 获取捕获的照片数据
-            val image = reader.acquireNextImage()
-            val buffer = image.planes[0].buffer
-            val data = ByteArray(buffer.remaining())
-            buffer.get(data)
-            val options = BitmapFactory.Options()
-            options.inSampleSize = 2
-            val bitmap = BitmapFactory.decodeByteArray(data,0,data.count(),options)
-            iv.setImageBitmap(bitmap)
-            iv.visibility = View.VISIBLE
-            stopCamera()
-            isShowImage = true
-            btn_Take.text = "再拍"
+        //先验证手机是否有sdcard
+        val status = Environment.getExternalStorageState()
+        if (status != Environment.MEDIA_MOUNTED){
+            Toast.makeText(applicationContext,"你的SD卡不可用",Toast.LENGTH_SHORT).show()
+            return@OnImageAvailableListener
         }
-
+        // 获取捕获的照片数据
+        val image = reader.acquireNextImage()
+        val buffer = image.planes[0].buffer
+        val data = ByteArray(buffer.remaining())
+        buffer.get(data)
+        val options = BitmapFactory.Options()
+        options.inSampleSize = 2
+        val bitmap = BitmapFactory.decodeByteArray(data,0,data.count(),options)
+        iv.setImageBitmap(bitmap)
+        iv.visibility = View.VISIBLE
+        stopCamera()
+        isShowImage = true
+        btn_Take.text = "再拍"
     }
     private fun startCamera(){
         if (tv.isAvailable){
