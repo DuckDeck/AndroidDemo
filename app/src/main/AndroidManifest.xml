@@ -11,6 +11,7 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
     <uses-feature
         android:name="android.hardware.camera2"
@@ -145,7 +146,8 @@
             android:theme="@style/AppTheme" />
         <activity android:name=".Media.TakePhoto.TakePhotoActivity" />
         <activity android:name=".Media.RecordVideo.VideoListActivity" />
-        <activity android:name=".Media.SystemResolution.SystemGraphicResoutionActivity"></activity>
+        <activity android:name=".Media.Audio.AudioListActivity" />
+        <activity android:name=".Media.Audio.AudioRecordActivity"></activity>
     </application>
 
 </manifest> <!-- issue0:can not hide the title bar --><!-- just use   android:theme="@style/Theme.AppCompat.Light.NoActionBar"> -->
