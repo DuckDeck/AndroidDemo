@@ -9,8 +9,8 @@ import android.os.Bundle
 import android.os.Environment
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
+import android.support.v7.app.AlertDialog
 import android.util.Log
-import android.widget.Button
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_audio_record.*
 import stan.androiddemo.R
@@ -24,12 +24,12 @@ class AudioRecordActivity : AppCompatActivity() {
     var mCaptureThread:Thread? = null
     var isRecording = false
     var isPlaying = false
-    val frequence = 44100
-    val channelConfig = AudioFormat.CHANNEL_IN_MONO
+    val frequency = 44100
+    val channelConfig = AudioFormat.CHANNEL_IN_STEREO
     val playChannelConfig = AudioFormat.CHANNEL_IN_STEREO
     val audioEncoding = AudioFormat.ENCODING_PCM_16BIT
-    lateinit var  playerTask:PlayTask
-    lateinit var  recordTask:RecordTask
+    private lateinit var  playerTask:PlayTask
+    private lateinit var  recordTask:RecordTask
     var audioStatus = AudioStatus.Normal
         set(value) {
             field = value
@@ -43,7 +43,9 @@ class AudioRecordActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_audio_record)
         audioStatus = AudioStatus.Normal
-
+        if(audioFileExist()){
+            audioStatus = AudioStatus.RecordCompleted
+        }
 
         btn_record.setOnClickListener {
             if (audioStatus == AudioStatus.Normal || audioStatus == AudioStatus.RecordingPausing){
@@ -67,6 +69,30 @@ class AudioRecordActivity : AppCompatActivity() {
             stopAudioRecord()
         }
 
+        btn_delete.setOnClickListener {
+            val builder = AlertDialog.Builder(this)
+            builder.setIcon(android.R.drawable.ic_dialog_info)
+            builder.setTitle("删除揭示")
+            builder.setMessage("你确定要删除这个音频文件吗?")
+            builder.setCancelable(true)
+            builder.setPositiveButton("确定") { _, _ ->
+                audioFile.deleteOnExit()
+                audioStatus = AudioStatus.Normal
+            }
+            builder.create().show()
+
+        }
+
+    }
+
+    private  fun audioFileExist():Boolean{
+        val path = File(Environment.getExternalStorageDirectory().absolutePath + "/AudioRecord")
+        val files = path.listFiles()
+        if(files.count() > 0){
+            audioFile = files.first()
+            return  true
+        }
+        return  false
     }
 
     private fun updateStatus(){
@@ -79,12 +105,10 @@ class AudioRecordActivity : AppCompatActivity() {
             AudioStatus.Recording->{
                 btn_play.isEnabled = false
                 btn_delete.isEnabled = false
-                btn_record.text = "暂停"
                 btn_stop.isEnabled = true
             }
             AudioStatus.RecordCompleted->{
                 btn_delete.isEnabled = true
-                btn_record.text = "录音"
                 btn_stop.isEnabled = false
                 btn_play.isEnabled = true
             }
@@ -103,7 +127,6 @@ class AudioRecordActivity : AppCompatActivity() {
 
     private fun startAudioRecord(){
         if(checkPermission()){
-            val packageManager = getPackageManager()
             if(!packageManager.hasSystemFeature(PackageManager.FEATURE_MICROPHONE)){
                 Toast.makeText(this,"This device do not have a MICROPHONE",Toast.LENGTH_SHORT).show()
                 return
@@ -111,7 +134,7 @@ class AudioRecordActivity : AppCompatActivity() {
             val path = File(Environment.getExternalStorageDirectory().absolutePath + "/AudioRecord")
             path.mkdirs()
             try {
-                audioFile = File.createTempFile("recording",".pcm",path)
+                audioFile = File.createTempFile("record",".pcm",path)
             }
             catch (e:IOException){
                 Toast.makeText(this,"录音文件创建失败",Toast.LENGTH_SHORT).show()
@@ -120,6 +143,7 @@ class AudioRecordActivity : AppCompatActivity() {
             audioStatus = AudioStatus.Recording
             recordTask = RecordTask()
             recordTask.execute()
+            timer.start()
             Toast.makeText(this,"Recording start",Toast.LENGTH_SHORT).show()
         }
         else{
@@ -130,6 +154,7 @@ class AudioRecordActivity : AppCompatActivity() {
     private fun stopAudioRecord(){
         isRecording = false
         audioStatus = AudioStatus.RecordCompleted
+        timer.reset()
         Toast.makeText(this,"Recording completed",Toast.LENGTH_SHORT).show()
     }
 
@@ -137,12 +162,13 @@ class AudioRecordActivity : AppCompatActivity() {
         playerTask = PlayTask()
         playerTask.execute()
         audioStatus = AudioStatus.Playing
+
         Toast.makeText(this,"Recorded playing",Toast.LENGTH_SHORT).show()
     }
 
     private fun stopAudioPlay(){
         audioStatus = AudioStatus.PlayingPausing
-        isPlaying = true
+        isPlaying = false
     }
 
     private fun checkPermission():Boolean{
@@ -176,21 +202,23 @@ class AudioRecordActivity : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("StaticFieldLeak")
     inner  class RecordTask :AsyncTask<Void,Int,Void>(){
         override fun doInBackground(vararg p0: Void?): Void? {
             isRecording = true
             try {
                 val dos = DataOutputStream(BufferedOutputStream(FileOutputStream(audioFile)))
-                var bufferSize = AudioRecord.getMinBufferSize(frequence,channelConfig,audioEncoding)
-                val record = AudioRecord(MediaRecorder.AudioSource.MIC,frequence,channelConfig,audioEncoding,bufferSize)
+                val bufferSize = AudioRecord.getMinBufferSize(frequency,channelConfig,audioEncoding)
+                val record = AudioRecord(MediaRecorder.AudioSource.MIC,frequency,channelConfig,audioEncoding,bufferSize)
                 val buffer = ShortArray(bufferSize)
                 record.startRecording()
                 var r = 0
                 while (isRecording){
-                    var bufferReadResult = record.read(buffer,0,buffer.count())
+                    val bufferReadResult = record.read(buffer,0,buffer.count())
                     var i = 0
                     while (i<bufferReadResult){
                         dos.writeShort(buffer[i].toInt())
+                        i++
                     }
                     publishProgress(r)
                     r++
@@ -206,14 +234,15 @@ class AudioRecordActivity : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("StaticFieldLeak")
     inner class PlayTask: AsyncTask<Void, Void, Void>() {
         override fun doInBackground(vararg p0: Void?): Void? {
-            isRecording = true
-            var bufferSize = AudioTrack.getMinBufferSize(frequence,playChannelConfig,audioEncoding)
+            isPlaying = true
+            val bufferSize = AudioTrack.getMinBufferSize(frequency, this@AudioRecordActivity.playChannelConfig,audioEncoding)
             val buffer = ShortArray(bufferSize)
             try {
                 val dis = DataInputStream(BufferedInputStream(FileInputStream(audioFile)))
-                val track = AudioTrack(AudioManager.STREAM_MUSIC,frequence,playChannelConfig,audioEncoding,bufferSize,AudioTrack.MODE_STREAM)
+                val track = AudioTrack(AudioManager.STREAM_MUSIC,frequency,playChannelConfig,audioEncoding,bufferSize,AudioTrack.MODE_STREAM)
                 track.play()
                 while (isPlaying && dis.available() > 0){
                     var i = 0
@@ -223,6 +252,7 @@ class AudioRecordActivity : AppCompatActivity() {
                     }
                     track.write(buffer,0,buffer.count())
                 }
+                isPlaying = false
                 track.stop()
                 dis.close()
             }

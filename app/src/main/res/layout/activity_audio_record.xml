@@ -6,41 +6,68 @@
     android:layout_height="match_parent"
     tools:context=".Media.Audio.AudioRecordActivity">
 
-        <Button
-            android:layout_marginBottom="10dp"
-            android:layout_marginStart="10dp"
+
+    <stan.androiddemo.UI.DigitalTimer
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+
+        android:id="@+id/timer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:digitalTextSize="18dp"
+        app:digitalTextColor="@color/colorAccent"
+        android:text="00:00:00"/>
+
+
+        <ImageButton
+            android:layout_marginBottom="20dp"
+            android:layout_marginStart="20dp"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             android:id="@+id/btn_delete"
-            android:text="删除"
+            android:scaleType="center"
+            android:padding="16dp"
+            android:background="@color/colorAccent"
+            android:src="@drawable/ic_delete_forever_white_24dp"
             android:layout_width="wrap_content"
+
             android:layout_height="wrap_content" />
-        <Button
+        <ImageButton
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginBottom="10dp"
             app:layout_constraintBottom_toTopOf="@id/btn_stop"
             android:id="@+id/btn_record"
-            android:text="录音"
+            android:background="@color/colorAccent"
+            android:padding="16dp"
+            android:src="@drawable/ic_keyboard_voice_white_24dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-        <Button
+        <ImageButton
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             android:id="@+id/btn_stop"
-            android:text="停止"
+            android:padding="16dp"
+            android:background="@color/colorAccent"
+            android:src="@drawable/ic_stop_white_24dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-        <Button
-            android:layout_marginBottom="10dp"
-            android:layout_marginEnd="10dp"
+        <ImageButton
+            android:layout_marginBottom="20dp"
+            android:layout_marginEnd="20dp"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             android:id="@+id/btn_play"
-            android:text="播放"
+            android:padding="16dp"
+
+            android:background="@color/colorAccent"
+            android:src="@drawable/ic_play_arrow_white_24dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 

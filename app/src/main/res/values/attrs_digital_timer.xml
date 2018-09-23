@@ -1,0 +1,6 @@
+<resources>
+    <declare-styleable name="DigitalTimer">
+        <attr name="digitalTextColor" format="color" />
+        <attr name="digitalTextSize" format="dimension" />
+    </declare-styleable>
+</resources>

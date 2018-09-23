@@ -11,12 +11,13 @@ class AudioListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_audio_list)
+        setSupportActionBar(toolbar)
+        toolbar.setNavigationOnClickListener { onBackPressed() }
+        title = ""
 
         btn_float.setOnClickListener {
             val intent = Intent(this, AudioRecordActivity::class.java)
             startActivity(intent)
         }
-
-
     }
 }
