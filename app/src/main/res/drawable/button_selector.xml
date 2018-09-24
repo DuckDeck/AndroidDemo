@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:color="@color/grey_100" android:state_enabled="false"></item>
-    <item android:color="@color/accent" android:state_enabled="true"></item>
+    <item android:drawable="@drawable/circle_gray_bg"
+        android:src="@drawable/ic_delete_forever_gray_24dp"
+        android:state_enabled="false"/>
+    <item android:drawable="@drawable/circle_accent_bg"
+        android:src="@drawable/ic_delete_forever_accent_24dp"  />
 </selector>

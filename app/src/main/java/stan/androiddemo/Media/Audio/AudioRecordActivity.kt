@@ -83,10 +83,15 @@ class AudioRecordActivity : AppCompatActivity() {
 
         }
 
+
+
     }
 
     private  fun audioFileExist():Boolean{
         val path = File(Environment.getExternalStorageDirectory().absolutePath + "/AudioRecord")
+        if(!path.exists()){
+            path.mkdirs()
+        }
         val files = path.listFiles()
         if(files.count() > 0){
             audioFile = files.first()
@@ -193,6 +198,7 @@ class AudioRecordActivity : AppCompatActivity() {
                     val recordPermission = grantResults[1] == PackageManager.PERMISSION_GRANTED
                     if (storagePermission && recordPermission){
                         Toast.makeText(this,"Permission Granted",Toast.LENGTH_SHORT).show()
+                        startAudioRecord()
                     }
                     else{
                         Toast.makeText(this,"Permission Denied",Toast.LENGTH_SHORT).show()
