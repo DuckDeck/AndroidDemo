@@ -79,7 +79,7 @@ class ImageFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
                 val imgCollect = helper.getView<ImageView>(R.id.img_mito_collect)
 
                 if (item.isCollected){
-                    imgCollect.setImageDrawable(resources.getDrawable(R.drawable.ic_star_black_24dp))
+                    imgCollect.setImageDrawable(resources.getDrawable(R.drawable.ic_star_theme_24dp))
                 }
                 else{
                     imgCollect.setImageDrawable(resources.getDrawable(R.drawable.ic_star_border_black_24dp))

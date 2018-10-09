@@ -18,7 +18,7 @@ import java.lang.Exception
  * Created by stanhu on 28/12/2017.
  */
 class ImageCatInfo() : Parcelable {
-    var catName = ""
+    private var catName = ""
     var resulotions = mutableListOf<Resolution>()
 
     constructor(parcel: Parcel) : this() {
@@ -47,14 +47,10 @@ class ImageCatInfo() : Parcelable {
         fun imageCats(type:Int,cat:String,theme:String,  cb: ((ImageCatInfo: ResultInfo)->Unit)){
 
             var baseUrl  = PCImage
-            if (type == 1){
-                baseUrl = PadImage
-            }
-            else if (type == 2){
-                baseUrl = PhoneImage
-            }
-            else if (type == 3){
-                baseUrl = EssentialImage
+            when (type) {
+                1 -> baseUrl = PadImage
+                2 -> baseUrl = PhoneImage
+                3 -> baseUrl = EssentialImage
             }
             val url = baseUrl + "-" + ImageSetInfo.themeToUrlPara(theme) + "-" + ImageSetInfo.catToUrlPara(cat) + "-0-" + "-0-1.html"
             HttpTool.get(url,object  :okhttp3.Callback{

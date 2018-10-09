@@ -21,7 +21,6 @@ import stan.androiddemo.Model.ResultInfo
 import stan.androiddemo.R
 import stan.androiddemo.project.Mito.Model.ImageSetInfo
 import stan.androiddemo.project.Mito.Model.ImageSubjectInfo
-import stan.androiddemo.tool.ConvertUrl
 import stan.androiddemo.tool.ImageLoad.ImageLoadBuilder
 
 class ImageSubjectInfoActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
@@ -60,7 +59,7 @@ class ImageSubjectInfoActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefre
                 val imgCollect = helper.getView<ImageView>(R.id.img_mito_collect)
 
                 if (item.isCollected){
-                    imgCollect.setImageDrawable(resources.getDrawable(R.drawable.ic_star_black_24dp))
+                    imgCollect.setImageDrawable(resources.getDrawable(R.drawable.ic_star_theme_24dp))
                 }
                 else{
                     imgCollect.setImageDrawable(resources.getDrawable(R.drawable.ic_star_border_black_24dp))
@@ -119,7 +118,7 @@ class ImageSubjectInfoActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefre
 
     }
 
-    fun loadData(){
+    private fun loadData(){
         var url = imageSubject.subjectUrl
         if (index >= 1){
             if (count <= 0){
@@ -134,7 +133,7 @@ class ImageSubjectInfoActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefre
                 url = url + "index-"+ (index + 1) +".html"
             }
         }
-        ImageSubjectInfo.getImageSubject(url,{result:ResultInfo ->
+        ImageSubjectInfo.getImageSubject(url) { result:ResultInfo ->
             runOnUiThread {
                 count = result.count
                 if (swipe_refresh_subjectinfo_mito != null){
@@ -164,15 +163,14 @@ class ImageSubjectInfoActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefre
                 }
                 index ++
                 val collectedImages = DataSupport.findAll(ImageSetInfo::class.java)
-                arrImageSet.addAll(imageSets.map {
-                    val img = it
-                    if (collectedImages.find { it.hashId == img.hashId } != null){
+                arrImageSet.addAll(imageSets.map { it ->
+                    if (collectedImages.find { it.hashId == it.hashId } != null){
                         it.isCollected = true
                     }
                     it
                 })
                 mAdapter.notifyDataSetChanged()
             }
-        })
+        }
     }
 }

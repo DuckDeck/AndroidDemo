@@ -110,8 +110,8 @@ class MitoActivity : AppCompatActivity() {
 
     }
 
-    fun  getImageSet(){
-        ImageCatInfo.imageCats(currentSelectCat,"全部","全部",{v : ResultInfo ->
+    private fun  getImageSet(){
+        ImageCatInfo.imageCats(currentSelectCat,"全部","全部") { v : ResultInfo ->
             runOnUiThread {
 
                 if (v.code != 0) {
@@ -120,7 +120,7 @@ class MitoActivity : AppCompatActivity() {
                 }
                 imageCat = v.data as ImageCatInfo?
             }
-        })
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
