@@ -25,7 +25,7 @@ import stan.androiddemo.tool.ImageLoad.ImageLoadBuilder
 
 class ImageSubjectInfoActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
 
-
+    //这个是某个专题里的图片
     var arrImageSet = ArrayList<ImageSetInfo>()
     lateinit var mAdapter: BaseQuickAdapter<ImageSetInfo, BaseViewHolder>
     lateinit var imageSubject:ImageSubjectInfo
@@ -62,17 +62,17 @@ class ImageSubjectInfoActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefre
                     imgCollect.setImageDrawable(resources.getDrawable(R.drawable.ic_star_theme_24dp))
                 }
                 else{
-                    imgCollect.setImageDrawable(resources.getDrawable(R.drawable.ic_star_border_black_24dp))
+                    imgCollect.setImageDrawable(resources.getDrawable(R.drawable.ic_star_border_white_24dp))
                 }
 
                 imgCollect.setOnClickListener {
                     if (item.isCollected){
-                        imgCollect.setImageDrawable(resources.getDrawable(R.drawable.ic_star_border_black_24dp))
+                        imgCollect.setImageDrawable(resources.getDrawable(R.drawable.ic_star_border_white_24dp))
                         DataSupport.deleteAll(ImageSetInfo::class.java,"hashId = " + item.hashId )
                         item.isCollected = !item.isCollected
                     }
                     else{
-                        imgCollect.setImageDrawable(resources.getDrawable(R.drawable.ic_star_black_24dp))
+                        imgCollect.setImageDrawable(resources.getDrawable(R.drawable.ic_star_theme_24dp))
                         item.isCollected = !item.isCollected
                         val result =  item.save()
                         if (result){
@@ -163,8 +163,9 @@ class ImageSubjectInfoActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefre
                 }
                 index ++
                 val collectedImages = DataSupport.findAll(ImageSetInfo::class.java)
-                arrImageSet.addAll(imageSets.map { it ->
-                    if (collectedImages.find { it.hashId == it.hashId } != null){
+                arrImageSet.addAll(imageSets.map {
+                    val img = it
+                    if (collectedImages.find { it.hashId == img.hashId } != null){
                         it.isCollected = true
                     }
                     it

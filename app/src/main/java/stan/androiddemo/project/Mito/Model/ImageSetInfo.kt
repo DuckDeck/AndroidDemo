@@ -206,7 +206,7 @@ class ImageSetInfo() :DataSupport(),Parcelable{
 
             })
         }
-
+        //获取同类图片集合
         fun imageSet(imgSet: ImageSetInfo,cb: (imageSets: ResultInfo) -> Unit){
             HttpTool.get(imgSet.url,object  :okhttp3.Callback{
                 var result = ResultInfo()
@@ -220,21 +220,27 @@ class ImageSetInfo() :DataSupport(),Parcelable{
                     try {
                         val responseText = response.body()!!.string()
                         val js = Jsoup.parse(responseText)
-//                        val tags = js.select("div.con-tags").first().select("a")
-//                        for (tag in tags){
-//                            imgSet.tags.add(tag.text())
-//                        }
-                        val img = js.select("a.photo-a").first().child(0).attr("src")
-                        val lastIndex = img.indexOfLast { it == '/' }
-                        val u = img.substring(0,lastIndex)
-                        if (imgSet.count == 1){
+
+                        if(imgSet.count == 1){
+                            val tags = js.select("div.con-tags").first().select("a")
+                            for (tag in tags){
+                                imgSet.tags.add(tag.text())
+                            }
+                            val img = js.select("a.photo-a").first().child(0).attr("src")
                             imgSet.images.add(img)
                         }
                         else{
-                            for(i in 0 until imgSet.count){
-                                imgSet.images.add(u + "/" + (i + 1).ToFixedInt(3) + ".jpg")
+                            val tags = js.select("p.main_center_bianqin_fl").first().select("a")
+                            for (tag in tags){
+                                imgSet.tags.add(tag.select("span").text())
+                            }
+                            val imgs = js.select("div.img-box").first().select("a")
+                            for (img in imgs){
+                                val i = img.select("img").first().attr("src")
+                                imgSet.images.add(i)
                             }
                         }
+
                         result.data = imgSet
                         cb(result)
                     }

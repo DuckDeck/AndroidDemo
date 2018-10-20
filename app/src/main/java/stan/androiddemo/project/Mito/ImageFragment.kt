@@ -82,17 +82,17 @@ class ImageFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
                     imgCollect.setImageDrawable(resources.getDrawable(R.drawable.ic_star_theme_24dp))
                 }
                 else{
-                    imgCollect.setImageDrawable(resources.getDrawable(R.drawable.ic_star_border_black_24dp))
+                    imgCollect.setImageDrawable(resources.getDrawable(R.drawable.ic_star_border_white_24dp))
                 }
 
                 imgCollect.setOnClickListener {
                     if (item.isCollected){
-                        imgCollect.setImageDrawable(resources.getDrawable(R.drawable.ic_star_border_black_24dp))
+                        imgCollect.setImageDrawable(resources.getDrawable(R.drawable.ic_star_border_white_24dp))
                         DataSupport.deleteAll(ImageSetInfo::class.java,"hashId = " + item.hashId )
                         item.isCollected = !item.isCollected
                     }
                     else{
-                        imgCollect.setImageDrawable(resources.getDrawable(R.drawable.ic_star_black_24dp))
+                        imgCollect.setImageDrawable(resources.getDrawable(R.drawable.ic_star_theme_24dp))
                         item.isCollected = !item.isCollected
                         val result =  item.save()
                         if (result){
