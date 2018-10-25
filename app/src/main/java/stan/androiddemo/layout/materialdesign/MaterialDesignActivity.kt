@@ -91,7 +91,7 @@ class MaterialDesignActivity : AppCompatActivity() {
             override fun convert(helper: BaseViewHolder, item: Fruit) {
                 helper.setText(R.id.txt_fruit_name,item.name)
                 Glide.with(this@MaterialDesignActivity).load(item.imageId)
-                        .dontAnimate().into(helper.getView(R.id.img_fruit))
+                        .into(helper.getView(R.id.img_fruit))
             }
         }
 

@@ -159,7 +159,7 @@ class WeatherInfoActivity : AppCompatActivity() {
                 val editor = PreferenceManager.getDefaultSharedPreferences(this@WeatherInfoActivity).edit()
                 editor.putString("bing_pic", bingPic)
                 editor.apply()
-                runOnUiThread { Glide.with(this@WeatherInfoActivity).load(bingPic).centerCrop().into(img_bg_bing) }
+                runOnUiThread { Glide.with(this@WeatherInfoActivity).load(bingPic).into(img_bg_bing) }
             }
         })
     }

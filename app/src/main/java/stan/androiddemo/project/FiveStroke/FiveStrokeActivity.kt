@@ -45,7 +45,7 @@ class FiveStrokeActivity : AppCompatActivity() {
                 helper.setText(R.id.txt_letter,item.letter)
                 helper.setText(R.id.txt_letter_spell,item.spell)
                 helper.setText(R.id.txt_letter_code,item.code)
-                Glide.with(this@FiveStrokeActivity).load(item.decodeUrl).crossFade().into(helper.getView(R.id.img_letter_code))
+                Glide.with(this@FiveStrokeActivity).load(item.decodeUrl).into(helper.getView(R.id.img_letter_code))
                 helper.getView<ImageView>(R.id.img_delete_letter).setOnClickListener {
                     DataSupport.deleteAll(FiveStrokeInfo::class.java,"letter = '" + item.letter+"'")
                     arrLetters.remove(item)

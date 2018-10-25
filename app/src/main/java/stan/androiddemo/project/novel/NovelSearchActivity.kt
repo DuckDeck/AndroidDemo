@@ -34,7 +34,6 @@ class NovelSearchActivity : AppCompatActivity() {
         mAdapter = object:BaseQuickAdapter<NovelInfo,BaseViewHolder>(R.layout.novel_list_item,arrNovels){
             override fun convert(helper: BaseViewHolder, item: NovelInfo) {
                 Glide.with(this@NovelSearchActivity).load(item.img)
-                        .dontAnimate().centerCrop()
                         .into(helper.getView<ImageView>(R.id.img_novel_cover))
                 helper.setText(R.id.txt_novel_title,item.title)
                 helper.setText(R.id.txt_novel_intro,item.intro)

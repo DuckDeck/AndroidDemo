@@ -26,7 +26,7 @@ class FruitInfoActivity : AppCompatActivity() {
 //            actionBar.setDisplayHomeAsUpEnabled(true)
         //}
         collapsing_toolbarLayout.title = fruitName
-        Glide.with(this).load(fruitImageId).dontAnimate().into(img_fruit)
+        Glide.with(this).load(fruitImageId).into(img_fruit)
         txt_fruit_content.text = createFruitContent(fruitName)
 
     }
