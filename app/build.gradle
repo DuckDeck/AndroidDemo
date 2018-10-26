@@ -29,6 +29,9 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        ndk{
+            abiFilters "armeabi-v7a","arm64-v8a","x86","x86_64"
+        }
     }
     lintOptions {
         disable 'MissingTranslation'
@@ -41,6 +44,12 @@ android {
     }
     dataBinding {
         enabled = true
+    }
+    externalNativeBuild{
+        //配置CMakeLists文件地址
+        cmake{
+            path 'CMakeLists.txt'
+        }
     }
 
 }
