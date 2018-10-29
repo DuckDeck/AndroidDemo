@@ -110,4 +110,6 @@ dependencies {
     implementation 'org.greenrobot:eventbus:3.0.0'
     //bug report
     implementation 'com.tencent.bugly:crashreport:latest.release'
+
+    implementation project(':OpenCVLibrary')
 }

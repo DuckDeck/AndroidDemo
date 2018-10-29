@@ -77,6 +77,10 @@ add_library(
             IMPORTED
             )
 
+add_library( lib_opencv
+        SHARED
+        IMPORTED )
+
 if(${ANDROID_ABI} STREQUAL "armeabi")
 set_target_properties(
     avcodec
@@ -120,6 +124,11 @@ set_target_properties(
             PROPERTIES IMPORTED_LOCATION
             ${CMAKE_SOURCE_DIR}/src/main/jniLibs/armeabi/libfdk-aac.so
              )
+set_target_properties(lib_opencv
+        PROPERTIES IMPORTED_LOCATION
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/main/jniLibs/${ANDROID_ABI}/libopencv_java3.so)
+
+
 endif(${ANDROID_ABI} STREQUAL "armeabi")
 
 if(${ANDROID_ABI} STREQUAL "armeabi-v7a")
@@ -166,7 +175,9 @@ set_target_properties(
             PROPERTIES IMPORTED_LOCATION
             ${CMAKE_SOURCE_DIR}/src/main/jniLibs/armeabi-v7a/libfdk-aac.so
              )
-
+set_target_properties(lib_opencv
+        PROPERTIES IMPORTED_LOCATION
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/main/jniLibs/${ANDROID_ABI}/libopencv_java3.so)
 endif(${ANDROID_ABI} STREQUAL "armeabi-v7a")
 
 if(${ANDROID_ABI} STREQUAL "arm64-v8a")
@@ -212,6 +223,9 @@ set_target_properties(
             PROPERTIES IMPORTED_LOCATION
             ${CMAKE_SOURCE_DIR}/src/main/jniLibs/arm64-v8a/libfdk-aac.so
              )
+set_target_properties(lib_opencv
+        PROPERTIES IMPORTED_LOCATION
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/main/jniLibs/${ANDROID_ABI}/libopencv_java3.so)
 endif(${ANDROID_ABI} STREQUAL "arm64-v8a")
 
 if(${ANDROID_ABI} STREQUAL "x86")
@@ -256,6 +270,9 @@ set_target_properties(
             PROPERTIES IMPORTED_LOCATION
             ${CMAKE_SOURCE_DIR}/src/main/jniLibs/x86/libfdk-aac.so
              )
+set_target_properties(lib_opencv
+        PROPERTIES IMPORTED_LOCATION
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/main/jniLibs/${ANDROID_ABI}/libopencv_java3.so)
 endif(${ANDROID_ABI} STREQUAL "x86")
 
 if(${ANDROID_ABI} STREQUAL "x86_64")
@@ -300,12 +317,20 @@ set_target_properties(
             PROPERTIES IMPORTED_LOCATION
             ${CMAKE_SOURCE_DIR}/src/main/jniLibs/x86_64/libfdk-aac.so
              )
+set_target_properties(lib_opencv
+        PROPERTIES IMPORTED_LOCATION
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/main/jniLibs/${ANDROID_ABI}/libopencv_java3.so)
 endif(${ANDROID_ABI} STREQUAL "x86_64")
 
 include_directories(
     ${CMAKE_SOURCE_DIR}/ffmpeg-3.2.5/
 
 )
+
+include_directories(
+    ${CMAKE_SOURCE_DIR}/src/main/cpp/include
+)
+
 # Searches for a specified prebuilt library and stores the path as a
 # variable. Because CMake includes system libraries in the search path by
 # default, you only need to specify the name of the public NDK library
@@ -332,6 +357,7 @@ target_link_libraries( # Specifies the target library.
                        avutil
                        swresample
                        swscale
+                       lib_opencv
                        # Links the target library to the log library
                        # included in the NDK.
                        ${log-lib} )
