@@ -25,9 +25,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="stan.androiddemo.MainActivity">
-            <intent-filter android:priority="90" > <action android:name="android.intent.action.MAIN"></action>
-            <category android:name="android.intent.category.LAUNCHER"></category>
+        <activity android:name=".MainActivity">
+            <intent-filter android:priority="90">
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".project.weather.WeatherActivity" />
@@ -145,7 +147,9 @@
         <activity android:name=".Media.TakePhoto.TakePhotoActivity" />
         <activity android:name=".Media.RecordVideo.VideoListActivity" />
         <activity android:name=".Media.Audio.AudioListActivity" />
-        <activity android:name=".Media.Audio.AudioRecordActivity"></activity>
+        <activity android:name=".Media.Audio.AudioRecordActivity" />
+        <activity android:name=".Media.OpenCV.OpenCVActivity" />
+        <activity android:name=".Media.OpenCV.ImageToGrayActivity"></activity>
     </application>
 
 </manifest> <!-- issue0:can not hide the title bar --><!-- just use   android:theme="@style/Theme.AppCompat.Light.NoActionBar"> -->

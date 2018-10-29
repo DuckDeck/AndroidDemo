@@ -29,19 +29,19 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        ndk{
-            abiFilters "armeabi-v7a","arm64-v8a","x86","x86_64"
-        }
-        sourceSets {
-            main {
-                jniLibs.srcDirs = ['src/main/jniLibs']
-            }
-        }
-        externalNativeBuild {
-            cmake {
-                cppFlags "-std=c++11"
-            }
-        }
+//        ndk{
+//            abiFilters "armeabi-v7a","arm64-v8a","x86","x86_64"
+//        }
+//        sourceSets {
+//            main {
+//                jniLibs.srcDirs = ['src/main/jniLibs']
+//            }
+//        }
+//        externalNativeBuild {
+//            cmake {
+//                cppFlags "-std=c++11"
+//            }
+//        }
     }
     lintOptions {
         disable 'MissingTranslation'
@@ -55,17 +55,28 @@ android {
     dataBinding {
         enabled = true
     }
-    externalNativeBuild{
-        //配置CMakeLists文件地址
-        cmake{
-            path 'CMakeLists.txt'
-        }
+//    externalNativeBuild{
+//        //配置CMakeLists文件地址
+//        cmake{
+//            path 'CMakeLists.txt'
+//        }
+//    }
+
+    task nativeLibsToJar(type: Jar, description: 'create a jar archive of the native libs') {
+        destinationDir file("$buildDir/native-libs")
+        baseName 'native-libs'
+        from fileTree(dir: 'libs', include: '**/*.so')
+        into 'lib/'
     }
 
+    tasks.withType(JavaCompile) {
+        compileTask -> compileTask.dependsOn(nativeLibsToJar)
+    }
 }
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation fileTree(dir: "$buildDir/native-libs", include: 'native-libs.jar')
     androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })

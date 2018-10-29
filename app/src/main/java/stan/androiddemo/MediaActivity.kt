@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter
 import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_media.*
 import stan.androiddemo.Media.Audio.AudioListActivity
+import stan.androiddemo.Media.OpenCV.OpenCVActivity
 import stan.androiddemo.Media.TakePhoto.TakePhotoActivity
 
 class MediaActivity : AppCompatActivity() {
@@ -20,7 +21,7 @@ class MediaActivity : AppCompatActivity() {
         title = ""
 
         val adapter = ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,
-                arrayListOf("拍照","音频"))
+                arrayListOf("拍照","音频","OpenCV"))
         list_view_layout.adapter = adapter
 
         list_view_layout.onItemClickListener = AdapterView.OnItemClickListener { adapterView, view, i, l ->
@@ -37,7 +38,11 @@ class MediaActivity : AppCompatActivity() {
                     val intent = Intent(this, AudioListActivity::class.java)
                     startActivity(intent)
                 }
-
+                "OpenCV"->
+                {
+                    val intent = Intent(this, OpenCVActivity::class.java)
+                    startActivity(intent)
+                }
             }
         }
     }

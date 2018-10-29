@@ -9,3 +9,4 @@
 .externalNativeBuild
 gradle.properties
 jniLibs
+libs
