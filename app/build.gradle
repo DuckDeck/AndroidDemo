@@ -32,6 +32,16 @@ android {
         ndk{
             abiFilters "armeabi-v7a","arm64-v8a","x86","x86_64"
         }
+        sourceSets {
+            main {
+                jniLibs.srcDirs = ['src/main/jniLibs']
+            }
+        }
+        externalNativeBuild {
+            cmake {
+                cppFlags "-std=c++11"
+            }
+        }
     }
     lintOptions {
         disable 'MissingTranslation'
@@ -105,7 +115,7 @@ dependencies {
     //替换retrofit内部的okhttp
     implementation 'com.squareup.okhttp3:okhttp:3.10.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.9.0'
-    implementation 'com.squareup.okio:okio:1.13.0'
+    implementation 'com.squareup.okio:okio:1.14.0'
     //事件解耦
     implementation 'org.greenrobot:eventbus:3.0.0'
     //bug report

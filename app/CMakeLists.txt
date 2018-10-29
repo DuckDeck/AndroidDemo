@@ -10,28 +10,6 @@ cmake_minimum_required(VERSION 3.4.1)
 # You can define multiple libraries, and CMake builds them for you.
 # Gradle automatically packages shared libraries with your APK.
 
-add_library( # Sets the name of the library.
-             jx_ffmpeg_jni
-
-             # Sets the library as a shared library.
-             SHARED
-
-             # Provides a relative path to your source file(s).
-              src/main/cpp/jx_yuv_encode_h264.cpp
-              src/main/cpp/jx_pcm_encode_aac.cpp
-              src/main/cpp/jx_media_muxer.cpp
-              src/main/cpp/jx_jni_handler.cpp
-              src/main/cpp/jx_ffmpeg_jni.cpp
-              src/main/cpp/threadsafe_queue.cpp
-              src/main/cpp/jx_log.cpp
-              src/main/cpp/cmdutils.c
-              src/main/cpp/ffmpeg.c
-              src/main/cpp/ffmpeg_filter.c
-              src/main/cpp/ffmpeg_opt.c
-              src/main/cpp/jx_ffmpeg_cmd_run.c
-              src/main/cpp/jx_ffmpeg_config.cpp
-             )
-
 add_library(
             avcodec
             SHARED
@@ -78,8 +56,8 @@ add_library(
             )
 
 add_library( lib_opencv
-        SHARED
-        IMPORTED )
+             SHARED
+             IMPORTED )
 
 if(${ANDROID_ABI} STREQUAL "armeabi")
 set_target_properties(
@@ -322,10 +300,9 @@ set_target_properties(lib_opencv
         ${CMAKE_CURRENT_SOURCE_DIR}/src/main/jniLibs/${ANDROID_ABI}/libopencv_java3.so)
 endif(${ANDROID_ABI} STREQUAL "x86_64")
 
-include_directories(
-    ${CMAKE_SOURCE_DIR}/ffmpeg-3.2.5/
-
-)
+#include_directories(
+#    ${CMAKE_SOURCE_DIR}/ffmpeg-3.2.5/
+#)
 
 include_directories(
     ${CMAKE_SOURCE_DIR}/src/main/cpp/include
@@ -349,7 +326,6 @@ find_library( # Sets the name of the path variable.
 # build script, prebuilt third-party libraries, or system libraries.
 
 target_link_libraries( # Specifies the target library.
-                       jx_ffmpeg_jni
                        fdk-aac
                        avcodec
                        avfilter
