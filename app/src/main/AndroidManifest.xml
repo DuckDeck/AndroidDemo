@@ -149,7 +149,7 @@
         <activity android:name=".Media.Audio.AudioListActivity" />
         <activity android:name=".Media.Audio.AudioRecordActivity" />
         <activity android:name=".Media.OpenCV.OpenCVActivity" />
-        <activity android:name=".Media.OpenCV.ImageToGrayActivity"></activity>
+        <activity android:name=".Media.OpenCV.ImageToGrayActivity" />
     </application>
 
 </manifest> <!-- issue0:can not hide the title bar --><!-- just use   android:theme="@style/Theme.AppCompat.Light.NoActionBar"> -->
