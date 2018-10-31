@@ -16,11 +16,12 @@ extern "C"
 #define LOGE(FORMAT,...) __android_log_print(ANDROID_LOG_ERROR,"heiko",FORMAT,__VA_ARGS__);
 
 JNIEXPORT jstring JNICALL
-Java_stan_androiddemo_tool_ffmpeg_FFmpegBridge_ffmpegInfo(JNIEnv *env, jclass type) {
+Java_stan_androiddemo_tool_ffmpeg_FFmpegBridge_00024Companion_ffmpegInfo(JNIEnv *env,jobject) {
     char info[10000] = { 0 };
     sprintf(info, "%s\n", avcodec_configuration());
-    return (*env).NewStringUTF(info);
+    return env->NewStringUTF(info);
 }
 #ifdef __cplusplus
-};
+}
 #endif
+
