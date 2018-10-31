@@ -2,6 +2,7 @@ package stan.androiddemo.Media.ffmpeg
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import stan.androiddemo.R
 
 class ffmpegActivity : AppCompatActivity() {
 

@@ -5,25 +5,66 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Media.OpenCV.ImageToGrayActivity">
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
 
+        <android.support.v7.widget.Toolbar
+            android:layout_height="wrap_content"
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:minHeight="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:navigationIcon="?attr/homeAsUpIndicator">
+            <TextView
+                android:id="@+id/txt_toolbar_title"
+                android:layout_gravity="center"
+                android:textSize="16sp"
+                android:text="OpenCV项目列表"
+                android:textColor="@color/white"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </android.support.v7.widget.Toolbar>
+    </android.support.design.widget.AppBarLayout>
     <Button
         android:id="@+id/btnGray"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="60dp"
         app:layout_constraintTop_toTopOf="parent"
         android:text="灰度"
         />
+    <Button
+        android:id="@+id/btnTakeImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="20dp"
+        app:layout_constraintTop_toBottomOf="@+id/btnGray"
+        android:text="拍照"
+        />
+    <Button
+        android:id="@+id/btnChooseImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="20dp"
+        app:layout_constraintTop_toBottomOf="@+id/btnTakeImage"
+        android:text="选择照片"
+        />
 
     <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/btnGray"
-        android:layout_marginTop="50dp"
         android:id="@+id/imgGray"
+        android:layout_width="wrap_content"
+        android:layout_height="200dp"
+        android:layout_marginTop="50dp"
         android:src="@drawable/petal_header_bg"
+        app:layout_constraintTop_toBottomOf="@+id/btnChooseImage"
 
         />
 </android.support.constraint.ConstraintLayout>
