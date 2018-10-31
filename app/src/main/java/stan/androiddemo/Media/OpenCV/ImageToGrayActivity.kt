@@ -43,6 +43,10 @@ class ImageToGrayActivity : AppCompatActivity() {
             startActivityForResult(Intent.createChooser(intent,"图片选择..."),0x0001)
 
         }
+
+        btnReviseImage.setOnClickListener {
+
+        }
     }
 
     fun toGray(){
@@ -51,6 +55,7 @@ class ImageToGrayActivity : AppCompatActivity() {
         imgGray.isDrawingCacheEnabled = false
 
         val src = Mat()
+
         val dst = Mat()
         Utils.bitmapToMat(bitmap,src)
         Imgproc.cvtColor(src,dst, Imgproc.COLOR_BGRA2GRAY)
@@ -58,6 +63,22 @@ class ImageToGrayActivity : AppCompatActivity() {
         imgGray.setImageBitmap(bitmap)
         src.release()
         dst.release()
+    }
+
+    fun reverseImage(){
+        imgGray.isDrawingCacheEnabled = true
+        val bitmap = Bitmap.createBitmap(imgGray.drawingCache)
+        imgGray.isDrawingCacheEnabled = false
+        val src = Mat()
+        Utils.bitmapToMat(bitmap,src)
+        var pv = 0
+        val data = ByteArray(src.channels()*src.width()*src.height())
+        src.get(0,0,data)
+//        val reversedData = data.map {
+//            val tmp = it & 0xff
+//            tmp = 255 - tmp
+//            return tmp
+//        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -71,6 +92,7 @@ class ImageToGrayActivity : AppCompatActivity() {
             }
         }
     }
+
 
 
     private fun loadOpenCV(){
