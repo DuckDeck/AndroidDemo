@@ -1,5 +1,6 @@
 package stan.androiddemo.Media.OpenCV
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
@@ -15,12 +16,16 @@ import kotlinx.android.synthetic.main.activity_image_to_gray.*
 
 import org.opencv.android.OpenCVLoader
 import org.opencv.android.Utils
+import org.opencv.core.Core
 import org.opencv.core.Mat
 import org.opencv.imgproc.Imgproc
 import stan.androiddemo.R
+import kotlin.experimental.and
 
 class ImageToGrayActivity : AppCompatActivity() {
 
+    var currentChannelIndex = 0
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_image_to_gray)
@@ -45,10 +50,46 @@ class ImageToGrayActivity : AppCompatActivity() {
         }
 
         btnReviseImage.setOnClickListener {
+            imgGray.isDrawingCacheEnabled = true
+            val bitmap = Bitmap.createBitmap(imgGray.drawingCache)
+            imgGray.isDrawingCacheEnabled = false
+            val newBitmap = reverseImage(bitmap)
+            imgGray.setImageBitmap(newBitmap)
+        }
 
+        btnGetChannel.setOnClickListener {
+           val bitmap = getCurrentBitmap()
+            val src = Mat()
+            Utils.bitmapToMat(bitmap,src)
+            txtImageInfo.text = "Channels:${src.channels()}-----Width:${src.width()}-----Height:${src.height()}"
+            val channels = mutableListOf<Mat>()
+            Core.split(src,channels)
+
+            val m = channels[currentChannelIndex]
+            val bm = Bitmap.createBitmap(m.cols(),m.rows(),Bitmap.Config.ARGB_8888)
+
+            Log.i("channels",m.channels().toString())
+
+            Utils.matToBitmap(m,bm)
+            imgGray.setImageBitmap(bm)
+            m.release()
+
+            src.release()//不明白为什么都是一样的，书上连个图也不给一个
+            currentChannelIndex++
+            if (currentChannelIndex == channels.count()){
+                currentChannelIndex = 0
+            }
         }
     }
 
+    fun getCurrentBitmap():Bitmap{
+        imgGray.isDrawingCacheEnabled = true
+        val bitmap = Bitmap.createBitmap(imgGray.drawingCache)
+        imgGray.isDrawingCacheEnabled = false
+        return  bitmap
+    }
+
+    @SuppressLint("SetTextI18n")
     fun toGray(){
         imgGray.isDrawingCacheEnabled = true
         val bitmap = Bitmap.createBitmap(imgGray.drawingCache)
@@ -61,24 +102,27 @@ class ImageToGrayActivity : AppCompatActivity() {
         Imgproc.cvtColor(src,dst, Imgproc.COLOR_BGRA2GRAY)
         Utils.matToBitmap(dst,bitmap)
         imgGray.setImageBitmap(bitmap)
+        txtImageInfo.text = "Channels:${src.channels()}-----Width:${src.width()}-----Height:${src.height()}"
         src.release()
         dst.release()
     }
 
-    fun reverseImage(){
-        imgGray.isDrawingCacheEnabled = true
-        val bitmap = Bitmap.createBitmap(imgGray.drawingCache)
-        imgGray.isDrawingCacheEnabled = false
+
+
+    @SuppressLint("SetTextI18n")
+    fun reverseImage(bitmap: Bitmap):Bitmap{
         val src = Mat()
         Utils.bitmapToMat(bitmap,src)
-        var pv = 0
+        txtImageInfo.text = "Channels:${src.channels()}-----Width:${src.width()}-----Height:${src.height()}"
         val data = ByteArray(src.channels()*src.width()*src.height())
         src.get(0,0,data)
-//        val reversedData = data.map {
-//            val tmp = it & 0xff
-//            tmp = 255 - tmp
-//            return tmp
-//        }
+        val reversedData = data.map {
+            (255 - (it and  127).toInt()).toByte()
+        }
+        src.put(0,0,reversedData.toByteArray())
+        Utils.matToBitmap(src,bitmap)
+        src.release()
+        return  bitmap
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

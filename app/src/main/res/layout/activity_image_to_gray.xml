@@ -67,13 +67,36 @@
         android:text="反转图片"
         />
 
+    <Button
+        android:id="@+id/btnGetChannel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="20dp"
+        app:layout_constraintTop_toBottomOf="@+id/btnGray"
+        android:text="获取通道"
+        />
+
+
     <ImageView
         android:id="@+id/imgGray"
         android:layout_width="wrap_content"
-        android:layout_height="200dp"
-        android:layout_marginTop="50dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:scaleType="fitXY"
+        android:adjustViewBounds="true"
         android:src="@drawable/petal_header_bg"
+        android:maxHeight="400dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnChooseImage"
-
         />
+    <TextView
+        android:id="@+id/txtImageInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imgGray"
+        android:layout_marginTop="20dp"/>
 </android.support.constraint.ConstraintLayout>
