@@ -18,8 +18,13 @@ import org.opencv.android.OpenCVLoader
 import org.opencv.android.Utils
 import org.opencv.core.Core
 import org.opencv.core.Mat
+import org.opencv.core.Point
+import org.opencv.core.Scalar
 import org.opencv.imgproc.Imgproc
 import stan.androiddemo.R
+import stan.androiddemo.tool.getBitmap
+import stan.androiddemo.tool.getMat
+import stan.androiddemo.tool.setMat
 import kotlin.experimental.and
 
 class ImageToGrayActivity : AppCompatActivity() {
@@ -58,7 +63,7 @@ class ImageToGrayActivity : AppCompatActivity() {
         }
 
         btnGetChannel.setOnClickListener {
-           val bitmap = getCurrentBitmap()
+           val bitmap = imgGray.getBitmap()
             val src = Mat()
             Utils.bitmapToMat(bitmap,src)
             txtImageInfo.text = "Channels:${src.channels()}-----Width:${src.width()}-----Height:${src.height()}"
@@ -80,14 +85,57 @@ class ImageToGrayActivity : AppCompatActivity() {
                 currentChannelIndex = 0
             }
         }
+
+        btnMerge.setOnClickListener {
+            val m1 = Mat()
+            val bitmap1 = imgGray.getBitmap()
+            Utils.bitmapToMat(bitmap1,m1)
+            val m2 = Mat.zeros(m1.rows(),m1.cols(),m1.type())
+            Imgproc.circle(m2, Point(m1.rows() / 2.0,m1.height() / 2.0),200, Scalar(90.0,45.0,234.0),-1,8,0)
+            val m3 = Mat()
+            Core.add(m1,m2,m3)
+            val bitmapResult = Bitmap.createBitmap(bitmap1.width,bitmap1.height,Bitmap.Config.ARGB_8888)
+            Utils.matToBitmap(m3,bitmapResult)
+            imgGray.setImageBitmap(bitmapResult)
+            m1.release()
+            m2.release()
+            m3.release()
+        }
+
+        btnLight.setOnClickListener {
+            val m1 = imgGray.getMat()
+            val m2 = Mat()
+            val scale = 10.0
+            Core.add(m1,Scalar(scale,scale,scale),m2)
+            imgGray.setMat(m2)
+            m1.release()
+            m2.release()
+
+        }
+
+        btnGetDark.setOnClickListener {
+            val m1 = imgGray.getMat()
+            val m2 = Mat()
+            val scale = -10.0
+            Core.add(m1,Scalar(scale,scale,scale),m2)
+            imgGray.setMat(m2)
+            m1.release()
+            m2.release()
+        }
+
+        btnAddContrast.setOnClickListener {
+            val m1 = imgGray.getMat()
+            val m2 = Mat()
+            val scale = 1.1
+            Core.multiply(m1, Scalar(scale,scale,scale),m2)
+            imgGray.setMat(m2) //不知道为什么不能用
+            m2.release()
+            m1.release()
+        }
+
     }
 
-    fun getCurrentBitmap():Bitmap{
-        imgGray.isDrawingCacheEnabled = true
-        val bitmap = Bitmap.createBitmap(imgGray.drawingCache)
-        imgGray.isDrawingCacheEnabled = false
-        return  bitmap
-    }
+
 
     @SuppressLint("SetTextI18n")
     fun toGray(){
@@ -135,6 +183,7 @@ class ImageToGrayActivity : AppCompatActivity() {
                 }
             }
         }
+
     }
 
 

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Media.OpenCV.ImageOperateActivity">
+
+    <stan.androiddemo.UI.FixedDrawerLayout
+        android:id="@+id/drawer_layout_fixed"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.design.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.design.widget.AppBarLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <android.support.v7.widget.Toolbar
+                    android:layout_height="wrap_content"
+                    android:id="@+id/toolbar"
+                    app:navigationIcon="@drawable/ic_menu_black_24dp"
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                    android:layout_width="match_parent"
+                    android:minHeight="?attr/actionBarSize"
+                    android:background="?attr/colorPrimary"
+                    app:layout_scrollFlags="scroll|enterAlways|snap">
+                    <TextView
+                        android:id="@+id/txt_toolbar_title"
+                        android:textSize="16sp"
+                        android:text="图片操作"
+                        android:textColor="@color/white"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </android.support.v7.widget.Toolbar>
+            </android.support.design.widget.AppBarLayout>
+
+
+            <ImageView
+                android:id="@+id/imgOperate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="200dp"
+                android:scaleType="fitXY"
+                android:adjustViewBounds="true"
+                android:src="@drawable/petal_header_bg"
+                android:maxHeight="400dp"
+
+                />
+        </android.support.design.widget.CoordinatorLayout>
+        <android.support.design.widget.NavigationView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/navigation_view"
+            android:layout_gravity="start"
+            app:menu="@menu/image_operate_menu"
+            app:headerLayout="@layout/nav_header">
+
+        </android.support.design.widget.NavigationView>
+    </stan.androiddemo.UI.FixedDrawerLayout>
+
+</android.support.constraint.ConstraintLayout>
