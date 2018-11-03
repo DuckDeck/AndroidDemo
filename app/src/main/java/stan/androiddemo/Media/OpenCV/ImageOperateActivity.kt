@@ -20,6 +20,7 @@ import stan.androiddemo.R
 import stan.androiddemo.tool.getBitmap
 import stan.androiddemo.tool.getMat
 import stan.androiddemo.tool.setMat
+import java.util.*
 
 class ImageOperateActivity : AppCompatActivity() {
 
@@ -52,11 +53,36 @@ class ImageOperateActivity : AppCompatActivity() {
                 "线性绝对值放缩变换"->{
                     scaleAbsMat()
                 }
+                "归一化"->{
+                    normalizeMat()
+                }
+                "均值模糊"->{
+                    avgBlur()
+                }
+                "高斯模糊"->{
+                    gothBur()
+                }
+                "中值滤波"->{
+                    middleBlur()
+                }
+                "最大值滤波"->{
+                    minBlur()
+                }
+                "最小值滤波"->{
+                    maxBlur()
+                }
+
+                "高斯双边滤波"->{
+                    bilateralBlur()
+                }
+                "均值迁移滤波"->{
+                    shiftFilter()
+                }
+
+
             }
             return@setNavigationItemSelectedListener true
         }
-
-
     }
 
 
@@ -127,7 +153,7 @@ class ImageOperateActivity : AppCompatActivity() {
         m4.release()
     }
 
-    fun  scaleAbsMat(){
+    private fun  scaleAbsMat(){
         reset()
         val m1 = imgOperate.getMat()
         val m2 = Mat()
@@ -138,8 +164,110 @@ class ImageOperateActivity : AppCompatActivity() {
 
     }
 
+    private fun normalizeMat() {
+        //创建随机浮点数图像
+        val m1 = Mat.zeros(400, 400, CvType.CV_32FC3)
+        val data = FloatArray(400*400*3)
+        val random = Random()
+        for (i in 0 until data.count()){
+            data[i] = random.nextGaussian().toFloat()
+        }
+        m1.put(0,0,data)
+
+        //将值归化到0-255之间
+        val m2 = Mat()
+
+        m1.convertTo(m2,CvType.CV_8UC3)
+        imgOperate.setMat(m2)
+        Core.normalize(m1,m2,0.0,255.0,Core.NORM_MINMAX,-1,Mat())
+        val m3 = Mat()
+        m2.convertTo(m3,CvType.CV_8UC3)
+        imgResult.setMat(m3)
+        m1.release()
+        m2.release()
+        m3.release()
+    }
+
+    private fun avgBlur(){
+        val m1 = imgOperate.getMat()
+        val m2 = Mat()
+        Imgproc.blur(m1,m2, Size(15.0,15.0), Point(-1.0,-1.0),Core.BORDER_REFLECT)
+        //水平方向模糊
+        //Imgproc.blur(m1,m2, Size(15.0,1.0), Point(-1.0,-1.0),Core.BORDER_DEFAULT)
+        //垂直方向模糊
+        //Imgproc.blur(m1,m2, Size(1.0,15.0), Point(-1.0,-1.0),Core.BORDER_DEFAULT)
+        imgResult.setMat(m2)
+        m1.release()
+        m2.release()
+    }
+
+    private fun gothBur(){
+        val m1 = imgOperate.getMat()
+        val m2 = Mat()
+        Imgproc.GaussianBlur(m1,m2,Size(0.0,0.0),10.0)
+        //Imgproc.GaussianBlur(m1,m2,Size(10.0,10.0),0.0)//不知道为什么这样不行
+        imgResult.setMat(m2)
+        m1.release()
+        m2.release()
+    }
+
+    fun middleBlur(){
+        reset()
+        val m1 = imgOperate.getMat()
+        val m2 = Mat()
+        Imgproc.medianBlur(m1,m2,11)
+        imgResult.setMat(m2)
+        m1.release()
+        m2.release()
+    }
+
+    fun minBlur(){
+        reset()
+        val m1 = imgOperate.getMat()
+        val m2 = Mat()
+        val kernal = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, Size(5.0,5.0))
+        Imgproc.dilate(m1,m2,kernal)
+        imgResult.setMat(m2)
+        m1.release()
+        m2.release()
+        kernal.release()
+    }
+
+    fun maxBlur(){
+        reset()
+        val m1 = imgOperate.getMat()
+        val m2 = Mat()
+        val kernal = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, Size(5.0,5.0))
+        Imgproc.erode(m1,m2,kernal)
+        imgResult.setMat(m2)
+        m1.release()
+        m2.release()
+        kernal.release()
+    }
+
+    fun bilateralBlur(){
+        val m1 = imgOperate.getMat()
+        val m2 = Mat()
+        m1.convertTo(m2,CvType.CV_8SC3)
+        val m3 = Mat()
+        Imgproc.bilateralFilter(m1,m3,0,150.0,15.0)
+        imgResult.setMat(m3)
+        m1.release()
+        m2.release()
+        m3.release()
+    }
+
+    fun shiftFilter(){
+        val m1 = imgOperate.getMat()
+        val m2 = Mat()
+        Imgproc.pyrMeanShiftFiltering(m1,m2,10.0,50.0)
+        imgResult.setMat(m2)
+        m1.release()
+        m2.release()
+    }
+
+
     fun reset(){
-        imgOperate.setImageResource(R.drawable.petal_header_bg)
         imgResult.setImageResource(R.drawable.test1)
     }
 

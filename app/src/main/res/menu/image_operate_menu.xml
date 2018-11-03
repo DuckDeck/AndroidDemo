@@ -14,5 +14,22 @@
             android:id="@+id/nav_nor"/>
         <item android:title="线性绝对值放缩变换"
             android:id="@+id/nav_scale_abs"/>
+        <item android:title="归一化"
+            android:id="@+id/nav_normalize"/>
+
+        <item android:title="均值模糊"
+            android:id="@+id/nav_avg_blur"/>
+        <item android:title="高斯模糊"
+            android:id="@+id/nav_goth_blur"/>
+        <item android:title="中值滤波"
+            android:id="@+id/nav_middle_blur"/>
+        <item android:title="最大值滤波"
+            android:id="@+id/nav_min_blur"/>
+        <item android:title="最小值滤波"
+            android:id="@+id/nav_max_blur"/>
+        <item android:title="高斯双边滤波"
+            android:id="@+id/nav_bilateral_blur"/>
+        <item android:title="均值迁移滤波"
+            android:id="@+id/nav_shift_filter_blue"/>
     </group>
 </menu>
