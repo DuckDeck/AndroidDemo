@@ -12,6 +12,7 @@
 
         <item android:title="异或操作"
             android:id="@+id/nav_nor"/>
-
+        <item android:title="线性绝对值放缩变换"
+            android:id="@+id/nav_scale_abs"/>
     </group>
 </menu>

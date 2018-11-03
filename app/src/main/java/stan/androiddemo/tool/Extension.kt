@@ -23,7 +23,7 @@ fun Int.ToFixedInt(num:Int):String{
     else {
         var str = this.toString()
         while (str.length < num){
-            str = "0" + str
+            str = "0$str"
         }
         return str
     }
@@ -39,7 +39,7 @@ fun Image.Save(name:String){
     val data = ByteArray(buffer.remaining())
     buffer.get(data)
     val filePath = Environment.getExternalStorageDirectory().path + "/DCIM/Camera"
-    val photoPath = name + ".jpeg"
+    val photoPath = "$name.jpeg"
     val file = File(filePath,photoPath)
     try {
         //存到本地相册
@@ -61,8 +61,8 @@ fun Image.Save(name:String){
 fun ImageView.setMat(mat:Mat){
     val bitmat = Bitmap.createBitmap(mat.width(),mat.height(),Bitmap.Config.ARGB_8888)
     val matResult = Mat()
-    Imgproc.cvtColor(mat,matResult,Imgproc.COLOR_BGR2RGBA)
-    Utils.matToBitmap(matResult,bitmat)
+//    Imgproc.cvtColor(mat,matResult,Imgproc.COLOR_BGR2RGBA)
+    Utils.matToBitmap(mat,bitmat)
     setImageBitmap(bitmat)
     matResult.release()
 }
