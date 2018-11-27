@@ -1,7 +1,7 @@
 ![Android学习](http://upload-images.jianshu.io/upload_images/1281203-f287f2af84a447ef.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 准备集成ffmpep和opencv
-ffmpep和opencv集成OK，因为文件太大所以没有上传到github中。这样的话会导致下载这个项目太大了，所以打算放到网盘里面，并写文章来告诉大家怎么集成
+ffmpep和opencv集成OK，因为文件太大所以没有上传到github中。这样的话会导致下载这个项目太大了，所以打算放到网盘里面，并写文章来告诉大家怎么集成。需要去 https://pan.baidu.com/disk/home?#/all?vmode=list&path=%2F%E5%BC%80%E5%8F%91 下载需要的文件才能跑起来，怎么集成ffmpeg的文章https://www.jianshu.com/p/c93937977d2e在这里。
 
 刚开始时我们都是用Java开发Android，对于写了好几年`Swift`的我完全不能忍受Java的语法，没有元组(可以通过第三方实现)，没有高阶函数，没有扩展方法，不像Swift，接口(`Interface`)所有方法都要实现的，没有可选实现的。没有自定义运算符，句末要加分号等很多我在iOS开发过程中常用的语言特性都没有。直到后来Google宣布`Kotlin`为Android开发的一级语言。我就去随便了解下`Kotlin`的语法，发现`Kotlin`和`Swift`的语法实在是太像啦。两者相似度应该有80%以上吧，请参考[Swift和Kotlin语法比较](https://www.oschina.net/news/85013/swift-is-like-kotlin)。所以那还等什么？和同事协商后，确认可以在同一个项目里面可以同时使用Kotlin和Java开发，那么我果断换成`Kotlin`开发，`Kotlin`确实比Java简洁多了，不再需要`butterknife`框架，不需要写各种事件类，各种View也可直接从XML里面直接取出，再加上高阶函数和扩展方法，仿佛又回到了iOS开发APP的感觉。其开发体验和用Java开发完全不可同日而语。所以我在自己学习Android开发写的小项目也全是用`Kotlin`开发的。这里我就不再详细介绍`Kotlin`了，下面直接给出这些小项目吧。
 
