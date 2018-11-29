@@ -78,8 +78,12 @@ class ImageOperateActivity : AppCompatActivity() {
                 "均值迁移滤波"->{
                     shiftFilter()
                 }
-
-
+                "自定义滤波"->{
+                    customFilter()
+                }
+                "阈值相关"->{
+                thresholdFilter()
+            }
             }
             return@setNavigationItemSelectedListener true
         }
@@ -248,9 +252,9 @@ class ImageOperateActivity : AppCompatActivity() {
     fun bilateralBlur(){
         val m1 = imgOperate.getMat()
         val m2 = Mat()
-        m1.convertTo(m2,CvType.CV_8SC3)
+        Imgproc.cvtColor(m1,m2,Imgproc.COLOR_BGRA2BGR)
         val m3 = Mat()
-        Imgproc.bilateralFilter(m1,m3,0,150.0,15.0)
+        Imgproc.bilateralFilter(m2,m3,0,150.0,15.0)
         imgResult.setMat(m3)
         m1.release()
         m2.release()
@@ -260,12 +264,52 @@ class ImageOperateActivity : AppCompatActivity() {
     fun shiftFilter(){
         val m1 = imgOperate.getMat()
         val m2 = Mat()
-        Imgproc.pyrMeanShiftFiltering(m1,m2,10.0,50.0)
-        imgResult.setMat(m2)
+        // Only 8-bit, 3-channel images are supported in function
+        Imgproc.cvtColor(m1,m2,Imgproc.COLOR_BGRA2BGR)
+        var m3 = Mat()
+        Imgproc.pyrMeanShiftFiltering(m2,m3,10.0,50.0)
+        imgResult.setMat(m3)
         m1.release()
+        m2.release()
         m2.release()
     }
 
+    fun customFilter(){
+        //定义模糊卷积
+        val k = Mat(3,3,CvType.CV_32FC1);
+        val data = floatArrayOf(1.0f/9.0f,1.0f/9.0f,1.0f/9.0f,1.0f/9.0f,1.0f/9.0f,1.0f/9.0f,1.0f/9.0f,1.0f/9.0f,1.0f/9.0f)  //均值模糊卷积
+        //这个模糊卷积看起来就是模糊了一点点
+        val data2 = floatArrayOf(0f,1.0f/8.0f,0f,1.0f/8.0f,0.5f,1.0f/8.0f,0f,1.0f/8.0f,0f)  //高斯模糊卷积
+        //这个高斯模糊卷积看起来就是模糊了一点点,没什么区别
+        val data3 = floatArrayOf(0f,-1f,0f,-1f,5f,-1f,0f,-1f,0f)  //锐化
+        //这个锐化卷积看起来效果还是很明显的
+        k.put(0,0,data3)
+
+
+        //梯度卷积
+        val mx = Mat(3,3,CvType.CV_32FC1)
+        val my = Mat(3,3,CvType.CV_32FC1)
+        //X方向梯度算子
+        val robert_x = floatArrayOf(-1f,0f,0f,-1f)
+        mx.put(0,0,robert_x)
+        //y方向梯度算子
+        val robert_y = floatArrayOf(0f,1f,-1f,0f)
+        my.put(0,0,robert_y)
+        //这本书上有问题，并没有使用这两个卷积
+        val m1 = imgOperate.getMat()
+        val m2 = Mat()
+        Imgproc.filter2D(m1,m2,-10,k)
+        imgResult.setMat(m2)
+        k.release()
+        m1.release()
+        m2.release()
+
+    }
+
+
+    fun thresholdFilter(){
+
+    }
 
     fun reset(){
         imgResult.setImageResource(R.drawable.test1)
