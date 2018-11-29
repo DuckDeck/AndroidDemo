@@ -309,6 +309,20 @@ class ImageOperateActivity : AppCompatActivity() {
 
     fun thresholdFilter(){
 
+        val m1 = imgOperate.getMat()
+        val gray = Mat()
+        Imgproc.cvtColor(m1,gray,Imgproc.COLOR_BGR2GRAY)
+        var m2 = Mat()
+        //OTSU
+        //Imgproc.threshold(gray,m2,127.0,255.0,Imgproc.THRESH_BINARY or Imgproc.THRESH_BINARY)
+        //Triangle
+        //Imgproc.threshold(gray,m2,127.0,255.0,Imgproc.THRESH_BINARY or Imgproc.THRESH_TRIANGLE)
+        //自适应阈值
+        Imgproc.adaptiveThreshold(gray,m2,255.0,Imgproc.ADAPTIVE_THRESH_GAUSSIAN_C,Imgproc.THRESH_BINARY,15,10.0);
+        imgResult.setMat(m2)
+        m1.release()
+        m2.release()
+        gray.release()
     }
 
     fun reset(){
