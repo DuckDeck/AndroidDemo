@@ -30,6 +30,10 @@
         <item android:title="高斯双边滤波"
             android:id="@+id/nav_bilateral_blur"/>
         <item android:title="均值迁移滤波"
-            android:id="@+id/nav_shift_filter_blue"/>
+        android:id="@+id/nav_shift_filter_blue"/>
+        <item android:title="自定义滤波"
+            android:id="@+id/custom_filter"/>
+        <item android:title="阈值相关"
+            android:id="@+id/threshold"/>
     </group>
 </menu>

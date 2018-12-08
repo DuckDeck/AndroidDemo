@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Media.OpenCV.ImageOperateActivity">
+    tools:context=".Media.OpenCV.BasicFeatureDetectionActivity">
 
     <stan.androiddemo.UI.FixedDrawerLayout
         android:id="@+id/drawer_layout_fixed"
@@ -66,7 +66,7 @@
             android:layout_height="match_parent"
             android:id="@+id/navigation_view"
             android:layout_gravity="start"
-            app:menu="@menu/image_operate_menu"
+            app:menu="@menu/feature_detection_menu"
             app:headerLayout="@layout/nav_header">
 
         </android.support.design.widget.NavigationView>

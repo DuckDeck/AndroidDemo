@@ -22,10 +22,10 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        android:largeHeap="true">
+        android:theme="@style/AppTheme">
         <activity android:name=".MainActivity">
             <intent-filter android:priority="90">
                 <action android:name="android.intent.action.MAIN" />
@@ -153,7 +153,8 @@
         <activity android:name=".Media.OpenCV.ImageToGrayActivity" />
         <activity android:name=".Media.ffmpeg.FFmpegActivity" />
         <activity android:name=".Media.OpenCV.DrawImageActivity" />
-        <activity android:name=".Media.OpenCV.ImageOperateActivity"></activity>
+        <activity android:name=".Media.OpenCV.ImageOperateActivity" />
+        <activity android:name=".Media.OpenCV.BasicFeatureDetectionActivity"></activity>
     </application>
 
 </manifest> <!-- issue0:can not hide the title bar --><!-- just use   android:theme="@style/Theme.AppCompat.Light.NoActionBar"> -->
