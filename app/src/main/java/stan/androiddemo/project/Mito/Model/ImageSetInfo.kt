@@ -237,7 +237,10 @@ class ImageSetInfo() :DataSupport(),Parcelable{
                             val imgs = js.select("div.img-box").first().select("a")
                             for (img in imgs){
                                 val i = img.select("img").first().attr("src")
-                                imgSet.images.add(i)
+                                if(!i.contains("wechatpc")){
+                                    imgSet.images.add(i)
+                                }
+
                             }
                         }
 

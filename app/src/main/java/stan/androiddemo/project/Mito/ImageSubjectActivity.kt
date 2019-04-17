@@ -22,6 +22,8 @@ import stan.androiddemo.tool.ImageLoad.ImageLoadBuilder
 class ImageSubjectActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
 
     //这个是专题合集列表
+    //这个版块已经没了
+
     var arrImageSubs = ArrayList<ImageSubjectInfo>()
     lateinit var mAdapter: BaseQuickAdapter<ImageSubjectInfo, BaseViewHolder>
     lateinit var failView: View

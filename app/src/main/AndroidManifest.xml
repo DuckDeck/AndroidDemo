@@ -154,7 +154,8 @@
         <activity android:name=".Media.ffmpeg.FFmpegActivity" />
         <activity android:name=".Media.OpenCV.DrawImageActivity" />
         <activity android:name=".Media.OpenCV.ImageOperateActivity" />
-        <activity android:name=".Media.OpenCV.BasicFeatureDetectionActivity"></activity>
+        <activity android:name=".Media.OpenCV.BasicFeatureDetectionActivity" />
+        <activity android:name=".project.Mito.HotMitoActivity"></activity>
     </application>
 
 </manifest> <!-- issue0:can not hide the title bar --><!-- just use   android:theme="@style/Theme.AppCompat.Light.NoActionBar"> -->
