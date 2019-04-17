@@ -148,6 +148,69 @@ class ImageSetInfo() :DataSupport(),Parcelable{
             })
         }
 
+        fun hotImages(index:Int,cb:((imageSets: ResultInfo)->Unit)){
+            val url = "http://www.5857.com/html/hotlist-${index}.html"
+            HttpTool.get(url,object  :okhttp3.Callback{
+                var result = ResultInfo()
+                override fun onFailure(call: Call?, e: IOException?) {
+                    result.code = errcode_netword_error
+                    result.message = "网络错误，请重新再试"
+                    cb(result)
+                    e?.printStackTrace()
+                }
+                override fun onResponse(call: Call, response: Response) {
+                    val arrImageSets = ArrayList<ImageSetInfo>()
+                    try {
+                        val responseText = response.body()!!.string()
+                        val js = Jsoup.parse(responseText)
+                        val imageSets = js.select("ul.clearfix").first().children()
+                        if (imageSets.count() == 1 && imageSets.first().children().count() == 0){
+                            result.code = errcode_result_not_found
+                            result.message = "无有找到图片"
+                            cb(result)
+                            return
+                        }
+                        val reg = Regex("\\D+")
+                        for (set in imageSets){
+                            val imageSet = ImageSetInfo()
+                            val img = set.select("div.listbox").first()
+                            imageSet.mainImage = img.select("a>img").first().attr("src")
+                            imageSet.title = img.select("a>span").first().text()
+                            imageSet.url = img.select("a").first().attr("href")
+                            val c =  img.select("em.page_num").first().text().replace(reg,"").toIntOrNull()
+                            if (c != null){
+                                imageSet.count = c!!
+                            }
+                            val imageInfo = set.select("div.listbott").first()
+                            imageSet.category = imageInfo.select("em").first().text()
+                            var res = imageInfo.select("span.fbl").first().text()
+                            if (res.contains("(")){
+                                res = res.split("(")[0]
+                            }
+
+                            imageSet.resolution = Resolution(res)
+                            if (imageSet.resolution.pixelX == 0){
+                                     imageSet.resolution = Resolution.standardPhoneResolution
+                            }
+                            imageSet.hashId = imageSet.url.hashCode()
+                            imageSet.resolutionStr = imageSet.resolution.toString()
+                            imageSet.theme = imageInfo.select("span.color").first().text()
+                            arrImageSets.add(imageSet)
+                        }
+                        result.data = arrImageSets
+                        cb(result)
+                    }
+                    catch (e:Exception){
+                        result.code = errcode_html_resolve_error
+                        result.message = "HTML解析错误或者没有图片"
+                        cb(result)
+                        e.printStackTrace()
+                    }
+                }
+
+            })
+        }
+
         fun searchImages(keyword:String,index:Int,cb:(imageSets: ResultInfo) -> Unit){
             val url = "http://www.5857.com/index.php?m=search&c=index&a=init&typeid=3&q=" + URLEncoder.encode(keyword,"UTF-8") + "&page=" + index
             HttpTool.get(url,object :okhttp3.Callback{

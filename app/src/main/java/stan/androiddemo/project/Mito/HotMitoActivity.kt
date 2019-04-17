@@ -1,15 +1,26 @@
 package stan.androiddemo.project.Mito
+import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.graphics.drawable.VectorDrawableCompat
+import android.support.v4.graphics.drawable.DrawableCompat
+import android.support.v4.widget.SwipeRefreshLayout
+import android.support.v7.widget.StaggeredGridLayoutManager
 import android.view.View
+import android.widget.ImageView
+import android.widget.Toast
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
+import com.facebook.drawee.view.SimpleDraweeView
 import kotlinx.android.synthetic.main.activity_hot_mito.*
+import org.litepal.crud.DataSupport
+import stan.androiddemo.Model.ResultInfo
 import stan.androiddemo.R
 import stan.androiddemo.project.Mito.Model.ImageSetInfo
+import stan.androiddemo.tool.ImageLoad.ImageLoadBuilder
 
-class HotMitoActivity : AppCompatActivity() {
+class HotMitoActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
 
 
     var arrImageSet = ArrayList<ImageSetInfo>()
@@ -17,11 +28,129 @@ class HotMitoActivity : AppCompatActivity() {
     lateinit var failView: View
     lateinit var loadingView: View
     lateinit var progressLoading: Drawable
-
-
+    var index = 1
+    var count = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_hot_mito)
         toolbar.setNavigationOnClickListener { onBackPressed() }
+
+
+        val d0 = VectorDrawableCompat.create(resources,R.drawable.ic_toys_black_24dp,null)
+        progressLoading = DrawableCompat.wrap(d0!!.mutate())
+        DrawableCompat.setTint(progressLoading,resources.getColor(R.color.tint_list_pink))
+
+
+        mAdapter = object:BaseQuickAdapter<ImageSetInfo,BaseViewHolder>(R.layout.image_set_item,arrImageSet){
+            override fun convert(helper: BaseViewHolder, item: ImageSetInfo) {
+                val img = helper.getView<SimpleDraweeView>(R.id.img_set)
+                img.aspectRatio = item.resolution.pixelX.toFloat() / item.resolution.pixelY.toFloat()
+                ImageLoadBuilder.Start(this@HotMitoActivity,img,item.mainImage).setProgressBarImage(progressLoading).build()
+                helper.setText(R.id.txt_image_title,item.title)
+                helper.setText(R.id.txt_image_tag,item.category)
+                helper.setText(R.id.txt_image_resolution,item.resolutionStr)
+                helper.setText(R.id.txt_image_theme,item.theme)
+
+
+
+                val imgCollect = helper.getView<ImageView>(R.id.img_mito_collect)
+
+                if (item.isCollected){
+                    imgCollect.setImageDrawable(resources.getDrawable(R.drawable.ic_star_theme_24dp))
+                }
+                else{
+                    imgCollect.setImageDrawable(resources.getDrawable(R.drawable.ic_star_border_white_24dp))
+                }
+
+                imgCollect.setOnClickListener {
+                    if (item.isCollected){
+                        imgCollect.setImageDrawable(resources.getDrawable(R.drawable.ic_star_border_white_24dp))
+                        DataSupport.deleteAll(ImageSetInfo::class.java,"hashId = " + item.hashId )
+                        item.isCollected = !item.isCollected
+                    }
+                    else{
+                        imgCollect.setImageDrawable(resources.getDrawable(R.drawable.ic_star_theme_24dp))
+                        item.isCollected = !item.isCollected
+                        val result =  item.save()
+                        if (result){
+                            Toast.makeText(this@HotMitoActivity,"收藏成功", Toast.LENGTH_LONG).show()
+                        }
+                        else{
+                            Toast.makeText(this@HotMitoActivity,"收藏失败", Toast.LENGTH_LONG).show()
+                        }
+                    }
+                }
+
+            }
+
+        }
+
+        swipe_refresh_hot_mito.setColorSchemeResources(R.color.colorPrimary)
+        swipe_refresh_hot_mito.setOnRefreshListener(this)
+
+        recycler_hot_mito.layoutManager = StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL)
+        recycler_hot_mito.adapter = mAdapter
+        loadingView = View.inflate(this@HotMitoActivity,R.layout.list_loading_hint,null)
+        failView = View.inflate(this@HotMitoActivity,R.layout.list_empty_hint,null)
+        failView.setOnClickListener {
+            mAdapter.emptyView = loadingView
+            index = 1
+            loadData()
+        }
+
+
+        mAdapter.setEnableLoadMore(true)
+        mAdapter.setOnLoadMoreListener({
+
+        },recycler_hot_mito)
+
+        mAdapter.setOnItemClickListener { _, _, position ->
+            val set = arrImageSet[position]
+            val intent = Intent(this@HotMitoActivity,ImageSetActivity::class.java)
+            intent.putExtra("set",set)
+            startActivity(intent)
+        }
+        loadData()
+    }
+
+    private fun loadData(){
+        ImageSetInfo.hotImages(index){result:ResultInfo ->
+            runOnUiThread {
+                count = result.count
+                if(swipe_refresh_hot_mito != null){
+                    swipe_refresh_hot_mito.isRefreshing = false
+                }
+                if (result.code != 0) {
+                    Toast.makeText(this@HotMitoActivity,result.message, Toast.LENGTH_LONG).show()
+                    mAdapter.emptyView = failView
+                    return@runOnUiThread
+                }
+                val imageSets = result.data!! as ArrayList<ImageSetInfo>
+                if (imageSets.size <= 0){
+                    if (index == 1){
+                        mAdapter.emptyView = failView
+                        return@runOnUiThread
+                    }
+                    else{
+                        mAdapter.loadMoreEnd()
+                    }
+                }
+
+                if(index == 1){
+                    arrImageSet.clear()
+                }
+                else{
+                    mAdapter.loadMoreComplete()
+                }
+                index++
+                arrImageSet.addAll(imageSets)
+                mAdapter.notifyDataSetChanged()
+            }
+        }
+    }
+
+    override fun onRefresh() {
+        index = 1
+        loadData()
     }
 }
