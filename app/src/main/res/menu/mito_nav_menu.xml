@@ -23,6 +23,9 @@
         <item android:title="搜索壁纸"
             android:id="@+id/nav_search_mito"
             android:icon="@drawable/ic_search_black_24dp"></item>
+        <item android:title="动态壁纸"
+            android:id="@+id/nav_dynamic_mito"
+            android:icon="@drawable/ic_ondemand_video_black_24dp"></item>
         <!--<item android:title="设置"-->
             <!--android:id="@+id/nav_setting"-->
             <!--android:icon="@mipmap/setting"-->

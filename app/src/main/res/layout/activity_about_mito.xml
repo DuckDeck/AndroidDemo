@@ -8,7 +8,8 @@
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
         <android.support.v7.widget.Toolbar
             android:layout_height="wrap_content"
             android:id="@+id/toolbar"
@@ -32,13 +33,24 @@
    <LinearLayout
        app:layout_behavior="@string/appbar_scrolling_view_behavior"
        android:orientation="vertical"
+       android:padding="20dp"
        android:layout_width="match_parent"
        android:layout_height="match_parent">
        <TextView
+
            android:textSize="22sp"
-           android:text="还差各种筛选"
+           android:text="这是一款看图片的软件，图片来源是5857壁纸站，图片质量高美女也多，因为官方的APP很不好用，还有广告，我就写了这个APP，通过解析HTML实现加载显示图片，还有图片批量下载功能。注意有的分辨率打不开是因为网站有问题"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content" />
+
+       <Button
+           android:id="@+id/btn_clear_cache"
+           android:layout_gravity="center"
+           android:layout_width="200dp"
+           android:layout_height="60dp"
+           android:text="清空缓存"
+           android:textSize="20sp"/>
+
    </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>
