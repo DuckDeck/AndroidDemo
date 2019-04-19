@@ -46,8 +46,8 @@ class DynamicMitoFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     var imageCat = 0
     lateinit var progressLoading: Drawable
     companion object {
-        fun createFragment():ImageFragment{
-            val fg = ImageFragment()
+        fun createFragment():DynamicMitoFragment{
+            val fg = DynamicMitoFragment()
             return fg
         }
     }
@@ -126,9 +126,7 @@ class DynamicMitoFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
         mAdapter.setOnItemClickListener { _, _, position ->
             val set = arrImageSet[position]
-            val intent = Intent(this@DynamicMitoFragment.context,ImageSetActivity::class.java)
-            intent.putExtra("set",set)
-            startActivity(intent)
+
         }
 
         loadData()

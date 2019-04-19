@@ -382,6 +382,34 @@ class ImageSetInfo() :DataSupport(),Parcelable{
             })
         }
 
+        fun getVideoLink(url:String,cb: (videoLink: ResultInfo) -> Unit){
+            HttpTool.get(url,object  :okhttp3.Callback{
+                var result = ResultInfo()
+                override fun onFailure(call: Call?, e: IOException?) {
+                    result.code = errcode_netword_error
+                    result.message = "网络错误，请重新再试"
+                    cb(result)
+                    e?.printStackTrace()
+                }
+                override fun onResponse(call: Call, response: Response) {
+                    try {
+                        val responseText = response.body()!!.string()
+                        val js = Jsoup.parse(responseText)
+                        val video = js.select("div.js-video").first().child(0).attr("src")
+                        result.data = video
+                        cb(result)
+                    }
+                    catch (e:Exception){
+                        result.code = errcode_html_resolve_error
+                        result.message = "HTML解析错误"
+                        cb(result)
+                        e.printStackTrace()
+                    }
+                }
+
+            })
+        }
+
         fun catToUrlPara(str:String):Int{
             when(str){
                 "全部"->return 0

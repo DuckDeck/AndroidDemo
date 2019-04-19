@@ -156,7 +156,8 @@
         <activity android:name=".Media.OpenCV.ImageOperateActivity" />
         <activity android:name=".Media.OpenCV.BasicFeatureDetectionActivity" />
         <activity android:name=".project.Mito.HotMitoActivity" />
-        <activity android:name=".project.Mito.DynamicMitoActivity"></activity>
+        <activity android:name=".project.Mito.DynamicMitoActivity" />
+        <activity android:name=".project.Mito.DynamicMitoPlayActivity"></activity>
     </application>
 
 </manifest> <!-- issue0:can not hide the title bar --><!-- just use   android:theme="@style/Theme.AppCompat.Light.NoActionBar"> -->
