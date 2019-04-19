@@ -78,6 +78,10 @@ class MitoActivity : AppCompatActivity() {
                     val intent = Intent(this,ImageSearchActivity::class.java)
                     startActivityForResult(intent,0x00001)
                 }
+                R.id.nav_dynamic_mito->{
+                    val intent = Intent(this,DynamicMitoActivity::class.java)
+                    startActivityForResult(intent,0x00001)
+                }
                 R.id.nav_subject_mito->{
                     val intent = Intent(this,HotMitoActivity::class.java)
                     startActivityForResult(intent,0x00001)

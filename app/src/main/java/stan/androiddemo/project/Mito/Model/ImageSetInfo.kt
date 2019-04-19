@@ -40,6 +40,11 @@ class ImageSetInfo() :DataSupport(),Parcelable{
     var imgBelongCat = 0
     var isCollected = false
     var hashId = 0
+    var type = 0 //普通壁纸  1动态壁纸
+    var duration = 0 //
+    var durationStr = ""
+    var size = 0
+    var sizeStr = ""
     constructor(parcel: Parcel) : this() {
         url = parcel.readString()
         category = parcel.readString()
@@ -49,6 +54,9 @@ class ImageSetInfo() :DataSupport(),Parcelable{
         theme = parcel.readString()
         mainImage = parcel.readString()
         count = parcel.readInt()
+        type = parcel.readInt()
+        durationStr = parcel.readString()
+        sizeStr = parcel.readString()
     }
 
     companion object CREATOR : Parcelable.Creator<ImageSetInfo> {
@@ -321,6 +329,59 @@ class ImageSetInfo() :DataSupport(),Parcelable{
             })
         }
 
+        fun dynamicSets(cat: String,index: Int,cb: (imageSets: ResultInfo) -> Unit){
+            val url = "http://www.5857.com/list-42-0-${catToUrlPara(cat)}-0-0-0-${index}.html"
+            HttpTool.get(url,object  :okhttp3.Callback{
+                var result = ResultInfo()
+                override fun onFailure(call: Call?, e: IOException?) {
+                    result.code = errcode_netword_error
+                    result.message = "网络错误，请重新再试"
+                    cb(result)
+                    e?.printStackTrace()
+                }
+                override fun onResponse(call: Call, response: Response) {
+                    val arrImageSets = ArrayList<ImageSetInfo>()
+                    try {
+                        val responseText = response.body()!!.string()
+                        val js = Jsoup.parse(responseText)
+                        val imageSets = js.select("ul.clearfix").first().children()
+                        if (imageSets.count() == 1 && imageSets.first().children().count() == 0){
+                            result.code = errcode_result_not_found
+                            result.message = "无有找到图片"
+                            cb(result)
+                            return
+                        }
+                        val reg = Regex("\\D+")
+                        for (set in imageSets){
+                            val imageSet = ImageSetInfo()
+                            val img = set.select("div.listbox").first()
+                            imageSet.mainImage = img.select("a>img").first().attr("src")
+                            imageSet.title = img.select("a>span").first().text()
+                            imageSet.url = img.select("a").first().attr("href")
+
+                            val imageInfo = set.select("div.listbott").first()
+                            imageSet.category = imageInfo.select("span>a").first().text()
+                            imageSet.resolution = Resolution("340x604")
+                            imageSet.hashId = imageSet.url.hashCode()
+                            imageSet.resolutionStr = imageSet.resolution.toString()
+                            imageSet.sizeStr = imageInfo.select("span").first().text()
+                            imageSet.durationStr = imageInfo.select("em").first().text()
+                            arrImageSets.add(imageSet)
+                        }
+                        result.data = arrImageSets
+                        cb(result)
+                    }
+                    catch (e:Exception){
+                        result.code = errcode_html_resolve_error
+                        result.message = "HTML解析错误或者没有图片"
+                        cb(result)
+                        e.printStackTrace()
+                    }
+                }
+
+            })
+        }
+
         fun catToUrlPara(str:String):Int{
             when(str){
                 "全部"->return 0
@@ -347,7 +408,16 @@ class ImageSetInfo() :DataSupport(),Parcelable{
                 "动漫"->return 3444
                 "非主流"->return 3375
                 "小清新"->return 3381
-
+                "娱乐明星"->return 3456
+                "网络红人"->return 3457
+                "歌曲舞蹈"->return 3458
+                "影视大全"->return 3459
+                "动漫卡通"->return 3460
+                "游戏天地"->return 3461
+                "动物萌宠"->return 3462
+                "风景名胜"->return 3463
+                "天生尤物"->return 3464
+                "其他视频"->return 3465
             }
             return 0
         }
@@ -382,6 +452,9 @@ class ImageSetInfo() :DataSupport(),Parcelable{
         parcel.writeString(theme)
         parcel.writeString(mainImage)
         parcel.writeInt(count)
+        parcel.writeInt(type)
+        parcel.writeString(sizeStr)
+        parcel.writeString(durationStr)
     }
 
     override fun describeContents(): Int {
