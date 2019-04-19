@@ -22,7 +22,7 @@ class FiveStrokeInfo:DataSupport(){
 
     companion object {
         fun letterCode(letter:String, cb: ((imageSets: ResultInfo)->Unit)){
-            val url =  "http://www.52wubi.com/wbbmcx/search.php"
+            val url =  "https://www.52wubi.com/wbbmcx/search.php"
             val header = hashMapOf("Accept" to "text/html, application/xhtml+xml, image/jxr, */*",
                     "Referer" to "http://www.52wubi.com/wbbmcx/search.php",
                     "Accept-Language" to "zh-Hans-CN,zh-Hans;q=0.8,en-US;q=0.5,en;q=0.3",
