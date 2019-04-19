@@ -127,6 +127,9 @@ class DynamicMitoFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
         mAdapter.setOnItemClickListener { _, _, position ->
             val set = arrImageSet[position]
 
+            val intent = Intent(this.context,DynamicMitoPlayActivity::class.java)
+            intent.putExtra("video",set)
+            startActivity(intent)
         }
 
         loadData()

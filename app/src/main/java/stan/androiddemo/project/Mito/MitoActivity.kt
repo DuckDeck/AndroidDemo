@@ -28,7 +28,7 @@ class MitoActivity : AppCompatActivity() {
         val actionBar = supportActionBar
         if (actionBar != null){
             actionBar.setDisplayHomeAsUpEnabled(true)
-            actionBar.setHomeAsUpIndicator(R.mipmap.ic_launcher)
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp)
         }
        // 全部	美女	性感	明星	风光	卡通	创意	汽车	游戏	建筑	影视	植物	动物	节庆	可爱	静物	体育	日历	唯美	其它	系统	动漫	非主流	小清新
         val titles = arrayListOf("全部",	"美女","性感","明星","风光","卡通","创意","汽车","游戏","建筑","影视","植物","动物",
