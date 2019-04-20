@@ -15,7 +15,7 @@ import stan.androiddemo.project.Mito.Model.ImageSetInfo
 class DynamicMitoPlayActivity : AppCompatActivity() {
 
     lateinit var imageSet:ImageSetInfo
-
+    var videoLink = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dynamic_mito_play)
@@ -28,6 +28,11 @@ class DynamicMitoPlayActivity : AppCompatActivity() {
             progress_bar.clearAnimation()
             progress_bar.visibility = View.GONE
         }
+
+        txt_download.setOnClickListener {
+
+        }
+
 
         getVideoLink()
     }
@@ -42,7 +47,7 @@ class DynamicMitoPlayActivity : AppCompatActivity() {
                    return@runOnUiThread
                }
                val url = res.data!! as String
-
+                videoLink = url
                video_view.setVideoPath(url)
 
                val mediaController = MediaController(this)
