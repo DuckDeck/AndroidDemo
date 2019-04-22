@@ -7,6 +7,8 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_communication.*
+import kotlinx.android.synthetic.main.activity_communication.toolbar
+import kotlinx.android.synthetic.main.activity_layout.*
 import stan.androiddemo.communication.IPC.IPCActivity
 import stan.androiddemo.communication.Notification.NotificationActivity
 
@@ -15,7 +17,7 @@ class CommunicationActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_communication)
-
+        toolbar.setNavigationOnClickListener { onBackPressed() }
         val adapter = ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, arrayListOf("IPC","Notification"))
         list_view_communication.adapter = adapter
 
