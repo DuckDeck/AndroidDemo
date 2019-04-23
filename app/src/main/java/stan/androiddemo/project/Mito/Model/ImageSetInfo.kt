@@ -116,12 +116,12 @@ class ImageSetInfo() :DataSupport(),Parcelable{
                             val img = set.select("div.listbox").first()
                             imageSet.mainImage = img.select("a>img").first().attr("src")
                             if(imageSet.mainImage.startsWith("//")){
-                                imageSet.mainImage = "http" + imageSet.mainImage
+                                imageSet.mainImage = "http:" + imageSet.mainImage
                             }
                             imageSet.title = img.select("a>span").first().text()
                             imageSet.url = img.select("a").first().attr("href")
                             if(imageSet.url.startsWith("//")){
-                                imageSet.url = "http" + imageSet.url
+                                imageSet.url = "http:" + imageSet.url
                             }
                             val c =  img.select("em.page_num").first().text().replace(reg,"").toIntOrNull()
                             if (c != null){
@@ -190,12 +190,12 @@ class ImageSetInfo() :DataSupport(),Parcelable{
                             val img = set.select("div.listbox").first()
                             imageSet.mainImage = img.select("a>img").first().attr("src")
                             if(imageSet.mainImage.startsWith("//")){
-                                imageSet.mainImage = "http" + imageSet.mainImage
+                                imageSet.mainImage = "http:" + imageSet.mainImage
                             }
                             imageSet.title = img.select("a>span").first().text()
                             imageSet.url = img.select("a").first().attr("href")
                             if(imageSet.url.startsWith("//")){
-                                imageSet.url = "http" + imageSet.url
+                                imageSet.url = "http:" + imageSet.url
                             }
                             val c =  img.select("em.page_num").first().text().replace(reg,"").toIntOrNull()
                             if (c != null){
@@ -256,12 +256,12 @@ class ImageSetInfo() :DataSupport(),Parcelable{
                             val img = l.select("div.listbox").first() ?: continue
                             imageSet.mainImage = img.select("a>img").first().attr("src")
                             if(imageSet.mainImage.startsWith("//")){
-                                imageSet.mainImage = "http" + imageSet.mainImage
+                                imageSet.mainImage = "http:" + imageSet.mainImage
                             }
                             imageSet.title = img.select("a>span").first().text()
                             imageSet.url = img.select("a").first().attr("href")
                             if(imageSet.url.startsWith("//")){
-                                imageSet.url = "http" + imageSet.url
+                                imageSet.url = "http:" + imageSet.url
                             }
                             val c =  img.select("em.page_num").first().text().replace(reg,"").toIntOrNull()
                             if (c != null){
@@ -375,12 +375,12 @@ class ImageSetInfo() :DataSupport(),Parcelable{
                             val img = set.select("div.listbox").first()
                             imageSet.mainImage = img.select("a>img").first().attr("src")
                             if(imageSet.mainImage.startsWith("//")){
-                                imageSet.mainImage = "http" + imageSet.mainImage
+                                imageSet.mainImage = "http:" + imageSet.mainImage
                             }
                             imageSet.title = img.select("a>span").first().text()
                             imageSet.url = img.select("a").first().attr("href")
                             if(imageSet.url.startsWith("//")){
-                                imageSet.url = "http" + imageSet.url
+                                imageSet.url = "http:" + imageSet.url
                             }
                             val imageInfo = set.select("div.listbott").first()
                             imageSet.category = imageInfo.select("span>a").first().text()
