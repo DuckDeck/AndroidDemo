@@ -26,6 +26,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".Media.OpenCV.StringImageActivity"></activity>
         <activity android:name=".MainActivity">
             <intent-filter android:priority="90">
                 <action android:name="android.intent.action.MAIN" />
@@ -157,7 +158,7 @@
         <activity android:name=".Media.OpenCV.BasicFeatureDetectionActivity" />
         <activity android:name=".project.Mito.HotMitoActivity" />
         <activity android:name=".project.Mito.DynamicMitoActivity" />
-        <activity android:name=".project.Mito.DynamicMitoPlayActivity"></activity>
+        <activity android:name=".project.Mito.DynamicMitoPlayActivity" />
     </application>
 
-</manifest> <!-- issue0:can not hide the title bar --><!-- just use   android:theme="@style/Theme.AppCompat.Light.NoActionBar"> -->
+</manifest>

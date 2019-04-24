@@ -19,7 +19,7 @@ class OpenCVActivity : AppCompatActivity() {
         title = ""
 
         val adapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,
-                arrayListOf("照片变灰阶图","绘制图形","图片操作","特征检测"))
+                arrayListOf("照片变灰阶图","绘制图形","图片操作","特征检测","字符串图片"))
         list_view_layout.adapter = adapter
 
         list_view_layout.onItemClickListener = AdapterView.OnItemClickListener { adapterView, view, i, l ->
@@ -39,6 +39,10 @@ class OpenCVActivity : AppCompatActivity() {
                 }
                 "特征检测"->{
                     val intent = Intent(this,BasicFeatureDetectionActivity::class.java)
+                    startActivity(intent)
+                }
+                "字符串图片"->{
+                    val intent = Intent(this,StringImageActivity::class.java)
                     startActivity(intent)
                 }
             }
