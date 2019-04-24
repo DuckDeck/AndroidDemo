@@ -1,9 +1,12 @@
 package stan.androiddemo.Media.OpenCV
 
+import android.app.Activity
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Typeface
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_string_image.*
@@ -28,7 +31,15 @@ class StringImageActivity : AppCompatActivity() {
         title = ""
 
         txt_image.typeface = Typeface.createFromAsset(assets,"MSYHMONO.ttf")
-            
+
+
+        btn_open_image.setOnClickListener {
+            val intent = Intent()
+            intent.type = "image/*"
+            intent.action = Intent.ACTION_GET_CONTENT
+            startActivityForResult(Intent.createChooser(intent,"图片选择..."),0x0001)
+        }
+
         btn_change_image.setOnClickListener {
             img_operate.isDrawingCacheEnabled = true
             val bitmap = Bitmap.createBitmap(img_operate.drawingCache)
@@ -39,7 +50,7 @@ class StringImageActivity : AppCompatActivity() {
             val dst = Mat()
             Utils.bitmapToMat(bitmap,src)
 
-            Imgproc.resize(src,src, Size(46.0,46.0))
+            Imgproc.resize(src,src, Size(67.0,67.0))
             Imgproc.cvtColor(src,dst, Imgproc.COLOR_BGRA2GRAY)
 //            Utils.matToBitmap(dst,bitmap)
 //            img_operate.setImageBitmap(bitmap)
@@ -65,6 +76,19 @@ class StringImageActivity : AppCompatActivity() {
             var result = arrStr.joinToString("\n")
             txt_image.text = result
 
+        }
+
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 0x0001){
+            if (resultCode == Activity.RESULT_OK){
+                if (data != null){
+                    val bitmap = MediaStore.Images.Media.getBitmap(contentResolver,data!!.data)
+                    img_operate.setImageBitmap(bitmap)
+                }
+            }
         }
 
     }

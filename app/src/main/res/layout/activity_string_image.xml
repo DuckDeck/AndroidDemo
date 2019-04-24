@@ -42,13 +42,15 @@
         android:scaleType="fitCenter"
         android:layout_marginTop="65dp"
         android:adjustViewBounds="true"
-        android:src="@mipmap/a11"
+        android:src="@mipmap/mito"
 
         />
 
+
+
      <TextView
 
-         android:textSize="12sp"
+         android:textSize="8sp"
          android:id="@+id/txt_image"
          android:layout_width="match_parent"
          android:layout_height="wrap_content"
@@ -66,6 +68,19 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginBottom="50dp"
         android:layout_marginStart="50dp"/>
+
+
+    <Button
+        android:id="@+id/btn_open_video"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="打开视频"
+        android:background="@color/accent"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="50dp" />
 
     <Button
         android:id="@+id/btn_change_image"
