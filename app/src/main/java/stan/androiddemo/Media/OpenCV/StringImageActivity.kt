@@ -8,6 +8,8 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.view.View
+import android.widget.MediaController
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_string_image.*
 import org.opencv.android.OpenCVLoader
@@ -38,6 +40,13 @@ class StringImageActivity : AppCompatActivity() {
             intent.type = "image/*"
             intent.action = Intent.ACTION_GET_CONTENT
             startActivityForResult(Intent.createChooser(intent,"图片选择..."),0x0001)
+        }
+
+        btn_open_video.setOnClickListener {
+            val intent = Intent()
+            intent.type = "video/*"
+            intent.action = Intent.ACTION_GET_CONTENT
+            startActivityForResult(Intent.createChooser(intent,"视频选择..."),0x0002)
         }
 
         btn_change_image.setOnClickListener {
@@ -87,6 +96,23 @@ class StringImageActivity : AppCompatActivity() {
                 if (data != null){
                     val bitmap = MediaStore.Images.Media.getBitmap(contentResolver,data!!.data)
                     img_operate.setImageBitmap(bitmap)
+                    img_operate.visibility = View.VISIBLE
+                    video_view.visibility = View.GONE
+                }
+            }
+        }
+        else if (requestCode == 0x0002){
+            if (resultCode == Activity.RESULT_OK){
+                if (data != null){
+                  val url =  MediaStore.Video.Media.getContentUri(data.data.toString())
+                    img_operate.visibility = View.GONE
+                    video_view.visibility = View.VISIBLE
+                    //video_view.setVideoURI(url)
+                    video_view.setVideoPath(data.data.toString())
+                    val mediaController = MediaController(this)
+                    video_view.setMediaController(mediaController)
+                    video_view.requestFocus()
+                    video_view.start()
                 }
             }
         }
