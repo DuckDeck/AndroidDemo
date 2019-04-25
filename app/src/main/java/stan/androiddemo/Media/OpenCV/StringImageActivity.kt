@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Typeface
+import android.media.MediaMetadataRetriever
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
@@ -18,6 +19,8 @@ import org.opencv.core.Mat
 import org.opencv.core.Size
 import org.opencv.imgproc.Imgproc
 import stan.androiddemo.R
+import java.util.*
+import kotlin.concurrent.timer
 
 class StringImageActivity : AppCompatActivity() {
     
@@ -33,6 +36,8 @@ class StringImageActivity : AppCompatActivity() {
         title = ""
 
         txt_image.typeface = Typeface.createFromAsset(assets,"MSYHMONO.ttf")
+
+
 
 
         btn_open_image.setOnClickListener {
@@ -58,8 +63,8 @@ class StringImageActivity : AppCompatActivity() {
 
             val dst = Mat()
             Utils.bitmapToMat(bitmap,src)
-
-            Imgproc.resize(src,src, Size(67.0,67.0))
+            val height = 67.0 * src.height().toDouble()   / src.width().toDouble()
+            Imgproc.resize(src,src, Size(67.0,height))
             Imgproc.cvtColor(src,dst, Imgproc.COLOR_BGRA2GRAY)
 //            Utils.matToBitmap(dst,bitmap)
 //            img_operate.setImageBitmap(bitmap)
@@ -84,7 +89,7 @@ class StringImageActivity : AppCompatActivity() {
             dst.release()
             var result = arrStr.joinToString("\n")
             txt_image.text = result
-
+            dst.release()
         }
 
     }
@@ -113,6 +118,10 @@ class StringImageActivity : AppCompatActivity() {
                     video_view.setMediaController(mediaController)
                     video_view.requestFocus()
                     video_view.start()
+                    val mmr = MediaMetadataRetriever()
+                    mmr.setDataSource(data.data.toString())
+
+
                 }
             }
         }
