@@ -422,7 +422,13 @@ class ImageSetInfo() :DataSupport(),Parcelable{
                         val responseText = response.body()!!.string()
                         val js = Jsoup.parse(responseText)
                         val video = js.select("div.js-video").first().child(0).attr("src")
-                        result.data = video
+                        if(video.startsWith("//")){
+                            result.data = "http:" + video
+                        }
+                        else{
+                            result.data = video
+                        }
+
                         cb(result)
                     }
                     catch (e:Exception){
