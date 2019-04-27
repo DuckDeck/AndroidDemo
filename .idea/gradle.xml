@@ -9,6 +9,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/OpenCVLibrary" />
+            <option value="$PROJECT_DIR$/YaseaLibrary" />
             <option value="$PROJECT_DIR$/app" />
           </set>
         </option>

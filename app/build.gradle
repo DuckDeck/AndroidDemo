@@ -133,4 +133,6 @@ dependencies {
     implementation 'com.tencent.bugly:crashreport:2.6.6.1'
 
     implementation project(':OpenCVLibrary')
+
+    implementation project(':YaseaLibrary')
 }
