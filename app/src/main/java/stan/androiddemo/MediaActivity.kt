@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter
 import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_media.*
 import stan.androiddemo.Media.Audio.AudioListActivity
+import stan.androiddemo.Media.Live.LiveActivity
 import stan.androiddemo.Media.OpenCV.OpenCVActivity
 import stan.androiddemo.Media.TakePhoto.TakePhotoActivity
 import stan.androiddemo.Media.ffmpeg.FFmpegActivity
@@ -22,7 +23,7 @@ class MediaActivity : AppCompatActivity() {
         title = ""
 
         val adapter = ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,
-                arrayListOf("拍照","音频","OpenCV","FFmpeg"))
+                arrayListOf("拍照","音频","OpenCV","FFmpeg","直播"))
         list_view_layout.adapter = adapter
 
         list_view_layout.onItemClickListener = AdapterView.OnItemClickListener { adapterView, view, i, l ->
@@ -47,6 +48,11 @@ class MediaActivity : AppCompatActivity() {
                 "FFmpeg"->
                 {
                     val intent = Intent(this, FFmpegActivity::class.java)
+                    startActivity(intent)
+                }
+                "直播"->
+                {
+                    val intent = Intent(this, LiveActivity::class.java)
                     startActivity(intent)
                 }
             }

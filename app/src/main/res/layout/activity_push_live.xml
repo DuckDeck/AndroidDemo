@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Media.Live.PushLiveActivity">
+
+   <ImageButton
+       android:id="@+id/btn_back"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       app:layout_constraintTop_toTopOf="parent"
+       app:layout_constraintStart_toStartOf="parent"
+       android:layout_marginTop="30dp"
+       android:layout_marginStart="30dp"
+       android:src="@drawable/ic_arrow_back_white_24dp"/>
+
+    <net.ossrs.yasea.SrsCameraView
+        android:id="@+id/push_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        />
+
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/btn_switch_camera"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="30dp"
+        android:layout_marginEnd="30dp"
+        android:src="@drawable/ic_camera_white_24dp"/>
+
+</android.support.constraint.ConstraintLayout>
