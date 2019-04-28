@@ -21,7 +21,7 @@ class LiveActivity : AppCompatActivity() {
         title = ""
 
         val adapter = ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,
-                arrayListOf("推流"))
+                arrayListOf("推流","拉流"))
         list_view_layout.adapter = adapter
 
         list_view_layout.onItemClickListener = AdapterView.OnItemClickListener { adapterView, view, i, l ->
@@ -33,7 +33,11 @@ class LiveActivity : AppCompatActivity() {
                     val intent = Intent(this, PushLiveActivity::class.java)
                     startActivity(intent)
                 }
-
+                "拉流"->
+                {
+                    val intent = Intent(this, PullliveActivity::class.java)
+                    startActivity(intent)
+                }
 
             }
         }
