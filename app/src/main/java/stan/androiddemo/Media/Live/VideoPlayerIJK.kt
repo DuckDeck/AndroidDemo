@@ -33,7 +33,7 @@ class VideoPlayerIJK : FrameLayout{
 
     fun initVideoView(context: Context){
         mContext = context
-        focusable = true
+        //focusable = true
     }
 
     fun setVideoPath(path:String){
