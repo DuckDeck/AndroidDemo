@@ -8,5 +8,5 @@
 .externalNativeBuild
 gradle.properties
 jniLibs
-libs
+/app/libs
 OpenCVLibrary/build
