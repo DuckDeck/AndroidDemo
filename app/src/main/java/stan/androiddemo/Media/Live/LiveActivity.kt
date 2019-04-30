@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.TextView
-import stan.androiddemo.Media.TakePhoto.TakePhotoActivity
 import stan.androiddemo.R
 
 class LiveActivity : AppCompatActivity() {
@@ -35,7 +34,7 @@ class LiveActivity : AppCompatActivity() {
                 }
                 "拉流"->
                 {
-                    val intent = Intent(this, PullliveActivity::class.java)
+                    val intent = Intent(this, PullLiveActivity::class.java)
                     startActivity(intent)
                 }
 

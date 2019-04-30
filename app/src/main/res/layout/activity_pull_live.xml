@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Media.Live.PullliveActivity">
+    tools:context=".Media.Live.PullLiveActivity">
 
 
-    <VideoView
-        android:id="@+id/video_view"
+    <stan.androiddemo.Media.Live.VideoPlayerIJK
+        android:id="@+id/video_view_ijk"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         />
