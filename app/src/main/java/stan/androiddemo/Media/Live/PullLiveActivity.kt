@@ -2,6 +2,8 @@ package stan.androiddemo.Media.Live
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_pull_live.*
 import stan.androiddemo.R
 import tv.danmaku.ijk.media.player.IMediaPlayer
@@ -29,32 +31,44 @@ class PullLiveActivity : AppCompatActivity() {
             }
 
             override fun onCompletion(p0: IMediaPlayer?) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                p0?.seekTo(0)
+                p0?.start()
             }
 
             override fun onError(p0: IMediaPlayer?, p1: Int, p2: Int): Boolean {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+               return false
             }
 
             override fun onInfo(p0: IMediaPlayer?, p1: Int, p2: Int): Boolean {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                if(p1 == IMediaPlayer.MEDIA_INFO_BUFFERING_START){
+                    txt_video_info.visibility = View.VISIBLE
+                    video_view_ijk.visibility = View.GONE
+                    Toast.makeText(this@PullLiveActivity,"直播结束",Toast.LENGTH_SHORT).show()
+                }
+                else if(p1 == IMediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START || p1 == IMediaPlayer.MEDIA_INFO_BUFFERING_END){
+                    txt_video_info.visibility = View.GONE
+                    video_view_ijk.visibility = View.VISIBLE
+                    Toast.makeText(this@PullLiveActivity,"直播开始",Toast.LENGTH_SHORT).show()
+                }
+                return false
             }
 
             override fun onPrepared(p0: IMediaPlayer?) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                p0?.start()
             }
 
             override fun onSeekComplete(p0: IMediaPlayer?) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
 
             override fun onVideoSizeChanged(p0: IMediaPlayer?, p1: Int, p2: Int, p3: Int, p4: Int) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
         })
 
+    }
 
-
+    override fun onStop() {
+        super.onStop()
+        IjkMediaPlayer.native_profileEnd()
     }
 
 }

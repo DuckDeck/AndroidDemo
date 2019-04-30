@@ -10,3 +10,4 @@ gradle.properties
 jniLibs
 /app/libs
 OpenCVLibrary/build
+
