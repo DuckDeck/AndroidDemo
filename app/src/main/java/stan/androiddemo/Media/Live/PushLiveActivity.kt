@@ -1,8 +1,12 @@
 package stan.androiddemo.Media.Live
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.hardware.Camera
+import android.hardware.camera2.CameraAccessException
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v4.app.ActivityCompat
 import android.util.Log
 import android.widget.Toast
 import com.github.faucamp.simplertmp.RtmpHandler
@@ -29,6 +33,22 @@ class PushLiveActivity : AppCompatActivity(),SrsEncodeHandler.SrsEncodeListener,
         setContentView(R.layout.activity_push_live)
 
 
+
+
+
+        try {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
+                ActivityCompat.requestPermissions(this, arrayOf("android.permission.CAMERA"),0x0001)
+            }
+            else{
+               startPullLive()
+            }
+        }
+        catch (e: CameraAccessException){
+            e.printStackTrace()
+        }
+
+
         btn_back.setOnClickListener {
             onBackPressed()
         }
@@ -37,6 +57,29 @@ class PushLiveActivity : AppCompatActivity(),SrsEncodeHandler.SrsEncodeListener,
             publisher.switchCameraFace((publisher.cameraId + 1) % Camera.getNumberOfCameras())
         }
 
+
+
+
+
+
+
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        when(requestCode){
+            0x0001->{
+                val cameraAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED
+                if (cameraAccepted){
+                   startPullLive()
+                }
+                else{
+                    Toast.makeText(this,"请开启应用拍照权限",Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
+    fun startPullLive(){
         publisher = SrsPublisher(push_view)
         publisher.setEncodeHandler(SrsEncodeHandler(this))
         publisher.setRtmpHandler(RtmpHandler((this)))
@@ -47,14 +90,13 @@ class PushLiveActivity : AppCompatActivity(),SrsEncodeHandler.SrsEncodeListener,
         publisher.setVideoHDMode()
         publisher.startPublish("rtmp://144.34.157.61:1935/mylive/44")
         publisher.startCamera()
-
-
-
-
     }
 
 
-
+    override fun onBackPressed() {
+        super.onBackPressed()
+        publisher.stopCamera()
+    }
 
     override fun onNetworkWeak() {}
 

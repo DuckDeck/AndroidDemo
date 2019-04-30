@@ -24,7 +24,7 @@ class PullLiveActivity : AppCompatActivity() {
             finish()
         }
 
-        video_view_ijk.setVideoPath("http://144.34.157.61/mylive_hls/44.m3u8")
+        video_view_ijk.setVideoPath("rtmp://bqbbq.com/mylive/44")
         video_view_ijk.setListener( object:VideoPlayerListener(){
             override fun onBufferingUpdate(p0: IMediaPlayer?, p1: Int) {
 
