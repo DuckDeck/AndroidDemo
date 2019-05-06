@@ -10,7 +10,9 @@ import android.support.v4.app.ActivityCompat
 import android.util.Log
 import android.widget.Toast
 import com.github.faucamp.simplertmp.RtmpHandler
+import kotlinx.android.synthetic.main.activity_live.*
 import kotlinx.android.synthetic.main.activity_push_live.*
+import kotlinx.android.synthetic.main.activity_push_live.toolbar
 import net.ossrs.yasea.SrsEncodeHandler
 import net.ossrs.yasea.SrsPublisher
 import net.ossrs.yasea.SrsRecordHandler
@@ -31,7 +33,9 @@ class PushLiveActivity : AppCompatActivity(),SrsEncodeHandler.SrsEncodeListener,
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_push_live)
-
+        setSupportActionBar(toolbar)
+        toolbar.setNavigationOnClickListener { onBackPressed() }
+        title = ""
 
 
 
@@ -49,9 +53,6 @@ class PushLiveActivity : AppCompatActivity(),SrsEncodeHandler.SrsEncodeListener,
         }
 
 
-        btn_back.setOnClickListener {
-            onBackPressed()
-        }
 
         btn_switch_camera.setOnClickListener {
             publisher.switchCameraFace((publisher.cameraId + 1) % Camera.getNumberOfCameras())
@@ -85,8 +86,8 @@ class PushLiveActivity : AppCompatActivity(),SrsEncodeHandler.SrsEncodeListener,
         publisher.setRtmpHandler(RtmpHandler((this)))
         publisher.setRecordHandler(SrsRecordHandler(this))
 
-        publisher.setPreviewResolution(1920,1200)
-        publisher.setOutputResolution(1200,1920)
+        publisher.setPreviewResolution(1200,1200)
+        publisher.setOutputResolution(1200,1200)
         publisher.setVideoHDMode()
         publisher.startPublish("rtmp://144.34.157.61:1935/mylive/44")
         publisher.startCamera()

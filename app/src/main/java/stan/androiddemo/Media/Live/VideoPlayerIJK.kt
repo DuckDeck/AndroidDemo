@@ -46,6 +46,13 @@ class VideoPlayerIJK : FrameLayout{
             this.path = path
             createSurfaceView()
         }
+        else{
+            if(surfaceView == null){
+                createSurfaceView()
+            }
+            this.path = path
+            load()
+        }
 
     }
 
