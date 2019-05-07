@@ -7,6 +7,9 @@
     tools:context=".Media.Live.PullLiveActivity">
 
 
+
+
+
     <stan.androiddemo.Media.Live.VideoPlayerIJK
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

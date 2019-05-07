@@ -12,6 +12,7 @@ import master.flame.danmaku.danmaku.model.DanmakuTimer
 import master.flame.danmaku.danmaku.model.IDanmakus
 import master.flame.danmaku.danmaku.model.IDisplayer
 import master.flame.danmaku.danmaku.model.android.DanmakuContext
+import master.flame.danmaku.danmaku.model.android.Danmakus
 import master.flame.danmaku.danmaku.parser.BaseDanmakuParser
 import stan.androiddemo.R
 import tv.danmaku.ijk.media.player.IMediaPlayer
@@ -38,6 +39,7 @@ class PullLiveActivity : AppCompatActivity() {
         }
 
         video_view_ijk.setVideoPath("rtmp://bqbbq.com/mylive/44")
+
         video_view_ijk.setListener( object:VideoPlayerListener(){
             override fun onBufferingUpdate(p0: IMediaPlayer?, p1: Int) {
 
@@ -68,6 +70,7 @@ class PullLiveActivity : AppCompatActivity() {
 
             override fun onPrepared(p0: IMediaPlayer?) {
                 p0?.start()
+                generateSomeDanmaku()
             }
 
             override fun onSeekComplete(p0: IMediaPlayer?) {
@@ -111,12 +114,13 @@ class PullLiveActivity : AppCompatActivity() {
         danmaku_view.showFPS(true)
 
 
+
     }
 
     fun getDeaultDanmakuParser():BaseDanmakuParser{
         return object:BaseDanmakuParser(){
             override fun parse(): IDanmakus {
-                return danmakus
+                return Danmakus()
             }
         }
     }
@@ -169,6 +173,10 @@ class PullLiveActivity : AppCompatActivity() {
     override fun onStop() {
         super.onStop()
         IjkMediaPlayer.native_profileEnd()
+        if (danmaku_view != null){
+            danmaku_view.release()
+
+        }
     }
 
 }
