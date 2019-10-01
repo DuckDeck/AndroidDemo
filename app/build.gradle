@@ -147,12 +147,12 @@ dependencies {
 
 
 
-    implementation 'com.github.ctiao:DanmakuFlameMaster:0.9.25'
-    implementation 'com.github.ctiao:ndkbitmap-armv7a:0.9.21'
+//    implementation 'com.github.ctiao:DanmakuFlameMaster:0.9.25'
+//    implementation 'com.github.ctiao:ndkbitmap-armv7a:0.9.21'
 
     // Other ABIs: optional
-    implementation 'com.github.ctiao:ndkbitmap-armv5:0.9.21'
-    implementation 'com.github.ctiao:ndkbitmap-x86:0.9.21'
+//    implementation 'com.github.ctiao:ndkbitmap-armv5:0.9.21'
+//    implementation 'com.github.ctiao:ndkbitmap-x86:0.9.21'
 
 
 
