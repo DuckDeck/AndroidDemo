@@ -5,9 +5,9 @@ import android.media.Image
 import android.os.Environment
 import android.widget.ImageView
 import okhttp3.internal.Util
-import org.opencv.android.Utils
-import org.opencv.core.Mat
-import org.opencv.imgproc.Imgproc
+//import org.opencv.android.Utils
+//import org.opencv.core.Mat
+//import org.opencv.imgproc.Imgproc
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
@@ -58,14 +58,14 @@ fun Image.Save(name:String){
     }
 }
 
-fun ImageView.setMat(mat:Mat){
-    val bitmat = Bitmap.createBitmap(mat.width(),mat.height(),Bitmap.Config.ARGB_8888)
-    val matResult = Mat()
-//    Imgproc.cvtColor(mat,matResult,Imgproc.COLOR_BGR2RGBA)
-    Utils.matToBitmap(mat,bitmat)
-    setImageBitmap(bitmat)
-    matResult.release()
-}
+//fun ImageView.setMat(mat:Mat){
+//    val bitmat = Bitmap.createBitmap(mat.width(),mat.height(),Bitmap.Config.ARGB_8888)
+//    val matResult = Mat()
+////    Imgproc.cvtColor(mat,matResult,Imgproc.COLOR_BGR2RGBA)
+//    Utils.matToBitmap(mat,bitmat)
+//    setImageBitmap(bitmat)
+//    matResult.release()
+//}
 
 fun ImageView.getBitmap():Bitmap{
     this.isDrawingCacheEnabled = true
@@ -73,9 +73,9 @@ fun ImageView.getBitmap():Bitmap{
     this.isDrawingCacheEnabled = false
     return  bitmap
 }
-fun ImageView.getMat():Mat{
-    val bitmap = getBitmap()
-    val mat = Mat()
-    Utils.bitmapToMat(bitmap,mat)
-    return  mat
-}
+//fun ImageView.getMat():Mat{
+//    val bitmap = getBitmap()
+//    val mat = Mat()
+//    Utils.bitmapToMat(bitmap,mat)
+//    return  mat
+//}

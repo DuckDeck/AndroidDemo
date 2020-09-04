@@ -22,7 +22,6 @@ import rx.functions.Func1
 import stan.androiddemo.Model.ResultInfo
 import stan.androiddemo.R
 import stan.androiddemo.project.Mito.Model.ImageSetInfo
-import stan.androiddemo.tool.ConvertUrl
 import stan.androiddemo.tool.ImageLoad.ImageLoadBuilder
 import stan.androiddemo.tool.KeyboardTool
 import java.util.concurrent.TimeUnit

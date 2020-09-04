@@ -23,7 +23,6 @@ import com.bumptech.glide.request.target.Target
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.facebook.drawee.view.SimpleDraweeView
-import com.maning.imagebrowserlibrary.MNImageBrowser
 import kotlinx.android.synthetic.main.activity_image_set.*
 import stan.androiddemo.Model.ResultInfo
 import stan.androiddemo.R
@@ -105,7 +104,7 @@ class ImageSetActivity : AppCompatActivity() {
         }
 
         mAdapter.setOnItemClickListener { adapter, view, position ->
-            MNImageBrowser.showImageBrowser(this,view,position,arrImageUrl)
+
         }
 
         loadingView = View.inflate(this,R.layout.list_loading_hint,null)

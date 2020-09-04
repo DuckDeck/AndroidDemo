@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar_main)
 
         val adapter = ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,
-                arrayListOf("项目Demo","布局Layout","绘制View","线程Thread","通信网络","存储Store","多媒体Media"))
+                arrayListOf("项目Demo","布局Layout","绘制View","线程Thread","通信网络","存储Store"))
         list_view_menu.adapter = adapter
 
         list_view_menu.onItemClickListener = AdapterView.OnItemClickListener { _, view, _, _ ->
@@ -64,11 +64,7 @@ class MainActivity : AppCompatActivity() {
                     val intent = Intent(this, StoreActivity::class.java)
                     startActivity(intent)
                 }
-                "多媒体Media"->
-                {
-                    val intent = Intent(this, MediaActivity::class.java)
-                    startActivity(intent)
-                }
+
             }
         }
 

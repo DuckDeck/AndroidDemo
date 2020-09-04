@@ -19,7 +19,7 @@ import org.litepal.crud.DataSupport
 import stan.androiddemo.R
 import stan.androiddemo.project.Mito.Model.ImageSetInfo
 import stan.androiddemo.project.Mito.Model.Resolution
-import stan.androiddemo.tool.ConvertUrl
+
 import stan.androiddemo.tool.ImageLoad.ImageLoadBuilder
 
 class CollectActivity : AppCompatActivity() {

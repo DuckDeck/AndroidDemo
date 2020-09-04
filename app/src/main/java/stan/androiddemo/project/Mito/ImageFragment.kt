@@ -24,7 +24,7 @@ import stan.androiddemo.Model.ResultInfo
 import stan.androiddemo.R
 import stan.androiddemo.project.Mito.Model.ImageSetInfo
 import stan.androiddemo.project.Mito.Model.Resolution
-import stan.androiddemo.tool.ConvertUrl
+
 import stan.androiddemo.tool.ImageLoad.ImageLoadBuilder
 
 class ImageFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
